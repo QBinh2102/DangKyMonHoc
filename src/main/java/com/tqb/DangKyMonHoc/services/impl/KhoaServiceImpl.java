@@ -28,12 +28,12 @@ public class KhoaServiceImpl implements KhoaService{
 
     @Override
     public List<Khoa> findAll() {
-        return this.khoaRepo.findAll();
+        return this.khoaRepo.findAllByOrderByIdAsc();
     }
 
     @Override
     public List<Khoa> findByTenKhoaContaining(String tenKhoa) {
-        return this.khoaRepo.findByTenKhoaContainingIgnoreCase(tenKhoa);
+        return this.khoaRepo.findByTenKhoaContainingIgnoreCaseOrderByIdAsc(tenKhoa);
     }
 
     @Override

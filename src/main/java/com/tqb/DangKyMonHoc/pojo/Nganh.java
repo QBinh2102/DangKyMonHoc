@@ -4,6 +4,7 @@
  */
 package com.tqb.DangKyMonHoc.pojo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Basic;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -47,10 +48,13 @@ public class Nganh implements Serializable {
         @JoinColumn(name = "nganh_id", referencedColumnName = "id")}, inverseJoinColumns = {
         @JoinColumn(name = "mon_hoc_id", referencedColumnName = "id")})
     @ManyToMany
+    @JsonIgnore
     private Set<MonHoc> monHocSet;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "nganh")
+    @JsonIgnore
     private Set<MonHocLienQuan> monHocLienQuanSet;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "nganhId")
+    @JsonIgnore
     private Set<SinhVien> sinhVienSet;
     @JoinColumn(name = "khoa_id", referencedColumnName = "id")
     @ManyToOne(optional = false)

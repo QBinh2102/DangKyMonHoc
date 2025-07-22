@@ -4,7 +4,7 @@
  */
 package com.tqb.DangKyMonHoc.repositories;
 
-import com.tqb.DangKyMonHoc.pojo.Khoa;
+import com.tqb.DangKyMonHoc.pojo.Nganh;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -12,10 +12,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
  *
  * @author toquocbinh2102
  */
-public interface KhoaRepository extends JpaRepository<Khoa, Integer>{
+public interface NganhRepository extends JpaRepository<Nganh, Integer>{
     
-    List<Khoa> findAllByOrderByIdAsc();
-    Khoa findById(int id);
-    List<Khoa> findByTenKhoaContainingIgnoreCaseOrderByIdAsc(String tenKhoa);
+    Nganh findById(int id);
+    List<Nganh> findAllByOrderByIdAsc();
+    List<Nganh> findByTenNganhContainingIgnoreCaseOrderByIdAsc(String tenNganh);
+    List<Nganh> findByKhoaId_IdOrderByIdAsc(int khoaId);
     
 }
