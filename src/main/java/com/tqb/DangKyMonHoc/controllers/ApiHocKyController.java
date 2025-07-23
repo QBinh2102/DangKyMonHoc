@@ -12,6 +12,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -22,22 +24,41 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/hocky")
 public class ApiHocKyController {
-    
+
     @Autowired
     private HocKyService hocKyService;
-    
+
     @GetMapping
-    public ResponseEntity<List<HocKy>> getAllHocKy(){
+    public ResponseEntity<List<HocKy>> getAllHocKy() {
         return new ResponseEntity<>(this.hocKyService.findAllByOrderByIdAsc(), HttpStatus.OK);
     }
-    
+
     @GetMapping("/latest")
-    public ResponseEntity<HocKy> getHocKyMoiNhat(){
+    public ResponseEntity<HocKy> getHocKyMoiNhat() {
         return new ResponseEntity<>(this.hocKyService.findTopByOrderByIdDesc(), HttpStatus.OK);
     }
-    
+
     @GetMapping("/{hocKyId}")
-    public ResponseEntity<HocKy> getHocKyById(@PathVariable(value="hocKyId") int id){
+    public ResponseEntity<HocKy> getHocKyById(@PathVariable(value = "hocKyId") int id) {
         return new ResponseEntity<>(this.hocKyService.findById(id), HttpStatus.OK);
     }
+
+    @PostMapping
+    public ResponseEntity<?> create(@RequestBody HocKy hocKy) {
+        if (hocKy.getId() != null) {
+            return ResponseEntity
+                    .status(HttpStatus.CONFLICT)
+                    .body("ID phải để trống khi tạo mới.");
+        }
+
+        try {
+            HocKy newHocKy = this.hocKyService.add(hocKy);
+            return new ResponseEntity<>(newHocKy, HttpStatus.CREATED);
+        } catch (Exception e) {
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Lỗi khi tạo: " + e.getMessage());
+        }
+    }
+    
 }

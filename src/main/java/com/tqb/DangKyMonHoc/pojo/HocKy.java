@@ -2,9 +2,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-
 package com.tqb.DangKyMonHoc.pojo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Basic;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -45,8 +45,10 @@ public class HocKy implements Serializable {
     @Column(name = "nam_hoc")
     private String namHoc;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "hocKyId")
+    @JsonIgnore
     private Set<BuoiHoc> buoiHocSet;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "hocKyId")
+    @JsonIgnore
     private Set<DangKy> dangKySet;
 
     public HocKy() {
@@ -126,5 +128,5 @@ public class HocKy implements Serializable {
     public String toString() {
         return "com.tqb.DangKyMonHoc.pojo.HocKy[ id=" + id + " ]";
     }
-
+    
 }

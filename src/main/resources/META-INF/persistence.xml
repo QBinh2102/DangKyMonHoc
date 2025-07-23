@@ -2,6 +2,20 @@
 <persistence version="2.2" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence           http://xmlns.jcp.org/xml/ns/persistence/persistence_2_2.xsd">
   <persistence-unit name="com.tqb_DangKyMonHoc_jar_0.0.1-SNAPSHOTPU" transaction-type="RESOURCE_LOCAL">
     <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+    <class>com.tqb.DangKyMonHoc.pojo.Ca</class>
+    <class>com.tqb.DangKyMonHoc.pojo.Diem</class>
+    <class>com.tqb.DangKyMonHoc.pojo.QuyDinh</class>
+    <class>com.tqb.DangKyMonHoc.pojo.SinhVien</class>
+    <class>com.tqb.DangKyMonHoc.pojo.ThoiKhoaBieu</class>
+    <class>com.tqb.DangKyMonHoc.pojo.MonHocLienQuan</class>
+    <class>com.tqb.DangKyMonHoc.pojo.MonHoc</class>
+    <class>com.tqb.DangKyMonHoc.pojo.GiangVien</class>
+    <class>com.tqb.DangKyMonHoc.pojo.DangKy</class>
+    <class>com.tqb.DangKyMonHoc.pojo.HocKy</class>
+    <class>com.tqb.DangKyMonHoc.pojo.Khoa</class>
+    <class>com.tqb.DangKyMonHoc.pojo.BuoiHoc</class>
+    <class>com.tqb.DangKyMonHoc.pojo.DangKyCa</class>
+    <class>com.tqb.DangKyMonHoc.pojo.Nganh</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/database?zeroDateTimeBehavior=CONVERT_TO_NULL"/>
       <property name="javax.persistence.jdbc.user" value="root"/>

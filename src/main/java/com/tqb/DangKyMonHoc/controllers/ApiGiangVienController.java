@@ -4,8 +4,8 @@
  */
 package com.tqb.DangKyMonHoc.controllers;
 
-import com.tqb.DangKyMonHoc.pojo.Nganh;
-import com.tqb.DangKyMonHoc.services.NganhService;
+import com.tqb.DangKyMonHoc.pojo.GiangVien;
+import com.tqb.DangKyMonHoc.services.GiangVienService;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -24,24 +24,15 @@ import org.springframework.web.bind.annotation.RestController;
  * @author toquocbinh2102
  */
 @RestController
-@RequestMapping("/api/nganh")
-public class ApiNganhController {
+@RequestMapping("/api/giangvien")
+public class ApiGiangVienController {
 
     @Autowired
-    private NganhService nganhService;
+    private GiangVienService giangVienService;
 
-    @GetMapping
-    public ResponseEntity<List<Nganh>> getNganh(@RequestParam(value = "tenNganh", required = false) String tenNganh) {
-        if (tenNganh == null || tenNganh.isEmpty()) {
-            return new ResponseEntity<>(this.nganhService.findAll(), HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(this.nganhService.findByTenNganhContaining(tenNganh), HttpStatus.OK);
-        }
-    }
-
-    @GetMapping("/{nganhId}")
-    public ResponseEntity<Nganh> getNganhById(@PathVariable(value = "nganhId") int id) {
-        Nganh existing = this.nganhService.findById(id);
+    @GetMapping("/{giangVienId}")
+    public ResponseEntity<GiangVien> getGiangVienById(@PathVariable(value = "giangVienId") int id) {
+        GiangVien existing = this.giangVienService.findById(id);
         if (existing == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } else {
@@ -49,22 +40,26 @@ public class ApiNganhController {
         }
     }
 
-    @GetMapping("/khoa/{khoaId}")
-    public ResponseEntity<List<Nganh>> getNganhByKhoaId(@PathVariable(value = "khoaId") int id) {
-        return new ResponseEntity<>(this.nganhService.findByKhoaId(id), HttpStatus.OK);
+    @GetMapping
+    public ResponseEntity<List<GiangVien>> getGiangVien(@RequestParam(value = "hoTen", required = false) String hoTen) {
+        if (hoTen == null || hoTen.isEmpty()) {
+            return new ResponseEntity<>(this.giangVienService.findAll(), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(this.giangVienService.findByHoTenContaining(hoTen), HttpStatus.OK);
+        }
     }
 
     @PostMapping
-    public ResponseEntity<?> create(@RequestBody Nganh nganh) {
-        if (nganh.getId() != null) {
+    public ResponseEntity<?> create(@RequestBody GiangVien giangVien) {
+        if (giangVien.getId() != null) {
             return ResponseEntity
                     .status(HttpStatus.CONFLICT)
                     .body("ID phải để trống khi tạo mới.");
         }
 
         try {
-            Nganh newNganh = this.nganhService.addOrUpdate(nganh);
-            return new ResponseEntity<>(newNganh, HttpStatus.CREATED);
+            GiangVien newGiangVien = this.giangVienService.addOrUpdate(giangVien);
+            return new ResponseEntity<>(newGiangVien, HttpStatus.CREATED);
         } catch (Exception e) {
             return ResponseEntity
                     .status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -72,14 +67,14 @@ public class ApiNganhController {
         }
     }
 
-    @PutMapping("/{nganhId}")
-    public ResponseEntity<Nganh> update(@PathVariable(value = "nganhId") int id, @RequestBody Nganh nganh) {
-        Nganh existing = this.nganhService.findById(id);
+    @PutMapping("/{giangVienId}")
+    public ResponseEntity<GiangVien> update(@PathVariable(value = "giangVienId") int id, @RequestBody GiangVien giangVien) {
+        GiangVien existing = this.giangVienService.findById(id);
         if (existing == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } else {
-            nganh.setId(id);
-            return new ResponseEntity<>(this.nganhService.addOrUpdate(nganh), HttpStatus.OK);
+            giangVien.setId(id);
+            return new ResponseEntity<>(this.giangVienService.addOrUpdate(giangVien), HttpStatus.OK);
         }
     }
 

@@ -4,8 +4,8 @@
  */
 package com.tqb.DangKyMonHoc.controllers;
 
-import com.tqb.DangKyMonHoc.pojo.Nganh;
-import com.tqb.DangKyMonHoc.services.NganhService;
+import com.tqb.DangKyMonHoc.pojo.MonHoc;
+import com.tqb.DangKyMonHoc.services.MonHocService;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -24,24 +24,15 @@ import org.springframework.web.bind.annotation.RestController;
  * @author toquocbinh2102
  */
 @RestController
-@RequestMapping("/api/nganh")
-public class ApiNganhController {
+@RequestMapping("/api/monhoc")
+public class ApiMonHocController {
 
     @Autowired
-    private NganhService nganhService;
+    private MonHocService monHocService;
 
-    @GetMapping
-    public ResponseEntity<List<Nganh>> getNganh(@RequestParam(value = "tenNganh", required = false) String tenNganh) {
-        if (tenNganh == null || tenNganh.isEmpty()) {
-            return new ResponseEntity<>(this.nganhService.findAll(), HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(this.nganhService.findByTenNganhContaining(tenNganh), HttpStatus.OK);
-        }
-    }
-
-    @GetMapping("/{nganhId}")
-    public ResponseEntity<Nganh> getNganhById(@PathVariable(value = "nganhId") int id) {
-        Nganh existing = this.nganhService.findById(id);
+    @GetMapping("/{monHocId}")
+    public ResponseEntity<MonHoc> getMonHocById(@PathVariable(value = "monHocId") int id) {
+        MonHoc existing = this.monHocService.findById(id);
         if (existing == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } else {
@@ -49,37 +40,41 @@ public class ApiNganhController {
         }
     }
 
-    @GetMapping("/khoa/{khoaId}")
-    public ResponseEntity<List<Nganh>> getNganhByKhoaId(@PathVariable(value = "khoaId") int id) {
-        return new ResponseEntity<>(this.nganhService.findByKhoaId(id), HttpStatus.OK);
+    @GetMapping
+    public ResponseEntity<List<MonHoc>> getMonHoc(@RequestParam(value = "tenMon", required = false) String tenMon) {
+        if (tenMon == null || tenMon.isEmpty()) {
+            return new ResponseEntity<>(this.monHocService.findAll(), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(this.monHocService.findByTenMonContaining(tenMon), HttpStatus.OK);
+        }
     }
 
     @PostMapping
-    public ResponseEntity<?> create(@RequestBody Nganh nganh) {
-        if (nganh.getId() != null) {
+    public ResponseEntity<?> create(@RequestBody MonHoc monHoc) {
+        if (monHoc.getId() != null) {
             return ResponseEntity
                     .status(HttpStatus.CONFLICT)
                     .body("ID phải để trống khi tạo mới.");
         }
 
         try {
-            Nganh newNganh = this.nganhService.addOrUpdate(nganh);
-            return new ResponseEntity<>(newNganh, HttpStatus.CREATED);
+            MonHoc newMonHoc = this.monHocService.addOrUpdate(monHoc);
+            return new ResponseEntity<>(newMonHoc, HttpStatus.CREATED);
         } catch (Exception e) {
             return ResponseEntity
                     .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Lỗi khi tạo: " + e.getMessage());
+                    .body("Lỗi khi tạo khoa: " + e.getMessage());
         }
     }
 
-    @PutMapping("/{nganhId}")
-    public ResponseEntity<Nganh> update(@PathVariable(value = "nganhId") int id, @RequestBody Nganh nganh) {
-        Nganh existing = this.nganhService.findById(id);
+    @PutMapping("/{monHocId}")
+    public ResponseEntity<MonHoc> update(@PathVariable(value = "monHocId") int id, @RequestBody MonHoc monHoc) {
+        MonHoc existing = this.monHocService.findById(id);
         if (existing == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } else {
-            nganh.setId(id);
-            return new ResponseEntity<>(this.nganhService.addOrUpdate(nganh), HttpStatus.OK);
+            monHoc.setId(id);
+            return new ResponseEntity<>(this.monHocService.addOrUpdate(monHoc), HttpStatus.OK);
         }
     }
 

@@ -4,8 +4,8 @@
  */
 package com.tqb.DangKyMonHoc.controllers;
 
-import com.tqb.DangKyMonHoc.pojo.Khoa;
-import com.tqb.DangKyMonHoc.services.KhoaService;
+import com.tqb.DangKyMonHoc.pojo.SinhVien;
+import com.tqb.DangKyMonHoc.services.SinhVienService;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -24,24 +24,15 @@ import org.springframework.web.bind.annotation.RestController;
  * @author toquocbinh2102
  */
 @RestController
-@RequestMapping("/api/khoa")
-public class ApiKhoaController {
+@RequestMapping("/api/sinhvien")
+public class ApiSinhVienController {
 
     @Autowired
-    private KhoaService khoaService;
+    private SinhVienService sinhVienService;
 
-    @GetMapping
-    public ResponseEntity<List<Khoa>> getKhoa(@RequestParam(value = "tenKhoa", required = false) String tenKhoa) {
-        if (tenKhoa == null || tenKhoa.trim().isEmpty()) {
-            return new ResponseEntity<>(this.khoaService.findAll(), HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(this.khoaService.findByTenKhoaContaining(tenKhoa), HttpStatus.OK);
-        }
-    }
-
-    @GetMapping("/{khoaId}")
-    public ResponseEntity<Khoa> getKhoaById(@PathVariable(value = "khoaId") int id) {
-        Khoa existing = this.khoaService.findById(id);
+    @GetMapping("/{sinhVienId}")
+    public ResponseEntity<SinhVien> getSinhVienById(@PathVariable(value = "sinhVienId") int id) {
+        SinhVien existing = this.sinhVienService.findById(id);
         if (existing == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } else {
@@ -49,33 +40,41 @@ public class ApiKhoaController {
         }
     }
 
+    @GetMapping
+    public ResponseEntity<List<SinhVien>> getSinhVien(@RequestParam(value = "hoTen", required = false) String hoTen) {
+        if (hoTen == null || hoTen.isEmpty()) {
+            return new ResponseEntity<>(this.sinhVienService.findAll(), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(this.sinhVienService.findByHoTenContaining(hoTen), HttpStatus.OK);
+        }
+    }
+
     @PostMapping
-    public ResponseEntity<?> create(@RequestBody Khoa khoa) {
-        if (khoa.getId() != null) {
+    public ResponseEntity<?> create(@RequestBody SinhVien sinhVien) {
+        if (sinhVien.getId() != null) {
             return ResponseEntity
                     .status(HttpStatus.CONFLICT)
                     .body("ID phải để trống khi tạo mới.");
         }
 
         try {
-            Khoa saved = this.khoaService.addOrUpdate(khoa);
-            return new ResponseEntity<>(saved, HttpStatus.CREATED);
+            SinhVien newSinhVien = this.sinhVienService.addOrUpdate(sinhVien);
+            return new ResponseEntity<>(newSinhVien, HttpStatus.CREATED);
         } catch (Exception e) {
-            // Trả về lỗi cụ thể nếu xảy ra Exception
             return ResponseEntity
                     .status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("Lỗi khi tạo: " + e.getMessage());
         }
     }
 
-    @PutMapping("/{khoaId}")
-    public ResponseEntity<Khoa> update(@PathVariable(value = "khoaId") int id, @RequestBody Khoa khoa) {
-        Khoa existing = this.khoaService.findById(id);
+    @PutMapping("/{sinhVienId}")
+    public ResponseEntity<SinhVien> update(@PathVariable(value = "sinhVienId") int id, @RequestBody SinhVien sinhVien) {
+        SinhVien existing = this.sinhVienService.findById(id);
         if (existing == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } else {
-            khoa.setId(id); // đảm bảo id đúng
-            return new ResponseEntity<>(this.khoaService.addOrUpdate(khoa), HttpStatus.OK);
+            sinhVien.setId(id);
+            return new ResponseEntity<>(this.sinhVienService.addOrUpdate(sinhVien), HttpStatus.OK);
         }
     }
 
