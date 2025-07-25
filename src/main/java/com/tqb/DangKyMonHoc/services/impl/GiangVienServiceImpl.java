@@ -8,6 +8,7 @@ import com.tqb.DangKyMonHoc.pojo.GiangVien;
 import com.tqb.DangKyMonHoc.repositories.GiangVienRepository;
 import com.tqb.DangKyMonHoc.services.GiangVienService;
 import java.util.List;
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,8 +17,8 @@ import org.springframework.stereotype.Service;
  * @author toquocbinh2102
  */
 @Service
-public class GiangVienServiceImpl implements GiangVienService{
-    
+public class GiangVienServiceImpl implements GiangVienService {
+
     @Autowired
     private GiangVienRepository giangVienRepo;
 
@@ -27,18 +28,23 @@ public class GiangVienServiceImpl implements GiangVienService{
     }
 
     @Override
-    public List<GiangVien> findAll() {
-        return this.giangVienRepo.findAllByOrderByIdAsc();
-    }
-
-    @Override
-    public List<GiangVien> findByHoTenContaining(String hoTen) {
-        return this.giangVienRepo.findByHoTenContainingIgnoreCaseOrderByIdAsc(hoTen);
+    public List<GiangVien> findGiangVien(Map<String, String> params) {
+        String hoTen = params.get("hoTen");
+        boolean hasHoTen = hoTen != null && !hoTen.isEmpty();
+        if (hasHoTen) {
+            return this.giangVienRepo.findByNguoiDung_HoTenContainingIgnoreCaseOrderByIdAsc(hoTen);
+        } else {
+            return this.giangVienRepo.findAllByOrderByIdAsc();
+        }
     }
 
     @Override
     public GiangVien addOrUpdate(GiangVien giangVien) {
+        if (giangVien.getNguoiDung() != null
+                && (giangVien.getNguoiDung().getMatKhau() == null || giangVien.getNguoiDung().getMatKhau().isEmpty())) {
+            giangVien.getNguoiDung().setMatKhau("123456");
+        }
         return this.giangVienRepo.save(giangVien);
     }
-    
+
 }

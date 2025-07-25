@@ -4,7 +4,7 @@
  */
 package com.tqb.DangKyMonHoc.services;
 
-import com.tqb.DangKyMonHoc.pojo.Nganh;
+import com.tqb.DangKyMonHoc.pojo.Diem;
 import java.util.List;
 import java.util.Map;
 
@@ -12,10 +12,10 @@ import java.util.Map;
  *
  * @author toquocbinh2102
  */
-public interface NganhService {
+public interface DiemService {
     
-    Nganh findById(int id);
-    List<Nganh> findNganh(Map<String,String> params);
-    Nganh addOrUpdate(Nganh nganh);
+    Diem findById(int id);
+    List<Diem> findDiem(Map<String,String> params);
+    Diem addOrUpdate(Diem diem);
     
 }

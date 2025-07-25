@@ -7,6 +7,7 @@ package com.tqb.DangKyMonHoc.controllers;
 import com.tqb.DangKyMonHoc.pojo.Khoa;
 import com.tqb.DangKyMonHoc.services.KhoaService;
 import java.util.List;
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,12 +32,8 @@ public class ApiKhoaController {
     private KhoaService khoaService;
 
     @GetMapping
-    public ResponseEntity<List<Khoa>> getKhoa(@RequestParam(value = "tenKhoa", required = false) String tenKhoa) {
-        if (tenKhoa == null || tenKhoa.trim().isEmpty()) {
-            return new ResponseEntity<>(this.khoaService.findAll(), HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(this.khoaService.findByTenKhoaContaining(tenKhoa), HttpStatus.OK);
-        }
+    public ResponseEntity<List<Khoa>> getKhoa(@RequestParam Map<String, String> params) {
+        return new ResponseEntity<>(this.khoaService.findKhoa(params), HttpStatus.OK);
     }
 
     @GetMapping("/{khoaId}")
@@ -61,7 +58,6 @@ public class ApiKhoaController {
             Khoa saved = this.khoaService.addOrUpdate(khoa);
             return new ResponseEntity<>(saved, HttpStatus.CREATED);
         } catch (Exception e) {
-            // Trả về lỗi cụ thể nếu xảy ra Exception
             return ResponseEntity
                     .status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("Lỗi khi tạo: " + e.getMessage());
@@ -74,7 +70,7 @@ public class ApiKhoaController {
         if (existing == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } else {
-            khoa.setId(id); // đảm bảo id đúng
+            khoa.setId(id);
             return new ResponseEntity<>(this.khoaService.addOrUpdate(khoa), HttpStatus.OK);
         }
     }

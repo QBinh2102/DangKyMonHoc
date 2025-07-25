@@ -6,6 +6,7 @@ package com.tqb.DangKyMonHoc.services;
 
 import com.tqb.DangKyMonHoc.pojo.MonHoc;
 import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -14,8 +15,7 @@ import java.util.List;
 public interface MonHocService {
     
     MonHoc findById(int id);
-    List<MonHoc> findAll();
-    List<MonHoc> findByTenMonContaining(String tenMon);
+    List<MonHoc> findMonHoc(Map<String,String> params);
     MonHoc addOrUpdate(MonHoc monHoc);
     
 }

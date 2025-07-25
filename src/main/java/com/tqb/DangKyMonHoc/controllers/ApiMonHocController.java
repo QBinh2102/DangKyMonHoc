@@ -7,6 +7,7 @@ package com.tqb.DangKyMonHoc.controllers;
 import com.tqb.DangKyMonHoc.pojo.MonHoc;
 import com.tqb.DangKyMonHoc.services.MonHocService;
 import java.util.List;
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -41,12 +42,8 @@ public class ApiMonHocController {
     }
 
     @GetMapping
-    public ResponseEntity<List<MonHoc>> getMonHoc(@RequestParam(value = "tenMon", required = false) String tenMon) {
-        if (tenMon == null || tenMon.isEmpty()) {
-            return new ResponseEntity<>(this.monHocService.findAll(), HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(this.monHocService.findByTenMonContaining(tenMon), HttpStatus.OK);
-        }
+    public ResponseEntity<List<MonHoc>> getMonHoc(@RequestParam Map<String,String> params) {
+        return new ResponseEntity<>(this.monHocService.findMonHoc(params), HttpStatus.OK);
     }
 
     @PostMapping

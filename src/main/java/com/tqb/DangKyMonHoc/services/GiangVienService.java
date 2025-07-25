@@ -6,6 +6,7 @@ package com.tqb.DangKyMonHoc.services;
 
 import com.tqb.DangKyMonHoc.pojo.GiangVien;
 import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -14,8 +15,7 @@ import java.util.List;
 public interface GiangVienService {
     
     GiangVien findById(int id);
-    List<GiangVien> findAll();
-    List<GiangVien> findByHoTenContaining(String hoTen);
+    List<GiangVien> findGiangVien(Map<String,String> params);
     GiangVien addOrUpdate(GiangVien giangVien);
     
 }

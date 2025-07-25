@@ -15,10 +15,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.NamedQueries;
 import jakarta.persistence.NamedQuery;
 import jakarta.persistence.Table;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
 import java.io.Serializable;
-import java.util.Date;
 
 /**
  *
@@ -28,13 +25,7 @@ import java.util.Date;
 @Table(name = "thoi_khoa_bieu")
 @NamedQueries({
     @NamedQuery(name = "ThoiKhoaBieu.findAll", query = "SELECT t FROM ThoiKhoaBieu t"),
-    @NamedQuery(name = "ThoiKhoaBieu.findById", query = "SELECT t FROM ThoiKhoaBieu t WHERE t.id = :id"),
-    @NamedQuery(name = "ThoiKhoaBieu.findByThu", query = "SELECT t FROM ThoiKhoaBieu t WHERE t.thu = :thu"),
-    @NamedQuery(name = "ThoiKhoaBieu.findByGioBatDau", query = "SELECT t FROM ThoiKhoaBieu t WHERE t.gioBatDau = :gioBatDau"),
-    @NamedQuery(name = "ThoiKhoaBieu.findByGioKetThuc", query = "SELECT t FROM ThoiKhoaBieu t WHERE t.gioKetThuc = :gioKetThuc"),
-    @NamedQuery(name = "ThoiKhoaBieu.findByNgayBatDau", query = "SELECT t FROM ThoiKhoaBieu t WHERE t.ngayBatDau = :ngayBatDau"),
-    @NamedQuery(name = "ThoiKhoaBieu.findByNgayKetThuc", query = "SELECT t FROM ThoiKhoaBieu t WHERE t.ngayKetThuc = :ngayKetThuc"),
-    @NamedQuery(name = "ThoiKhoaBieu.findByPhong", query = "SELECT t FROM ThoiKhoaBieu t WHERE t.phong = :phong")})
+    @NamedQuery(name = "ThoiKhoaBieu.findById", query = "SELECT t FROM ThoiKhoaBieu t WHERE t.id = :id")})
 public class ThoiKhoaBieu implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -43,43 +34,18 @@ public class ThoiKhoaBieu implements Serializable {
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
-    @Column(name = "thu")
-    private String thu;
-    @Basic(optional = false)
-    @Column(name = "gio_bat_dau")
-    @Temporal(TemporalType.TIME)
-    private Date gioBatDau;
-    @Basic(optional = false)
-    @Column(name = "gio_ket_thuc")
-    @Temporal(TemporalType.TIME)
-    private Date gioKetThuc;
-    @Basic(optional = false)
-    @Column(name = "ngay_bat_dau")
-    @Temporal(TemporalType.DATE)
-    private Date ngayBatDau;
-    @Basic(optional = false)
-    @Column(name = "ngay_ket_thuc")
-    @Temporal(TemporalType.DATE)
-    private Date ngayKetThuc;
-    @Column(name = "phong")
-    private String phong;
-    @JoinColumn(name = "buoi_hoc_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
-    private BuoiHoc buoiHocId;
+    @JoinColumn(name = "lich_hoc_id", referencedColumnName = "id")
+    @ManyToOne
+    private LichHoc lichHocId;
+    @JoinColumn(name = "sinh_vien_id", referencedColumnName = "id")
+    @ManyToOne
+    private SinhVien sinhVienId;
 
     public ThoiKhoaBieu() {
     }
 
     public ThoiKhoaBieu(Integer id) {
         this.id = id;
-    }
-
-    public ThoiKhoaBieu(Integer id, Date gioBatDau, Date gioKetThuc, Date ngayBatDau, Date ngayKetThuc) {
-        this.id = id;
-        this.gioBatDau = gioBatDau;
-        this.gioKetThuc = gioKetThuc;
-        this.ngayBatDau = ngayBatDau;
-        this.ngayKetThuc = ngayKetThuc;
     }
 
     public Integer getId() {
@@ -90,60 +56,20 @@ public class ThoiKhoaBieu implements Serializable {
         this.id = id;
     }
 
-    public String getThu() {
-        return thu;
+    public LichHoc getLichHocId() {
+        return lichHocId;
     }
 
-    public void setThu(String thu) {
-        this.thu = thu;
+    public void setLichHocId(LichHoc lichHocId) {
+        this.lichHocId = lichHocId;
     }
 
-    public Date getGioBatDau() {
-        return gioBatDau;
+    public SinhVien getSinhVienId() {
+        return sinhVienId;
     }
 
-    public void setGioBatDau(Date gioBatDau) {
-        this.gioBatDau = gioBatDau;
-    }
-
-    public Date getGioKetThuc() {
-        return gioKetThuc;
-    }
-
-    public void setGioKetThuc(Date gioKetThuc) {
-        this.gioKetThuc = gioKetThuc;
-    }
-
-    public Date getNgayBatDau() {
-        return ngayBatDau;
-    }
-
-    public void setNgayBatDau(Date ngayBatDau) {
-        this.ngayBatDau = ngayBatDau;
-    }
-
-    public Date getNgayKetThuc() {
-        return ngayKetThuc;
-    }
-
-    public void setNgayKetThuc(Date ngayKetThuc) {
-        this.ngayKetThuc = ngayKetThuc;
-    }
-
-    public String getPhong() {
-        return phong;
-    }
-
-    public void setPhong(String phong) {
-        this.phong = phong;
-    }
-
-    public BuoiHoc getBuoiHocId() {
-        return buoiHocId;
-    }
-
-    public void setBuoiHocId(BuoiHoc buoiHocId) {
-        this.buoiHocId = buoiHocId;
+    public void setSinhVienId(SinhVien sinhVienId) {
+        this.sinhVienId = sinhVienId;
     }
 
     @Override

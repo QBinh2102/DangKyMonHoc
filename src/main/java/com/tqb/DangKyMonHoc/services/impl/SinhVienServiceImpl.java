@@ -8,6 +8,7 @@ import com.tqb.DangKyMonHoc.pojo.SinhVien;
 import com.tqb.DangKyMonHoc.repositories.SinhVienRepository;
 import com.tqb.DangKyMonHoc.services.SinhVienService;
 import java.util.List;
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,8 +17,8 @@ import org.springframework.stereotype.Service;
  * @author toquocbinh2102
  */
 @Service
-public class SinhVienServiceImpl implements SinhVienService{
-    
+public class SinhVienServiceImpl implements SinhVienService {
+
     @Autowired
     private SinhVienRepository sinhVienRepo;
 
@@ -27,18 +28,23 @@ public class SinhVienServiceImpl implements SinhVienService{
     }
 
     @Override
-    public List<SinhVien> findAll() {
-        return this.sinhVienRepo.findAllByOrderByIdAsc();
-    }
-
-    @Override
-    public List<SinhVien> findByHoTenContaining(String hoTen) {
-        return this.sinhVienRepo.findByHoTenContainingIgnoreCaseOrderByIdAsc(hoTen);
+    public List<SinhVien> findSinhVien(Map<String, String> params) {
+        String hoTen = params.get("hoTen");
+        boolean hasHoTen = hoTen != null && !hoTen.isEmpty();
+        if (hasHoTen) {
+            return this.sinhVienRepo.findByNguoiDung_HoTenContainingIgnoreCaseOrderByIdAsc(hoTen);
+        } else {
+            return this.sinhVienRepo.findAllByOrderByIdAsc();
+        }
     }
 
     @Override
     public SinhVien addOrUpdate(SinhVien sinhVien) {
+        if (sinhVien.getNguoiDung() != null
+                && (sinhVien.getNguoiDung().getMatKhau() == null || sinhVien.getNguoiDung().getMatKhau().isEmpty())) {
+            sinhVien.getNguoiDung().setMatKhau("123456");
+        }
         return this.sinhVienRepo.save(sinhVien);
     }
-    
+
 }

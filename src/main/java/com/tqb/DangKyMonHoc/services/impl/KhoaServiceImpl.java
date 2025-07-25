@@ -8,6 +8,7 @@ import com.tqb.DangKyMonHoc.pojo.Khoa;
 import com.tqb.DangKyMonHoc.repositories.KhoaRepository;
 import com.tqb.DangKyMonHoc.services.KhoaService;
 import java.util.List;
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,8 +17,8 @@ import org.springframework.stereotype.Service;
  * @author toquocbinh2102
  */
 @Service
-public class KhoaServiceImpl implements KhoaService{
-    
+public class KhoaServiceImpl implements KhoaService {
+
     @Autowired
     private KhoaRepository khoaRepo;
 
@@ -27,18 +28,19 @@ public class KhoaServiceImpl implements KhoaService{
     }
 
     @Override
-    public List<Khoa> findAll() {
-        return this.khoaRepo.findAllByOrderByIdAsc();
-    }
-
-    @Override
-    public List<Khoa> findByTenKhoaContaining(String tenKhoa) {
-        return this.khoaRepo.findByTenKhoaContainingIgnoreCaseOrderByIdAsc(tenKhoa);
+    public List<Khoa> findKhoa(Map<String, String> params) {
+        String tenKhoa = params.get("tenKhoa");
+        boolean hasTenKhoa = tenKhoa != null && !tenKhoa.isEmpty();
+        if (hasTenKhoa) {
+            return this.khoaRepo.findByTenKhoaContainingIgnoreCaseOrderByIdAsc(tenKhoa);
+        } else {
+            return this.khoaRepo.findAllByOrderByIdAsc();
+        }
     }
 
     @Override
     public Khoa addOrUpdate(Khoa khoa) {
         return this.khoaRepo.save(khoa);
     }
-    
+
 }

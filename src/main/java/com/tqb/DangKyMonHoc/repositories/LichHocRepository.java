@@ -4,7 +4,7 @@
  */
 package com.tqb.DangKyMonHoc.repositories;
 
-import com.tqb.DangKyMonHoc.pojo.SinhVien;
+import com.tqb.DangKyMonHoc.pojo.LichHoc;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -12,10 +12,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
  *
  * @author toquocbinh2102
  */
-public interface SinhVienRepository extends JpaRepository<SinhVien, Integer>{
+public interface LichHocRepository extends JpaRepository<LichHoc, Integer>{
     
-    SinhVien findById(int id);
-    List<SinhVien> findByNguoiDung_HoTenContainingIgnoreCaseOrderByIdAsc(String hoTen);
-    List<SinhVien> findAllByOrderByIdAsc();
+    LichHoc findById(int id);
+    List<LichHoc> findByBuoiHocId_IdOrderByIdAsc(int buoiHocId);
+    List<LichHoc> findAllByOrderByIdAsc();
     
 }

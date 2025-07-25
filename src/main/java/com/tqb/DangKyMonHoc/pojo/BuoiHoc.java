@@ -4,6 +4,7 @@
  */
 package com.tqb.DangKyMonHoc.pojo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Basic;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -29,8 +30,8 @@ import java.util.Set;
 @NamedQueries({
     @NamedQuery(name = "BuoiHoc.findAll", query = "SELECT b FROM BuoiHoc b"),
     @NamedQuery(name = "BuoiHoc.findById", query = "SELECT b FROM BuoiHoc b WHERE b.id = :id"),
-    @NamedQuery(name = "BuoiHoc.findBySiSo", query = "SELECT b FROM BuoiHoc b WHERE b.siSo = :siSo"),
-    @NamedQuery(name = "BuoiHoc.findByLoai", query = "SELECT b FROM BuoiHoc b WHERE b.loai = :loai")})
+    @NamedQuery(name = "BuoiHoc.findByCa", query = "SELECT b FROM BuoiHoc b WHERE b.ca = :ca"),
+    @NamedQuery(name = "BuoiHoc.findBySiSo", query = "SELECT b FROM BuoiHoc b WHERE b.siSo = :siSo")})
 public class BuoiHoc implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -39,10 +40,10 @@ public class BuoiHoc implements Serializable {
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
+    @Column(name = "ca")
+    private String ca;
     @Column(name = "si_so")
     private Integer siSo;
-    @Column(name = "loai")
-    private String loai;
     @JoinColumn(name = "giang_vien_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private GiangVien giangVienId;
@@ -53,11 +54,11 @@ public class BuoiHoc implements Serializable {
     @ManyToOne(optional = false)
     private MonHoc monHocId;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "buoiHocId")
+    @JsonIgnore
     private Set<DangKy> dangKySet;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "buoiHocId")
-    private Set<ThoiKhoaBieu> thoiKhoaBieuSet;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "buoiHocId")
-    private Set<Ca> caSet;
+    @JsonIgnore
+    private Set<LichHoc> lichHocSet;
 
     public BuoiHoc() {
     }
@@ -74,20 +75,20 @@ public class BuoiHoc implements Serializable {
         this.id = id;
     }
 
+    public String getCa() {
+        return ca;
+    }
+
+    public void setCa(String ca) {
+        this.ca = ca;
+    }
+
     public Integer getSiSo() {
         return siSo;
     }
 
     public void setSiSo(Integer siSo) {
         this.siSo = siSo;
-    }
-
-    public String getLoai() {
-        return loai;
-    }
-
-    public void setLoai(String loai) {
-        this.loai = loai;
     }
 
     public GiangVien getGiangVienId() {
@@ -122,20 +123,12 @@ public class BuoiHoc implements Serializable {
         this.dangKySet = dangKySet;
     }
 
-    public Set<ThoiKhoaBieu> getThoiKhoaBieuSet() {
-        return thoiKhoaBieuSet;
+    public Set<LichHoc> getLichHocSet() {
+        return lichHocSet;
     }
 
-    public void setThoiKhoaBieuSet(Set<ThoiKhoaBieu> thoiKhoaBieuSet) {
-        this.thoiKhoaBieuSet = thoiKhoaBieuSet;
-    }
-
-    public Set<Ca> getCaSet() {
-        return caSet;
-    }
-
-    public void setCaSet(Set<Ca> caSet) {
-        this.caSet = caSet;
+    public void setLichHocSet(Set<LichHoc> lichHocSet) {
+        this.lichHocSet = lichHocSet;
     }
 
     @Override

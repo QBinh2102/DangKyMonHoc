@@ -49,6 +49,9 @@ public class HocKy implements Serializable {
     private Set<BuoiHoc> buoiHocSet;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "hocKyId")
     @JsonIgnore
+    private Set<Diem> diemSet;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "hocKyId")
+    @JsonIgnore
     private Set<DangKy> dangKySet;
 
     public HocKy() {
@@ -94,6 +97,14 @@ public class HocKy implements Serializable {
 
     public void setBuoiHocSet(Set<BuoiHoc> buoiHocSet) {
         this.buoiHocSet = buoiHocSet;
+    }
+
+    public Set<Diem> getDiemSet() {
+        return diemSet;
+    }
+
+    public void setDiemSet(Set<Diem> diemSet) {
+        this.diemSet = diemSet;
     }
 
     public Set<DangKy> getDangKySet() {

@@ -24,32 +24,41 @@ CREATE TABLE nganh (
     FOREIGN KEY (khoa_id) REFERENCES khoa(id)
 );
 
--- ========================
--- 4. SINH VIÊN
--- ========================
-CREATE TABLE sinh_vien (
+-- ===============================
+-- 3. Bảng Người Dùng (Chung)
+-- ===============================
+CREATE TABLE nguoi_dung (
     id INT PRIMARY KEY AUTO_INCREMENT,
     ho_ten VARCHAR(100) NOT NULL,
-    email VARCHAR(100) UNIQUE NOT NULL,
+    email VARCHAR(100) NOT NULL UNIQUE,
     mat_khau VARCHAR(255) NOT NULL,
+    vai_tro ENUM('SINH_VIEN', 'GIANG_VIEN', 'ADMIN') NOT NULL
+);
+
+-- ===============================
+-- 4. Bảng Sinh Viên
+-- ===============================
+CREATE TABLE sinh_vien (
+    id INT PRIMARY KEY,  -- Trùng với ID người dùng
     ngay_sinh DATE,
-    khoa_hoc INT NOT NULL,
-    so_tin_chi INT NOT NULL DEFAULT 0,
-    khoa_id INT NOT NULL,
-    nganh_id INT NOT NULL,
+    khoa_hoc INT,
+    so_tin_chi INT DEFAULT 0,
+    khoa_id INT,
+    nganh_id INT,
+    FOREIGN KEY (id) REFERENCES nguoi_dung(id) ON DELETE CASCADE,
     FOREIGN KEY (khoa_id) REFERENCES khoa(id),
     FOREIGN KEY (nganh_id) REFERENCES nganh(id)
 );
 
--- ========================
--- 5. GIẢNG VIÊN
--- ========================
+-- ===============================
+-- 5. Bảng Giảng Viên
+-- ===============================
 CREATE TABLE giang_vien (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    ho_ten VARCHAR(100) NOT NULL,
-    email VARCHAR(100) UNIQUE NOT NULL,
-    hoc_vi VARCHAR(50),
-    mat_khau VARCHAR(255)
+    id INT PRIMARY KEY,  -- Trùng với ID người dùng
+    hoc_vi VARCHAR(100),
+    khoa_id INT,
+    FOREIGN KEY (id) REFERENCES nguoi_dung(id) ON DELETE CASCADE,
+    FOREIGN KEY (khoa_id) REFERENCES khoa(id)
 );
 
 -- ========================
@@ -97,11 +106,13 @@ CREATE TABLE diem (
     id INT PRIMARY KEY AUTO_INCREMENT,
     sinh_vien_id INT NOT NULL,
     mon_hoc_id INT NOT NULL,
+    hoc_ky_id INT NOT NULL,
     lan_hoc INT NOT NULL DEFAULT 1,
-    loai ENUM('GIUA_KY', 'CUOI_KY') NOT NULL,
+    loai ENUM('GIUA_KY', 'CUOI_KY', 'TONG_KET') NOT NULL,
     diem DECIMAL(4,2) CHECK (diem BETWEEN 0 AND 10),
     FOREIGN KEY (sinh_vien_id) REFERENCES sinh_vien(id),
     FOREIGN KEY (mon_hoc_id) REFERENCES mon_hoc(id),
+    FOREIGN KEY (hoc_ky_id) REFERENCES hoc_ky(id),
     UNIQUE (sinh_vien_id, mon_hoc_id, lan_hoc, loai)  -- tránh trùng điểm cùng loại
 );
 
@@ -113,15 +124,15 @@ CREATE TABLE buoi_hoc (
     mon_hoc_id INT NOT NULL,
     giang_vien_id INT NOT NULL,
     hoc_ky_id INT NOT NULL,
+    ca VARCHAR(10),
     si_so INT DEFAULT 50,
-    loai ENUM('LyThuyet', 'ThucHanh'),
     FOREIGN KEY (mon_hoc_id) REFERENCES mon_hoc(id),
     FOREIGN KEY (giang_vien_id) REFERENCES giang_vien(id),
     FOREIGN KEY (hoc_ky_id) REFERENCES hoc_ky(id)
 );
 
 -- THỜI KHÓA BIỂU
-CREATE TABLE thoi_khoa_bieu (
+CREATE TABLE lich_hoc (
     id INT PRIMARY KEY AUTO_INCREMENT,
     buoi_hoc_id INT NOT NULL,
     thu VARCHAR(20),            -- VD: 'Thứ 2'
@@ -130,17 +141,8 @@ CREATE TABLE thoi_khoa_bieu (
     ngay_bat_dau DATE NOT NULL,
     ngay_ket_thuc DATE NOT NULL,
     phong VARCHAR(50),
+    loai ENUM('LyThuyet', 'ThucHanh'),
     FOREIGN KEY (buoi_hoc_id) REFERENCES buoi_hoc(id)
-);
-
--- CA
-CREATE TABLE ca (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    buoi_hoc_id INT NOT NULL,
-    ten_ca VARCHAR(20),
-    si_so INT DEFAULT 50,
-    FOREIGN KEY (buoi_hoc_id) REFERENCES buoi_hoc(id),
-    UNIQUE (buoi_hoc_id, ten_ca)
 );
 
 -- ========================
@@ -149,27 +151,25 @@ CREATE TABLE ca (
 CREATE TABLE dang_ky (
     id INT PRIMARY KEY AUTO_INCREMENT,
     sinh_vien_id INT NOT NULL,
-    mon_hoc_id INT NOT NULL,
     buoi_hoc_id INT NOT NULL,
     hoc_ky_id INT NOT NULL,
     trang_thai ENUM('DANG_KY', 'DA_HOC', 'HOAN_THANH', 'TRUOT') DEFAULT 'DANG_KY',
     ngay_dang_ky TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (sinh_vien_id) REFERENCES sinh_vien(id),
-    FOREIGN KEY (mon_hoc_id) REFERENCES mon_hoc(id),
     FOREIGN KEY (buoi_hoc_id) REFERENCES buoi_hoc(id),
     FOREIGN KEY (hoc_ky_id) REFERENCES hoc_ky(id),
     UNIQUE (sinh_vien_id, buoi_hoc_id)
 );
 
--- ĐĂNG KÝ CA HỌC THỰC HÀNH
-CREATE TABLE dang_ky_ca (
+-- THỜI KHÓA BIỂU
+CREATE TABLE thoi_khoa_bieu (
     id INT PRIMARY KEY AUTO_INCREMENT,
-    dang_ky_id INT NOT NULL,
-    ten_ca VARCHAR(20),
-    FOREIGN KEY (dang_ky_id) REFERENCES dang_ky(id),
-    UNIQUE (dang_ky_id)
+    sinh_vien_id INT,
+    lich_hoc_id INT,
+    FOREIGN KEY (sinh_vien_id) REFERENCES sinh_vien(id),
+    FOREIGN KEY (lich_hoc_id) REFERENCES lich_hoc(id),
+    UNIQUE (sinh_vien_id, lich_hoc_id)
 );
-
 
 -- ========================
 -- 11. QUY ĐỊNH HỆ THỐNG (VD: Giới hạn tín chỉ)
@@ -215,31 +215,67 @@ VALUES
 	('Hệ thống thông tin quản lý', 1),
 	('Công nghệ thông tin', 1);
 
-INSERT INTO sinh_vien (ho_ten, email, mat_khau, ngay_sinh, khoa_hoc, so_tin_chi, khoa_id, nganh_id)
-VALUES
-	('Tô Quốc Bình', 'binh@student.edu.vn', '123456', '2004-02-21', 2022, 71, 1, 1),
-	('Trần Huỳnh Sang', 'sang@student.edu.vn', '123456', '2004-03-24', 2022, 71, 1, 1),
-	('Nguyễn Đăng Khôi', 'khoi@student.edu.vn', '123456', '2004-05-27', 2022, 71, 1, 1),
-	('Trần Thị Trang', 'trang@student.edu.vn', '123456', '2003-04-12', 2021, 0, 1, 2),
-	('Võ Quốc Bảo', 'bao@student.edu.vn', '123456', '2005-05-15', 2023, 46, 1, 3);
-  
--- Thêm giảng viên
-INSERT INTO giang_vien (ho_ten, email, hoc_vi, mat_khau)
-VALUES
-	('Nguyễn Văn Ón', 'onnguyenvan@giangvien.edu.vn', 'Thạc sĩ', '123456'),
-	('Trần Thị Tuyết', 'tuyettranthi@giangvien.edu.vn', 'Tiến sĩ', '123456'),
-	('Lê Minh Bảo', 'baoleminh@giangvien.edu.vn', 'Thạc sĩ', '123456'),
-	('Nguyễn Hữu Khuê', 'khuenguyenhuu@giangvien.edu.vn', 'Tiến sĩ', '123456'),
-	('Phạm Minh Trang', 'trangphamminh@giangvien.edu.vn', 'Tiến sĩ', '123456'),
-	('Đỗ Quang Hùng', 'hungdoquang@giangvien.edu.vn', 'Thạc sĩ', '123456'),
-	('Phùng Thị Anh', 'anhphungthi@giangvien.edu.vn', 'Thạc sĩ', '123456'),
-	('Võ Văn Kiệt', 'kietvovan@giangvien.edu.vn', 'Thạc sĩ', '123456'),
-	('Dương Minh Công', 'congminhduong@giangvien.edu.vn', 'Thạc sĩ', '123456'),
-	('Nguyễn Lộc Thành', 'thanhnguenloc@giangvien.edu.vn', 'Thạc sĩ', '123456'),
-	('Trần Tuấn Khải', 'khaitrantuan@giangvien.edu.vn', 'Tiến sĩ', '123456'),
-    ('Đỗ Kim Tuấn', 'tuandokim@giangvien.edu.vn', 'Tiến sĩ', '123456'),
-    ('Trần Hà Thanh', 'thanhtranha@giangvien.edu.vn', 'Thạc sĩ', '123456'),
-    ('Nguyễn Quốc Thiên', 'thiennguyenquoc@giangvien.edu.vn', 'Tiến sĩ', '123456');
+-- ==========================
+-- THÊM GIẢNG VIÊN
+-- ==========================
+INSERT INTO nguoi_dung (ho_ten, email, mat_khau, vai_tro) VALUES
+    ('Nguyễn Văn Ón', 'onnguyenvan@giangvien.edu.vn', '123456', 'GIANG_VIEN'),
+    ('Trần Thị Tuyết', 'tuyettranthi@giangvien.edu.vn', '123456', 'GIANG_VIEN'),
+    ('Lê Minh Bảo', 'baoleminh@giangvien.edu.vn', '123456', 'GIANG_VIEN'),
+    ('Nguyễn Hữu Khuê', 'khuenguyenhuu@giangvien.edu.vn', '123456', 'GIANG_VIEN'),
+    ('Phạm Minh Trang', 'trangphamminh@giangvien.edu.vn', '123456', 'GIANG_VIEN'),
+    ('Đỗ Quang Hùng', 'hungdoquang@giangvien.edu.vn', '123456', 'GIANG_VIEN'),
+    ('Phùng Thị Anh', 'anhphungthi@giangvien.edu.vn', '123456', 'GIANG_VIEN'),
+    ('Võ Văn Kiệt', 'kietvovan@giangvien.edu.vn', '123456', 'GIANG_VIEN'),
+    ('Dương Minh Công', 'congminhduong@giangvien.edu.vn', '123456', 'GIANG_VIEN'),
+    ('Nguyễn Lộc Thành', 'thanhnguenloc@giangvien.edu.vn', '123456', 'GIANG_VIEN'),
+    ('Trần Tuấn Khải', 'khaitrantuan@giangvien.edu.vn', '123456', 'GIANG_VIEN'),
+    ('Đỗ Kim Tuấn', 'tuandokim@giangvien.edu.vn', '123456', 'GIANG_VIEN'),
+    ('Trần Hà Thanh', 'thanhtranha@giangvien.edu.vn', '123456', 'GIANG_VIEN'),
+    ('Nguyễn Quốc Thiên', 'thiennguyenquoc@giangvien.edu.vn', '123456', 'GIANG_VIEN');
+
+-- Giả sử id tự động tăng từ 1 đến 14 cho giảng viên
+
+INSERT INTO giang_vien (id, hoc_vi, khoa_id) VALUES
+    (1, 'Thạc sĩ', 1),
+    (2, 'Tiến sĩ', 1),
+    (3, 'Thạc sĩ', 1),
+    (4, 'Tiến sĩ', 1),
+    (5, 'Tiến sĩ', 1),
+    (6, 'Thạc sĩ', 1),
+    (7, 'Thạc sĩ', 1),
+    (8, 'Thạc sĩ', 1),
+    (9, 'Thạc sĩ', 1),
+    (10, 'Thạc sĩ', 1),
+    (11, 'Tiến sĩ', 1),
+    (12, 'Tiến sĩ', 1),
+    (13, 'Thạc sĩ', 1),
+    (14, 'Tiến sĩ', 1);
+
+-- ==========================
+-- THÊM SINH VIÊN
+-- ==========================
+INSERT INTO nguoi_dung (ho_ten, email, mat_khau, vai_tro) VALUES
+    ('Tô Quốc Bình', 'binh@student.edu.vn', '123456', 'SINH_VIEN'),
+    ('Trần Huỳnh Sang', 'sang@student.edu.vn', '123456', 'SINH_VIEN'),
+    ('Nguyễn Đăng Khôi', 'khoi@student.edu.vn', '123456', 'SINH_VIEN'),
+    ('Trần Thị Trang', 'trang@student.edu.vn', '123456', 'SINH_VIEN'),
+    ('Võ Quốc Bảo', 'bao@student.edu.vn', '123456', 'SINH_VIEN');
+
+-- Giả sử id tiếp tục từ 15 đến 19
+
+INSERT INTO sinh_vien (id, ngay_sinh, khoa_hoc, so_tin_chi, khoa_id, nganh_id) VALUES
+    (15, '2004-02-21', 2022, 71, 1, 1),
+    (16, '2004-03-24', 2022, 71, 1, 1),
+    (17, '2004-05-27', 2022, 71, 1, 1),
+    (18, '2003-04-12', 2021, 0, 1, 2),
+    (19, '2005-05-15', 2023, 46, 1, 3);
+
+-- Thêm admin
+INSERT INTO nguoi_dung (ho_ten, email, mat_khau, vai_tro)
+VALUES ('Admin Hệ Thống', 'admin@admin.vn', 'admin123', 'ADMIN');
+
+    
 -- Thêm môn học
 INSERT INTO mon_hoc (ten_mon, mo_ta, so_tin_chi, phan_tram_giua_ky, phan_tram_cuoi_ky, diem_qua_mon, khoa_id)
 VALUES
@@ -425,173 +461,259 @@ VALUES
     (2,37);
 	
 -- Thêm điểm
-INSERT INTO diem(sinh_vien_id, mon_hoc_id, loai, diem)
+INSERT INTO diem(sinh_vien_id, mon_hoc_id, hoc_ky_id, loai, diem)
 VALUES
 	-- Tô Quốc Bình
-	(1,1, "GIUA_KY",9),
-    (1,1, "CUOI_KY",7.6),
-    (1,2, "GIUA_KY",6),
-    (1,2, "CUOI_KY",8),
-    (1,3, "GIUA_KY",6.6),
-    (1,3, "CUOI_KY",3.7),
-    (1,4, "GIUA_KY",4.2),
-    (1,4, "CUOI_KY",6.5),
-    (1,5, "GIUA_KY",5.5),
-    (1,5, "CUOI_KY",4),
-    (1,6, "GIUA_KY",7.2),
-    (1,6, "CUOI_KY",7),
-    (1,7, "GIUA_KY",7.7),
-    (1,7, "CUOI_KY",9),
-    (1,8, "GIUA_KY",9.6),
-    (1,8, "CUOI_KY",9.5),
-    (1,9, "GIUA_KY",9),
-    (1,9, "CUOI_KY",8),
-    (1,10, "GIUA_KY",10),
-    (1,10, "CUOI_KY",4.3),
-    (1,11, "GIUA_KY",5.5),
-    (1,11, "CUOI_KY",8),
-    (1,12, "GIUA_KY",8.7),
-    (1,12, "CUOI_KY",8),
-    (1,13, "GIUA_KY",7.5),
-    (1,13, "CUOI_KY",9),
-    (1,14, "GIUA_KY",5.5),
-    (1,14, "CUOI_KY",8),
-    (1,15, "GIUA_KY",7.9),
-    (1,15, "CUOI_KY",8),
-    (1,16, "GIUA_KY",10),
-    (1,16, "CUOI_KY",9.8),
-    (1,17, "GIUA_KY",7.5),
-    (1,17, "CUOI_KY",6.5),
-    (1,18, "GIUA_KY",6.5),
-    (1,18, "CUOI_KY",7),
-    (1,19, "GIUA_KY",10),
-    (1,19, "CUOI_KY",4.4),
-    (1,20, "GIUA_KY",7),
-    (1,20, "CUOI_KY",6),
-    (1,21, "GIUA_KY",6.5),
-    (1,21, "CUOI_KY",7),
+	(15,1,4, "GIUA_KY",9),
+    (15,1,4, "CUOI_KY",7.6),
+    (15,1,4, "TONG_KET",8.2),
+    (15,2,4, "GIUA_KY",6),
+    (15,2,4, "CUOI_KY",8),
+    (15,2,4, "TONG_KET",7.2),
+    (15,3,5, "GIUA_KY",6.6),
+    (15,3,5, "CUOI_KY",3.7),
+    (15,3,5, "TONG_KET",3.7),
+    (15,4,5, "GIUA_KY",4.2),
+    (15,4,5, "CUOI_KY",6.5),
+    
+    (15,5,6, "GIUA_KY",5.5),
+    (15,5,6, "CUOI_KY",4),
+    
+    (15,6,6, "GIUA_KY",7.2),
+    (15,6,6, "CUOI_KY",7),
+    
+    (15,7,6, "GIUA_KY",7.7),
+    (15,7,6, "CUOI_KY",9),
+    
+    (15,8,7, "GIUA_KY",9.6),
+    (15,8,7, "CUOI_KY",9.5),
+    
+    (15,9,7, "GIUA_KY",9),
+    (15,9,7, "CUOI_KY",8),
+    
+    (15,10,7, "GIUA_KY",10),
+    (15,10,7, "CUOI_KY",4.3),
+    
+    (15,11,8, "GIUA_KY",5.5),
+    (15,11,8, "CUOI_KY",8),
+    
+    (15,12,8, "GIUA_KY",8.7),
+    (15,12,8, "CUOI_KY",8),
+    
+    (15,13,8, "GIUA_KY",7.5),
+    (15,13,8, "CUOI_KY",9),
+    
+    (15,14,9, "GIUA_KY",5.5),
+    (15,14,9, "CUOI_KY",8),
+    
+    (15,15,9, "GIUA_KY",7.9),
+    (15,15,9, "CUOI_KY",8),
+    
+    (15,16,10, "GIUA_KY",10),
+    (15,16,10, "CUOI_KY",9.8),
+    
+    (15,17,10, "GIUA_KY",7.5),
+    (15,17,10, "CUOI_KY",6.5),
+    
+    (15,18,10, "GIUA_KY",6.5),
+    (15,18,10, "CUOI_KY",7),
+    
+    (15,19,11, "GIUA_KY",10),
+    (15,19,11, "CUOI_KY",4.4),
+    
+    (15,20,11, "GIUA_KY",7),
+    (15,20,11, "CUOI_KY",6),
+    
+    (15,21,11, "GIUA_KY",6.5),
+    (15,21,11, "CUOI_KY",7),
+    
     -- Trần Huỳnh Sang
-    (2,1, "GIUA_KY",10),
-    (2,1, "CUOI_KY",7.4),
-    (2,2, "GIUA_KY",10),
-    (2,2, "CUOI_KY",10),
-    (2,3, "GIUA_KY",7.6),
-    (2,3, "CUOI_KY",6.8),
-    (2,4, "GIUA_KY",5.1),
-    (2,4, "CUOI_KY",7),
-    (2,5, "GIUA_KY",7.6),
-    (2,5, "CUOI_KY",4),
-    (2,6, "GIUA_KY",8.3),
-    (2,6, "CUOI_KY",6.5),
-    (2,7, "GIUA_KY",8.3),
-    (2,7, "CUOI_KY",9),
-    (2,8, "GIUA_KY",9.6),
-    (2,8, "CUOI_KY",10),
-    (2,9, "GIUA_KY",8.4),
-    (2,9, "CUOI_KY",9),
-    (2,10, "GIUA_KY",5),
-    (2,10, "CUOI_KY",5),
-    (2,11, "GIUA_KY",6),
-    (2,11, "CUOI_KY",8),
-    (2,12, "GIUA_KY",8.7),
-    (2,12, "CUOI_KY",8.2),
-    (2,13, "GIUA_KY",7.5),
-    (2,13, "CUOI_KY",7.5),
-    (2,14, "GIUA_KY",6),
-    (2,14, "CUOI_KY",8),
-    (2,15, "GIUA_KY",10),
-    (2,15, "CUOI_KY",6.4),
-    (2,16, "GIUA_KY",9),
-    (2,16, "CUOI_KY",8.8),
-    (2,17, "GIUA_KY",6.5),
-    (2,17, "CUOI_KY",6),
-    (2,18, "GIUA_KY",7),
-    (2,18, "CUOI_KY",7),
-    (2,19, "GIUA_KY",10),
-    (2,19, "CUOI_KY",6.4),
-    (2,20, "GIUA_KY",7),
-    (2,20, "CUOI_KY",5.5),
-    (2,21, "GIUA_KY",5.5),
-    (2,21, "CUOI_KY",7),
+    (16,1,4, "GIUA_KY",10),
+    (16,1,4, "CUOI_KY",7.4),
+    
+    (16,2,4, "GIUA_KY",10),
+    (16,2,4, "CUOI_KY",10),
+    
+    (16,3,5, "GIUA_KY",7.6),
+    (16,3,5, "CUOI_KY",6.8),
+    
+    (16,4,5, "GIUA_KY",5.1),
+    (16,4,5, "CUOI_KY",7),
+    
+    (16,5,6, "GIUA_KY",7.6),
+    (16,5,6, "CUOI_KY",4),
+    
+    (16,6,6, "GIUA_KY",8.3),
+    (16,6,6, "CUOI_KY",6.5),
+    
+    (16,7,6, "GIUA_KY",8.3),
+    (16,7,6, "CUOI_KY",9),
+    
+    (16,8,7, "GIUA_KY",9.6),
+    (16,8,7, "CUOI_KY",10),
+    
+    (16,9,7, "GIUA_KY",8.4),
+    (16,9,7, "CUOI_KY",9),
+    
+    (16,10,7, "GIUA_KY",5),
+    (16,10,7, "CUOI_KY",5),
+    
+    (16,11,8, "GIUA_KY",6),
+    (16,11,8, "CUOI_KY",8),
+    
+    (16,12,8, "GIUA_KY",8.7),
+    (16,12,8, "CUOI_KY",8.2),
+    
+    (16,13,8, "GIUA_KY",7.5),
+    (16,13,8, "CUOI_KY",7.5),
+    
+    (16,14,9, "GIUA_KY",6),
+    (16,14,9, "CUOI_KY",8),
+    
+    (16,15,9, "GIUA_KY",10),
+    (16,15,9, "CUOI_KY",6.4),
+    
+    (16,16,10, "GIUA_KY",9),
+    (16,16,10, "CUOI_KY",8.8),
+    
+    (16,17,10, "GIUA_KY",6.5),
+    (16,17,10, "CUOI_KY",6),
+    
+    (16,18,10, "GIUA_KY",7),
+    (16,18,10, "CUOI_KY",7),
+    
+    (16,19,11, "GIUA_KY",10),
+    (16,19,11, "CUOI_KY",6.4),
+    
+    (16,20,11, "GIUA_KY",7),
+    (16,20,11, "CUOI_KY",5.5),
+    
+    (16,21,11, "GIUA_KY",5.5),
+    (16,21,11, "CUOI_KY",7),
+    
     -- Nguyễn Đăng Khôi
-    (3,1, "GIUA_KY",8),
-    (3,1, "CUOI_KY",3.9),
-    (3,2, "GIUA_KY",5),
-    (3,2, "CUOI_KY",2),
-    (3,3, "GIUA_KY",6),
-    (3,3, "CUOI_KY",0.5),
-    (3,4, "GIUA_KY",4.5),
-    (3,4, "CUOI_KY",6),
-    (3,5, "GIUA_KY",5.1),
-    (3,5, "CUOI_KY",3.3),
-    (3,6, "GIUA_KY",6.5),
-    (3,6, "CUOI_KY",4.8),
-    (3,7, "GIUA_KY",8.2),
-    (3,7, "CUOI_KY",6),
-    (3,8, "GIUA_KY",9.6),
-    (3,8, "CUOI_KY",8),
-    (3,9, "GIUA_KY",6),
-    (3,9, "CUOI_KY",4.1),
-    (3,10, "GIUA_KY",9),
-    (3,10, "CUOI_KY",2),
-    (3,11, "GIUA_KY",2.5),
-    (3,11, "CUOI_KY",1.5),
-    (3,12, "GIUA_KY",8.5),
-    (3,12, "CUOI_KY",8),
-    (3,13, "GIUA_KY",7.5),
-    (3,13, "CUOI_KY",3),
-    (3,14, "GIUA_KY",2.5),
-    (3,14, "CUOI_KY",1.5),
-    (3,15, "GIUA_KY",10),
-    (3,15, "CUOI_KY",4.9),
-    (3,16, "GIUA_KY",8.5),
-    (3,16, "CUOI_KY",8.8),
-    (3,17, "GIUA_KY",6.5),
-    (3,17, "CUOI_KY",2),
-    (3,18, "GIUA_KY",3),
-    (3,18, "CUOI_KY",5),
-    (3,19, "GIUA_KY",8.5),
-    (3,19, "CUOI_KY",4.8),
-    (3,20, "GIUA_KY",6),
-    (3,20, "CUOI_KY",4.8),
-    (3,21, "GIUA_KY",3),
-    (3,21, "CUOI_KY",5.5),
-	-- Võ Quốc Bảo
-    (5,1, "GIUA_KY",6),
-    (5,1, "CUOI_KY",9),
-    (5,2, "GIUA_KY",9),
-    (5,2, "CUOI_KY",9.5),
-    (5,3, "GIUA_KY",9.9),
-    (5,3, "CUOI_KY",7.6),
-    (5,4, "GIUA_KY",9.5),
-    (5,4, "CUOI_KY",8),
-    (5,22, "GIUA_KY",6.5),
-    (5,22, "CUOI_KY",4.5),
-    (5,23, "GIUA_KY",9),
-    (5,23, "CUOI_KY",5.5),
-    (5,10, "GIUA_KY",10),
-    (5,10, "CUOI_KY",3.3),
-    (5,8, "GIUA_KY",10),
-    (5,8, "CUOI_KY",10),
-    (5,11, "GIUA_KY",7.5),
-    (5,11, "CUOI_KY",7),
-    (5,24, "GIUA_KY",8),
-    (5,24, "CUOI_KY",8),
-    (5,7, "GIUA_KY",9.3),
-    (5,7, "CUOI_KY",9.3),
-    (5,25, "GIUA_KY",9.8),
-    (5,25, "CUOI_KY",8),
-    (5,12, "GIUA_KY",9.2),
-    (5,12, "CUOI_KY",8.4);
+    (17,1,4, "GIUA_KY",8),
+    (17,1,4, "CUOI_KY",3.9),
+    
+    (17,2,4, "GIUA_KY",5),
+    (17,2,4, "CUOI_KY",2),
+    
+    (17,3,5, "GIUA_KY",6),
+    (17,3,5, "CUOI_KY",0.5),
+    
+    (17,4,5, "GIUA_KY",4.5),
+    (17,4,5, "CUOI_KY",6),
+    
+    (17,5,6, "GIUA_KY",5.1),
+    (17,5,6, "CUOI_KY",3.3),
+    
+    (17,6,6, "GIUA_KY",6.5),
+    (17,6,6, "CUOI_KY",4.8),
+    
+    (17,7,6, "GIUA_KY",8.2),
+    (17,7,6, "CUOI_KY",6),
+    
+    (17,8,7, "GIUA_KY",9.6),
+    (17,8,7, "CUOI_KY",8),
+    
+    (17,9,7, "GIUA_KY",6),
+    (17,9,7, "CUOI_KY",4.1),
+    
+    (17,10,7, "GIUA_KY",9),
+    (17,10,7, "CUOI_KY",2),
+    
+    (17,11,8, "GIUA_KY",2.5),
+    (17,11,8, "CUOI_KY",1.5),
+    
+    (17,12,8, "GIUA_KY",8.5),
+    (17,12,8, "CUOI_KY",8),
+    
+    (17,13,8, "GIUA_KY",7.5),
+    (17,13,8, "CUOI_KY",3),
+    
+    (17,14,9, "GIUA_KY",2.5),
+    (17,14,9, "CUOI_KY",1.5),
+    
+    (17,15,9, "GIUA_KY",10),
+    (17,15,9, "CUOI_KY",4.9),
+    
+    (17,16,10, "GIUA_KY",8.5),
+    (17,16,10, "CUOI_KY",8.8),
+    
+    (17,17,10, "GIUA_KY",6.5),
+    (17,17,10, "CUOI_KY",2),
+    
+    (17,18,10, "GIUA_KY",3),
+    (17,18,10, "CUOI_KY",5),
+    
+    (17,19,11, "GIUA_KY",8.5),
+    (17,19,11, "CUOI_KY",4.8),
+    
+    (17,20,11, "GIUA_KY",6),
+    (17,20,11, "CUOI_KY",4.8),
+    
+    (17,21,11, "GIUA_KY",3),
+    (17,21,11, "CUOI_KY",5.5),
+	
+    -- Võ Quốc Bảo
+    (19,1,7, "GIUA_KY",6),
+    (19,1,7, "CUOI_KY",9),
+    
+    (19,2,7, "GIUA_KY",9),
+    (19,2,7, "CUOI_KY",9.5),
+    
+    (19,3,8, "GIUA_KY",9.9),
+    (19,3,8, "CUOI_KY",7.6),
+    
+    (19,4,8, "GIUA_KY",9.5),
+    (19,4,8, "CUOI_KY",8),
+    
+    (19,22,9, "GIUA_KY",6.5),
+    (19,22,9, "CUOI_KY",4.5),
+    
+    (19,23,9, "GIUA_KY",9),
+    (19,23,9, "CUOI_KY",5.5),
+    
+    (19,10,9, "GIUA_KY",10),
+    (19,10,9, "CUOI_KY",3.3),
+    
+    (19,8,10, "GIUA_KY",10),
+    (19,8,10, "CUOI_KY",10),
+    
+    (19,11,10, "GIUA_KY",7.5),
+    (19,11,10, "CUOI_KY",7),
+    
+    (19,24,10, "GIUA_KY",8),
+    (19,24,10, "CUOI_KY",8),
+    
+    (19,7,11, "GIUA_KY",9.3),
+    (19,7,11, "CUOI_KY",9.3),
+    
+    (19,25,11, "GIUA_KY",9.8),
+    (19,25,11, "CUOI_KY",8),
+    
+    (19,12,11, "GIUA_KY",9.2),
+    (19,12,11, "CUOI_KY",8.4);
+    
 -- Thêm điểm học lại lần 2
-INSERT INTO diem(sinh_vien_id, mon_hoc_id, lan_hoc, loai, diem)
+INSERT INTO diem(sinh_vien_id, mon_hoc_id, hoc_ky_id, lan_hoc, loai, diem)
 VALUES
 	-- Nguyễn Đăng Khôi
-	(3,3,2,"GIUA_KY",3),
-    (3,3,2,"CUOI_KY",5.8);
+	(17,3,11,2,"GIUA_KY",3),
+    (17,3,11,2,"CUOI_KY",5.8);
+    
     
 -- Thêm buổi học
-INSERT INTO buoi_hoc(mon_hoc_id, giang_vien_id, hoc_ky_id, si_so)
+INSERT INTO buoi_hoc(mon_hoc_id, giang_vien_id, hoc_ky_id, ca, si_so)
 VALUES
-	(1,4,4,5),
+	(13,9,12,"",10),
+    (26,11,12,"",10),
+    (14,10,12,"01",5),
+    (14,10,12,"02",5);
     
+INSERT INTO lich_hoc(buoi_hoc_id, thu, gio_bat_dau, gio_ket_thuc, ngay_bat_dau, ngay_ket_thuc, phong, loai)
+VALUES
+	(1, "Thứ 4", "13:00:00", "17:30:00", "2025-09-10",  "2025-11-05", "301", 'LyThuyet'),
+    (3, "Thứ 6", "13:00:00", "17:30:00", "2025-09-12",  "2025-11-07", "204", 'LyThuyet'),
+    (3, "Thứ 6", "07:30:00", "11:00:00", "2025-09-19",  "2025-11-28", "PM.301", 'ThucHanh'),
+    (3, "Thứ 6", "07:30:00", "11:00:00", "2025-09-26",  "2025-12-05", "PM.301", 'ThucHanh');

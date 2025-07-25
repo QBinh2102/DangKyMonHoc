@@ -4,18 +4,14 @@
  */
 package com.tqb.DangKyMonHoc.services;
 
-import com.tqb.DangKyMonHoc.pojo.Nganh;
-import java.util.List;
-import java.util.Map;
+import com.tqb.DangKyMonHoc.pojo.NguoiDung;
 
 /**
  *
  * @author toquocbinh2102
  */
-public interface NganhService {
+public interface NguoiDungService {
     
-    Nganh findById(int id);
-    List<Nganh> findNganh(Map<String,String> params);
-    Nganh addOrUpdate(Nganh nganh);
+    NguoiDung login(String email, String matKhau);
     
 }

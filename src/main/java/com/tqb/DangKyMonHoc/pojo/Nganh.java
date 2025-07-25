@@ -53,7 +53,7 @@ public class Nganh implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "nganh")
     @JsonIgnore
     private Set<MonHocLienQuan> monHocLienQuanSet;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "nganhId")
+    @OneToMany(mappedBy = "nganhId")
     @JsonIgnore
     private Set<SinhVien> sinhVienSet;
     @JoinColumn(name = "khoa_id", referencedColumnName = "id")

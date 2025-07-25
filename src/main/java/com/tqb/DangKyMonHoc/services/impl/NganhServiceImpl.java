@@ -8,6 +8,7 @@ import com.tqb.DangKyMonHoc.pojo.Nganh;
 import com.tqb.DangKyMonHoc.repositories.NganhRepository;
 import com.tqb.DangKyMonHoc.services.NganhService;
 import java.util.List;
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,18 +28,18 @@ public class NganhServiceImpl implements NganhService {
     }
 
     @Override
-    public List<Nganh> findAll() {
-        return this.nganhRepo.findAllByOrderByIdAsc();
-    }
-
-    @Override
-    public List<Nganh> findByTenNganhContaining(String tenNganh) {
-        return this.nganhRepo.findByTenNganhContainingIgnoreCaseOrderByIdAsc(tenNganh);
-    }
-
-    @Override
-    public List<Nganh> findByKhoaId(int khoaId) {
-        return this.nganhRepo.findByKhoaId_IdOrderByIdAsc(khoaId);
+    public List<Nganh> findNganh(Map<String, String> params) {
+        String tenNganh = params.get("tenNganh");
+        String khoaId = params.get("khoaId");
+        boolean hasTenNganh = tenNganh != null && !tenNganh.isEmpty();
+        boolean hasKhoaId = khoaId != null && !khoaId.isEmpty();
+        if (hasTenNganh) {
+            return this.nganhRepo.findByTenNganhContainingIgnoreCaseOrderByIdAsc(tenNganh);
+        } else if (hasKhoaId) {
+            return this.nganhRepo.findByKhoaId_IdOrderByIdAsc(Integer.parseInt(khoaId));
+        } else {
+            return this.nganhRepo.findAllByOrderByIdAsc();
+        }
     }
 
     @Override

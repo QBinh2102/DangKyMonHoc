@@ -16,6 +16,6 @@ public interface GiangVienRepository extends JpaRepository<GiangVien, Integer>{
     
     GiangVien findById(int id);
     List<GiangVien> findAllByOrderByIdAsc();
-    List<GiangVien> findByHoTenContainingIgnoreCaseOrderByIdAsc(String hoTen);
+    List<GiangVien> findByNguoiDung_HoTenContainingIgnoreCaseOrderByIdAsc(String hoTen);
     
 }

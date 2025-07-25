@@ -5,7 +5,6 @@
 package com.tqb.DangKyMonHoc.pojo;
 
 import jakarta.persistence.Basic;
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -15,7 +14,6 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.NamedQueries;
 import jakarta.persistence.NamedQuery;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
@@ -52,14 +50,9 @@ public class DangKy implements Serializable {
     @JoinColumn(name = "hoc_ky_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private HocKy hocKyId;
-    @JoinColumn(name = "mon_hoc_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
-    private MonHoc monHocId;
     @JoinColumn(name = "sinh_vien_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private SinhVien sinhVienId;
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "dangKyId")
-    private DangKyCa dangKyCa;
 
     public DangKy() {
     }
@@ -108,28 +101,12 @@ public class DangKy implements Serializable {
         this.hocKyId = hocKyId;
     }
 
-    public MonHoc getMonHocId() {
-        return monHocId;
-    }
-
-    public void setMonHocId(MonHoc monHocId) {
-        this.monHocId = monHocId;
-    }
-
     public SinhVien getSinhVienId() {
         return sinhVienId;
     }
 
     public void setSinhVienId(SinhVien sinhVienId) {
         this.sinhVienId = sinhVienId;
-    }
-
-    public DangKyCa getDangKyCa() {
-        return dangKyCa;
-    }
-
-    public void setDangKyCa(DangKyCa dangKyCa) {
-        this.dangKyCa = dangKyCa;
     }
 
     @Override

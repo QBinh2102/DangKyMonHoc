@@ -4,7 +4,7 @@
  */
 package com.tqb.DangKyMonHoc.services;
 
-import com.tqb.DangKyMonHoc.pojo.Nganh;
+import com.tqb.DangKyMonHoc.pojo.LichHoc;
 import java.util.List;
 import java.util.Map;
 
@@ -12,10 +12,10 @@ import java.util.Map;
  *
  * @author toquocbinh2102
  */
-public interface NganhService {
+public interface LichHocService {
     
-    Nganh findById(int id);
-    List<Nganh> findNganh(Map<String,String> params);
-    Nganh addOrUpdate(Nganh nganh);
+    LichHoc findById(int id);
+    List<LichHoc> findLichHoc(Map<String,String> params);
+    LichHoc addOrUpdate(LichHoc lichHoc);
     
 }

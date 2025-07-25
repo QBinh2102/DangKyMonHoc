@@ -4,8 +4,8 @@
  */
 package com.tqb.DangKyMonHoc.controllers;
 
-import com.tqb.DangKyMonHoc.pojo.Nganh;
-import com.tqb.DangKyMonHoc.services.NganhService;
+import com.tqb.DangKyMonHoc.pojo.Diem;
+import com.tqb.DangKyMonHoc.services.DiemService;
 import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,38 +25,33 @@ import org.springframework.web.bind.annotation.RestController;
  * @author toquocbinh2102
  */
 @RestController
-@RequestMapping("/api/nganh")
-public class ApiNganhController {
-    
+@RequestMapping("/api/diem")
+public class ApiDiemController {
+
     @Autowired
-    private NganhService nganhService;
-    
+    private DiemService diemService;
+
+    @GetMapping("/{diemId}")
+    public ResponseEntity<Diem> getDiemById(@PathVariable(value = "diemId") int id) {
+        return new ResponseEntity<>(this.diemService.findById(id), HttpStatus.OK);
+    }
+
     @GetMapping
-    public ResponseEntity<List<Nganh>> getNganh(@RequestParam Map<String, String> params) {
-        return new ResponseEntity<>(this.nganhService.findNganh(params), HttpStatus.OK);
+    public ResponseEntity<List<Diem>> getDiem(@RequestParam Map<String, String> params) {
+        return new ResponseEntity<>(this.diemService.findDiem(params), HttpStatus.OK);
     }
-    
-    @GetMapping("/{nganhId}")
-    public ResponseEntity<Nganh> getNganhById(@PathVariable(value = "nganhId") int id) {
-        Nganh existing = this.nganhService.findById(id);
-        if (existing == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        } else {
-            return new ResponseEntity<>(existing, HttpStatus.OK);
-        }
-    }
-    
+
     @PostMapping
-    public ResponseEntity<?> create(@RequestBody Nganh nganh) {
-        if (nganh.getId() != null) {
+    public ResponseEntity<?> create(@RequestBody Diem diem) {
+        if (diem.getId() != null) {
             return ResponseEntity
                     .status(HttpStatus.CONFLICT)
                     .body("ID phải để trống khi tạo mới.");
         }
-        
+
         try {
-            Nganh newNganh = this.nganhService.addOrUpdate(nganh);
-            return new ResponseEntity<>(newNganh, HttpStatus.CREATED);
+            Diem newDiem = this.diemService.addOrUpdate(diem);
+            return new ResponseEntity<>(newDiem, HttpStatus.CREATED);
         } catch (Exception e) {
             return ResponseEntity
                     .status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -64,15 +59,15 @@ public class ApiNganhController {
         }
     }
     
-    @PutMapping("/{nganhId}")
-    public ResponseEntity<Nganh> update(@PathVariable(value = "nganhId") int id, @RequestBody Nganh nganh) {
-        Nganh existing = this.nganhService.findById(id);
-        if (existing == null) {
+    @PutMapping("/{diemId}")
+    public ResponseEntity<Diem> update(@PathVariable(value="diemId") int id, @RequestBody Diem diem){
+        Diem existing = this.diemService.findById(id);
+        if(existing == null){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        } else {
-            nganh.setId(id);
-            return new ResponseEntity<>(this.nganhService.addOrUpdate(nganh), HttpStatus.OK);
+        }else{
+            diem.setId(id);
+            return new ResponseEntity<>(this.diemService.addOrUpdate(diem), HttpStatus.OK);
         }
     }
-    
+
 }

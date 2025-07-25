@@ -4,8 +4,8 @@
  */
 package com.tqb.DangKyMonHoc.controllers;
 
-import com.tqb.DangKyMonHoc.pojo.Nganh;
-import com.tqb.DangKyMonHoc.services.NganhService;
+import com.tqb.DangKyMonHoc.pojo.BuoiHoc;
+import com.tqb.DangKyMonHoc.services.BuoiHocService;
 import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,54 +25,54 @@ import org.springframework.web.bind.annotation.RestController;
  * @author toquocbinh2102
  */
 @RestController
-@RequestMapping("/api/nganh")
-public class ApiNganhController {
-    
+@RequestMapping("/api/buoihoc")
+public class ApiBuoiHocController {
+
     @Autowired
-    private NganhService nganhService;
-    
-    @GetMapping
-    public ResponseEntity<List<Nganh>> getNganh(@RequestParam Map<String, String> params) {
-        return new ResponseEntity<>(this.nganhService.findNganh(params), HttpStatus.OK);
-    }
-    
-    @GetMapping("/{nganhId}")
-    public ResponseEntity<Nganh> getNganhById(@PathVariable(value = "nganhId") int id) {
-        Nganh existing = this.nganhService.findById(id);
+    private BuoiHocService buoiHocService;
+
+    @GetMapping("/{buoiHocId}")
+    public ResponseEntity<BuoiHoc> getBuoiHocById(@PathVariable(value = "buoiHocId") int id) {
+        BuoiHoc existing = this.buoiHocService.findById(id);
         if (existing == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } else {
             return new ResponseEntity<>(existing, HttpStatus.OK);
         }
     }
-    
+
+    @GetMapping
+    public ResponseEntity<List<BuoiHoc>> getBuoiHoc(@RequestParam Map<String, String> params) {
+        return new ResponseEntity<>(this.buoiHocService.findBuoiHoc(params), HttpStatus.OK);
+    }
+
     @PostMapping
-    public ResponseEntity<?> create(@RequestBody Nganh nganh) {
-        if (nganh.getId() != null) {
+    public ResponseEntity<?> create(@RequestBody BuoiHoc buoiHoc) {
+        if (buoiHoc.getId() != null) {
             return ResponseEntity
                     .status(HttpStatus.CONFLICT)
                     .body("ID phải để trống khi tạo mới.");
         }
-        
+
         try {
-            Nganh newNganh = this.nganhService.addOrUpdate(nganh);
-            return new ResponseEntity<>(newNganh, HttpStatus.CREATED);
+            BuoiHoc newBuoiHoc = this.buoiHocService.createOrUpdate(buoiHoc);
+            return new ResponseEntity<>(newBuoiHoc, HttpStatus.CREATED);
         } catch (Exception e) {
             return ResponseEntity
                     .status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("Lỗi khi tạo: " + e.getMessage());
         }
     }
-    
-    @PutMapping("/{nganhId}")
-    public ResponseEntity<Nganh> update(@PathVariable(value = "nganhId") int id, @RequestBody Nganh nganh) {
-        Nganh existing = this.nganhService.findById(id);
+
+    @PutMapping("/{buoiHocId}")
+    public ResponseEntity<BuoiHoc> update(@PathVariable(value = "buoiHocId") int id, @RequestBody BuoiHoc buoiHoc) {
+        BuoiHoc existing = this.buoiHocService.findById(id);
         if (existing == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } else {
-            nganh.setId(id);
-            return new ResponseEntity<>(this.nganhService.addOrUpdate(nganh), HttpStatus.OK);
+            buoiHoc.setId(id);
+            return new ResponseEntity<>(this.buoiHocService.createOrUpdate(buoiHoc), HttpStatus.OK);
         }
     }
-    
+
 }

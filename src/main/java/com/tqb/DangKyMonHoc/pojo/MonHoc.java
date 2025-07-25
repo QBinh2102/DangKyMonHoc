@@ -13,6 +13,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.NamedQueries;
@@ -33,7 +34,6 @@ import java.util.Set;
     @NamedQuery(name = "MonHoc.findAll", query = "SELECT m FROM MonHoc m"),
     @NamedQuery(name = "MonHoc.findById", query = "SELECT m FROM MonHoc m WHERE m.id = :id"),
     @NamedQuery(name = "MonHoc.findByTenMon", query = "SELECT m FROM MonHoc m WHERE m.tenMon = :tenMon"),
-    @NamedQuery(name = "MonHoc.findByMoTa", query = "SELECT m FROM MonHoc m WHERE m.moTa = :moTa"),
     @NamedQuery(name = "MonHoc.findBySoTinChi", query = "SELECT m FROM MonHoc m WHERE m.soTinChi = :soTinChi"),
     @NamedQuery(name = "MonHoc.findByPhanTramGiuaKy", query = "SELECT m FROM MonHoc m WHERE m.phanTramGiuaKy = :phanTramGiuaKy"),
     @NamedQuery(name = "MonHoc.findByPhanTramCuoiKy", query = "SELECT m FROM MonHoc m WHERE m.phanTramCuoiKy = :phanTramCuoiKy"),
@@ -49,6 +49,7 @@ public class MonHoc implements Serializable {
     @Basic(optional = false)
     @Column(name = "ten_mon")
     private String tenMon;
+    @Lob
     @Column(name = "mo_ta")
     private String moTa;
     @Basic(optional = false)
@@ -73,9 +74,6 @@ public class MonHoc implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "monHocId")
     @JsonIgnore
     private Set<Diem> diemSet;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "monHocId")
-    @JsonIgnore
-    private Set<DangKy> dangKySet;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "monHoc")
     @JsonIgnore
     private Set<MonHocLienQuan> monHocLienQuanSet;
@@ -180,14 +178,6 @@ public class MonHoc implements Serializable {
 
     public void setDiemSet(Set<Diem> diemSet) {
         this.diemSet = diemSet;
-    }
-
-    public Set<DangKy> getDangKySet() {
-        return dangKySet;
-    }
-
-    public void setDangKySet(Set<DangKy> dangKySet) {
-        this.dangKySet = dangKySet;
     }
 
     public Set<MonHocLienQuan> getMonHocLienQuanSet() {

@@ -4,7 +4,8 @@
  */
 package com.tqb.DangKyMonHoc.services;
 
-import com.tqb.DangKyMonHoc.pojo.Nganh;
+import com.tqb.DangKyMonHoc.pojo.MonHocLienQuan;
+import com.tqb.DangKyMonHoc.pojo.MonHocLienQuanPK;
 import java.util.List;
 import java.util.Map;
 
@@ -12,10 +13,10 @@ import java.util.Map;
  *
  * @author toquocbinh2102
  */
-public interface NganhService {
+public interface MonHocLienQuanService {
     
-    Nganh findById(int id);
-    List<Nganh> findNganh(Map<String,String> params);
-    Nganh addOrUpdate(Nganh nganh);
+    List<MonHocLienQuan> findMonHocLienQuan(Map<String,String> params);
+    MonHocLienQuan add(MonHocLienQuan monHocLienQuan);
+    boolean delete(MonHocLienQuanPK id);
     
 }

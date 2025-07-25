@@ -7,6 +7,7 @@ package com.tqb.DangKyMonHoc.controllers;
 import com.tqb.DangKyMonHoc.pojo.GiangVien;
 import com.tqb.DangKyMonHoc.services.GiangVienService;
 import java.util.List;
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -41,12 +42,8 @@ public class ApiGiangVienController {
     }
 
     @GetMapping
-    public ResponseEntity<List<GiangVien>> getGiangVien(@RequestParam(value = "hoTen", required = false) String hoTen) {
-        if (hoTen == null || hoTen.isEmpty()) {
-            return new ResponseEntity<>(this.giangVienService.findAll(), HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(this.giangVienService.findByHoTenContaining(hoTen), HttpStatus.OK);
-        }
+    public ResponseEntity<List<GiangVien>> getGiangVien(@RequestParam Map<String,String> params) {
+        return new ResponseEntity<>(this.giangVienService.findGiangVien(params), HttpStatus.OK);
     }
 
     @PostMapping

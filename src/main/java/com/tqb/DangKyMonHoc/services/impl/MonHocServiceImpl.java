@@ -8,6 +8,7 @@ import com.tqb.DangKyMonHoc.pojo.MonHoc;
 import com.tqb.DangKyMonHoc.repositories.MonHocRepository;
 import com.tqb.DangKyMonHoc.services.MonHocService;
 import java.util.List;
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,13 +28,14 @@ public class MonHocServiceImpl implements MonHocService{
     }
 
     @Override
-    public List<MonHoc> findAll() {
-        return this.monHocRepo.findAllByOrderByIdAsc();
-    }
-
-    @Override
-    public List<MonHoc> findByTenMonContaining(String tenMon) {
-        return this.monHocRepo.findByTenMonContainingIgnoreCaseOrderByIdAsc(tenMon);
+    public List<MonHoc> findMonHoc(Map<String,String> params) {
+        String tenMon = params.get("tenMon");
+        boolean hasTenMon = tenMon!=null && !tenMon.isEmpty();
+        if(hasTenMon){
+            return this.monHocRepo.findByTenMonContainingIgnoreCaseOrderByIdAsc(tenMon);
+        }else{
+            return this.monHocRepo.findAllByOrderByIdAsc();
+        }
     }
 
     @Override
