@@ -32,7 +32,7 @@ CREATE TABLE nguoi_dung (
     ho_ten VARCHAR(100) NOT NULL,
     email VARCHAR(100) NOT NULL UNIQUE,
     mat_khau VARCHAR(255) NOT NULL,
-    vai_tro ENUM('SINH_VIEN', 'GIANG_VIEN', 'ADMIN') NOT NULL
+    vai_tro ENUM('ROLE_SINH_VIEN', 'ROLE_GIANG_VIEN', 'ROLE_ADMIN') NOT NULL
 );
 
 -- ===============================
@@ -219,20 +219,20 @@ VALUES
 -- THÊM GIẢNG VIÊN
 -- ==========================
 INSERT INTO nguoi_dung (ho_ten, email, mat_khau, vai_tro) VALUES
-    ('Nguyễn Văn Ón', 'onnguyenvan@giangvien.edu.vn', '123456', 'GIANG_VIEN'),
-    ('Trần Thị Tuyết', 'tuyettranthi@giangvien.edu.vn', '123456', 'GIANG_VIEN'),
-    ('Lê Minh Bảo', 'baoleminh@giangvien.edu.vn', '123456', 'GIANG_VIEN'),
-    ('Nguyễn Hữu Khuê', 'khuenguyenhuu@giangvien.edu.vn', '123456', 'GIANG_VIEN'),
-    ('Phạm Minh Trang', 'trangphamminh@giangvien.edu.vn', '123456', 'GIANG_VIEN'),
-    ('Đỗ Quang Hùng', 'hungdoquang@giangvien.edu.vn', '123456', 'GIANG_VIEN'),
-    ('Phùng Thị Anh', 'anhphungthi@giangvien.edu.vn', '123456', 'GIANG_VIEN'),
-    ('Võ Văn Kiệt', 'kietvovan@giangvien.edu.vn', '123456', 'GIANG_VIEN'),
-    ('Dương Minh Công', 'congminhduong@giangvien.edu.vn', '123456', 'GIANG_VIEN'),
-    ('Nguyễn Lộc Thành', 'thanhnguenloc@giangvien.edu.vn', '123456', 'GIANG_VIEN'),
-    ('Trần Tuấn Khải', 'khaitrantuan@giangvien.edu.vn', '123456', 'GIANG_VIEN'),
-    ('Đỗ Kim Tuấn', 'tuandokim@giangvien.edu.vn', '123456', 'GIANG_VIEN'),
-    ('Trần Hà Thanh', 'thanhtranha@giangvien.edu.vn', '123456', 'GIANG_VIEN'),
-    ('Nguyễn Quốc Thiên', 'thiennguyenquoc@giangvien.edu.vn', '123456', 'GIANG_VIEN');
+    ('Nguyễn Văn Ón', 'onnguyenvan@giangvien.edu.vn', '$2a$10$Tl8uVg4Yq2h6zSUx3mPngOvPZYQ3UFHiHV5bFa//v5G/cR0gBwhZm', 'ROLE_GIANG_VIEN'),
+    ('Trần Thị Tuyết', 'tuyettranthi@giangvien.edu.vn', '$2a$10$Tl8uVg4Yq2h6zSUx3mPngOvPZYQ3UFHiHV5bFa//v5G/cR0gBwhZm', 'ROLE_GIANG_VIEN'),
+    ('Lê Minh Bảo', 'baoleminh@giangvien.edu.vn', '$2a$10$Tl8uVg4Yq2h6zSUx3mPngOvPZYQ3UFHiHV5bFa//v5G/cR0gBwhZm', 'ROLE_GIANG_VIEN'),
+    ('Nguyễn Hữu Khuê', 'khuenguyenhuu@giangvien.edu.vn', '$2a$10$Tl8uVg4Yq2h6zSUx3mPngOvPZYQ3UFHiHV5bFa//v5G/cR0gBwhZm', 'ROLE_GIANG_VIEN'),
+    ('Phạm Minh Trang', 'trangphamminh@giangvien.edu.vn', '$2a$10$Tl8uVg4Yq2h6zSUx3mPngOvPZYQ3UFHiHV5bFa//v5G/cR0gBwhZm', 'ROLE_GIANG_VIEN'),
+    ('Đỗ Quang Hùng', 'hungdoquang@giangvien.edu.vn', '$2a$10$Tl8uVg4Yq2h6zSUx3mPngOvPZYQ3UFHiHV5bFa//v5G/cR0gBwhZm', 'ROLE_GIANG_VIEN'),
+    ('Phùng Thị Anh', 'anhphungthi@giangvien.edu.vn', '$2a$10$Tl8uVg4Yq2h6zSUx3mPngOvPZYQ3UFHiHV5bFa//v5G/cR0gBwhZm', 'ROLE_GIANG_VIEN'),
+    ('Võ Văn Kiệt', 'kietvovan@giangvien.edu.vn', '$2a$10$Tl8uVg4Yq2h6zSUx3mPngOvPZYQ3UFHiHV5bFa//v5G/cR0gBwhZm', 'ROLE_GIANG_VIEN'),
+    ('Dương Minh Công', 'congminhduong@giangvien.edu.vn', '$2a$10$Tl8uVg4Yq2h6zSUx3mPngOvPZYQ3UFHiHV5bFa//v5G/cR0gBwhZm', 'ROLE_GIANG_VIEN'),
+    ('Nguyễn Lộc Thành', 'thanhnguenloc@giangvien.edu.vn', '$2a$10$Tl8uVg4Yq2h6zSUx3mPngOvPZYQ3UFHiHV5bFa//v5G/cR0gBwhZm', 'ROLE_GIANG_VIEN'),
+    ('Trần Tuấn Khải', 'khaitrantuan@giangvien.edu.vn', '$2a$10$Tl8uVg4Yq2h6zSUx3mPngOvPZYQ3UFHiHV5bFa//v5G/cR0gBwhZm', 'ROLE_GIANG_VIEN'),
+    ('Đỗ Kim Tuấn', 'tuandokim@giangvien.edu.vn', '$2a$10$Tl8uVg4Yq2h6zSUx3mPngOvPZYQ3UFHiHV5bFa//v5G/cR0gBwhZm', 'ROLE_GIANG_VIEN'),
+    ('Trần Hà Thanh', 'thanhtranha@giangvien.edu.vn', '$2a$10$Tl8uVg4Yq2h6zSUx3mPngOvPZYQ3UFHiHV5bFa//v5G/cR0gBwhZm', 'ROLE_GIANG_VIEN'),
+    ('Nguyễn Quốc Thiên', 'thiennguyenquoc@giangvien.edu.vn', '$2a$10$Tl8uVg4Yq2h6zSUx3mPngOvPZYQ3UFHiHV5bFa//v5G/cR0gBwhZm', 'ROLE_GIANG_VIEN');
 
 -- Giả sử id tự động tăng từ 1 đến 14 cho giảng viên
 
@@ -256,11 +256,11 @@ INSERT INTO giang_vien (id, hoc_vi, khoa_id) VALUES
 -- THÊM SINH VIÊN
 -- ==========================
 INSERT INTO nguoi_dung (ho_ten, email, mat_khau, vai_tro) VALUES
-    ('Tô Quốc Bình', 'binh@student.edu.vn', '123456', 'SINH_VIEN'),
-    ('Trần Huỳnh Sang', 'sang@student.edu.vn', '123456', 'SINH_VIEN'),
-    ('Nguyễn Đăng Khôi', 'khoi@student.edu.vn', '123456', 'SINH_VIEN'),
-    ('Trần Thị Trang', 'trang@student.edu.vn', '123456', 'SINH_VIEN'),
-    ('Võ Quốc Bảo', 'bao@student.edu.vn', '123456', 'SINH_VIEN');
+    ('Tô Quốc Bình', 'binh@student.edu.vn', '$2a$10$Tl8uVg4Yq2h6zSUx3mPngOvPZYQ3UFHiHV5bFa//v5G/cR0gBwhZm', 'ROLE_SINH_VIEN'),
+    ('Trần Huỳnh Sang', 'sang@student.edu.vn', '$2a$10$Tl8uVg4Yq2h6zSUx3mPngOvPZYQ3UFHiHV5bFa//v5G/cR0gBwhZm', 'ROLE_SINH_VIEN'),
+    ('Nguyễn Đăng Khôi', 'khoi@student.edu.vn', '$2a$10$Tl8uVg4Yq2h6zSUx3mPngOvPZYQ3UFHiHV5bFa//v5G/cR0gBwhZm', 'ROLE_SINH_VIEN'),
+    ('Trần Thị Trang', 'trang@student.edu.vn', '$2a$10$Tl8uVg4Yq2h6zSUx3mPngOvPZYQ3UFHiHV5bFa//v5G/cR0gBwhZm', 'ROLE_SINH_VIEN'),
+    ('Võ Quốc Bảo', 'bao@student.edu.vn', '$2a$10$Tl8uVg4Yq2h6zSUx3mPngOvPZYQ3UFHiHV5bFa//v5G/cR0gBwhZm', 'ROLE_SINH_VIEN');
 
 -- Giả sử id tiếp tục từ 15 đến 19
 
@@ -273,7 +273,7 @@ INSERT INTO sinh_vien (id, ngay_sinh, khoa_hoc, so_tin_chi, khoa_id, nganh_id) V
 
 -- Thêm admin
 INSERT INTO nguoi_dung (ho_ten, email, mat_khau, vai_tro)
-VALUES ('Admin Hệ Thống', 'admin@admin.vn', 'admin123', 'ADMIN');
+VALUES ('Admin Hệ Thống', 'admin@admin.vn', '$2a$10$YJWUKd2V8ZTn/uiiz6UQGOrEmScXYjxJCCQDrLRU3iD3vaYmmjNPm', 'ROLE_ADMIN');
 
     
 -- Thêm môn học
@@ -714,6 +714,15 @@ VALUES
 INSERT INTO lich_hoc(buoi_hoc_id, thu, gio_bat_dau, gio_ket_thuc, ngay_bat_dau, ngay_ket_thuc, phong, loai)
 VALUES
 	(1, "Thứ 4", "13:00:00", "17:30:00", "2025-09-10",  "2025-11-05", "301", 'LyThuyet'),
+    (2, "Thứ 4", "07:30:00", "11:00:00", "2025-09-10",  "2025-11-05", "301", 'LyThuyet'),
     (3, "Thứ 6", "13:00:00", "17:30:00", "2025-09-12",  "2025-11-07", "204", 'LyThuyet'),
     (3, "Thứ 6", "07:30:00", "11:00:00", "2025-09-19",  "2025-11-28", "PM.301", 'ThucHanh'),
     (3, "Thứ 6", "07:30:00", "11:00:00", "2025-09-26",  "2025-12-05", "PM.301", 'ThucHanh');
+    
+INSERT INTO dang_ky(sinh_vien_id, buoi_hoc_id, hoc_ky_id, trang_thai)
+VALUES
+	(19, 1, 12, "DANG_KY");
+    
+INSERT INTO thoi_khoa_bieu(sinh_vien_id, lich_hoc_id)
+VALUES
+	(19, 1);
