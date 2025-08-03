@@ -21,7 +21,8 @@ CREATE TABLE nganh (
     id INT PRIMARY KEY AUTO_INCREMENT,
     ten_nganh VARCHAR(100) NOT NULL,
     khoa_id INT NOT NULL,
-    FOREIGN KEY (khoa_id) REFERENCES khoa(id)
+    FOREIGN KEY (khoa_id) REFERENCES khoa(id),
+    UNIQUE (ten_nganh, khoa_id)
 );
 
 -- ===============================
@@ -121,11 +122,15 @@ CREATE TABLE diem (
 -- ========================
 CREATE TABLE buoi_hoc (
     id INT PRIMARY KEY AUTO_INCREMENT,
+    khoa_id INT NOT NULL,
+    nganh_id INT NOT NULL,
     mon_hoc_id INT NOT NULL,
     giang_vien_id INT NOT NULL,
     hoc_ky_id INT NOT NULL,
     ca VARCHAR(10),
     si_so INT DEFAULT 50,
+    FOREIGN KEY (khoa_id) REFERENCES khoa(id),
+    FOREIGN KEY (nganh_id) REFERENCES nganh(id),
     FOREIGN KEY (mon_hoc_id) REFERENCES mon_hoc(id),
     FOREIGN KEY (giang_vien_id) REFERENCES giang_vien(id),
     FOREIGN KEY (hoc_ky_id) REFERENCES hoc_ky(id)
@@ -177,15 +182,15 @@ CREATE TABLE thoi_khoa_bieu (
 CREATE TABLE quy_dinh (
     id INT PRIMARY KEY AUTO_INCREMENT,
     ten VARCHAR(100) UNIQUE NOT NULL,
-    gia_tri VARCHAR(100) NOT NULL
+    gia_tri INT NOT NULL
 );
 
 -- ========================
 -- 12. DỮ LIỆU MẪU
 -- ========================
 INSERT INTO quy_dinh (ten, gia_tri) VALUES 
-    ('so_tin_chi_toi_da', '24'),
-    ('so_tin_chi_toi_thieu', '12');
+    ('Số tín chỉ tối thiểu', 12),
+    ('Số tín chỉ tối đa', 24);
 
 -- Thêm học kỳ
 INSERT INTO hoc_ky (ky, nam_hoc)
@@ -273,7 +278,7 @@ INSERT INTO sinh_vien (id, ngay_sinh, khoa_hoc, so_tin_chi, khoa_id, nganh_id) V
 
 -- Thêm admin
 INSERT INTO nguoi_dung (ho_ten, email, mat_khau, vai_tro)
-VALUES ('Admin Hệ Thống', 'admin@admin.vn', '$2a$10$YJWUKd2V8ZTn/uiiz6UQGOrEmScXYjxJCCQDrLRU3iD3vaYmmjNPm', 'ROLE_ADMIN');
+VALUES ('Admin Hệ Thống', 'admin@admin.vn', '$2a$10$YJWUKd2V8ZTn/uiiz6UQGOrEmScXYjxJCCQDrLRU3iD3vaYmmjNPm', 'ROLE_ADMIN'); -- admin123
 
     
 -- Thêm môn học

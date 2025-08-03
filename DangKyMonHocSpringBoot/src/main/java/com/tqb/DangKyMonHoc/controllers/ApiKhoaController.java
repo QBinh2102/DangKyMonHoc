@@ -11,6 +11,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,6 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/api")
+@CrossOrigin
 public class ApiKhoaController {
 
     @Autowired
@@ -46,7 +48,7 @@ public class ApiKhoaController {
         }
     }
 
-    @PostMapping("/khoa")
+    @PostMapping("/secure/admin/khoa")
     public ResponseEntity<?> create(@RequestBody Khoa khoa) {
         if (khoa.getId() != null) {
             return ResponseEntity
@@ -64,7 +66,7 @@ public class ApiKhoaController {
         }
     }
 
-    @PutMapping("/khoa/{khoaId}")
+    @PutMapping("/secure/admin/khoa/{khoaId}")
     public ResponseEntity<Khoa> update(@PathVariable(value = "khoaId") int id, @RequestBody Khoa khoa) {
         Khoa existing = this.khoaService.findById(id);
         if (existing == null) {

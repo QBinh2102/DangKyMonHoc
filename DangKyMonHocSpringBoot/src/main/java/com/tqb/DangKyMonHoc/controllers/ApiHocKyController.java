@@ -10,6 +10,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,27 +24,28 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/api")
+@CrossOrigin
 public class ApiHocKyController {
 
     @Autowired
     private HocKyService hocKyService;
 
-    @GetMapping("/hocky")
+    @GetMapping("/secure/admin/hocky")
     public ResponseEntity<List<HocKy>> getAllHocKy() {
         return new ResponseEntity<>(this.hocKyService.findAllByOrderByIdAsc(), HttpStatus.OK);
     }
 
-    @GetMapping("/hocky/latest")
+    @GetMapping("/secure/admin/hocky/latest")
     public ResponseEntity<HocKy> getHocKyMoiNhat() {
         return new ResponseEntity<>(this.hocKyService.findTopByOrderByIdDesc(), HttpStatus.OK);
     }
 
-    @GetMapping("/hocky/{hocKyId}")
+    @GetMapping("/secure/admin/hocky/{hocKyId}")
     public ResponseEntity<HocKy> getHocKyById(@PathVariable(value = "hocKyId") int id) {
         return new ResponseEntity<>(this.hocKyService.findById(id), HttpStatus.OK);
     }
 
-    @PostMapping("/hocky")
+    @PostMapping("/secure/admin/hocky")
     public ResponseEntity<?> create(@RequestBody HocKy hocKy) {
         if (hocKy.getId() != null) {
             return ResponseEntity

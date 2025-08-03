@@ -11,6 +11,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,12 +27,13 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/api")
+@CrossOrigin
 public class ApiBuoiHocController {
 
     @Autowired
     private BuoiHocService buoiHocService;
 
-    @GetMapping("/buoihoc/{buoiHocId}")
+    @GetMapping("/secure/admin/buoihoc/{buoiHocId}")
     public ResponseEntity<BuoiHoc> getBuoiHocById(@PathVariable(value = "buoiHocId") int id) {
         BuoiHoc existing = this.buoiHocService.findById(id);
         if (existing == null) {
@@ -41,12 +43,12 @@ public class ApiBuoiHocController {
         }
     }
 
-    @GetMapping("/buoihoc")
+    @GetMapping("/secure/admin/buoihoc")
     public ResponseEntity<List<BuoiHoc>> getBuoiHoc(@RequestParam Map<String, String> params) {
         return new ResponseEntity<>(this.buoiHocService.findBuoiHoc(params), HttpStatus.OK);
     }
 
-    @PostMapping("/buoihoc")
+    @PostMapping("/secure/admin/buoihoc")
     public ResponseEntity<?> create(@RequestBody BuoiHoc buoiHoc) {
         if (buoiHoc.getId() != null) {
             return ResponseEntity
@@ -64,7 +66,7 @@ public class ApiBuoiHocController {
         }
     }
 
-    @PutMapping("/buoihoc/{buoiHocId}")
+    @PutMapping("/secure/admin/buoihoc/{buoiHocId}")
     public ResponseEntity<BuoiHoc> update(@PathVariable(value = "buoiHocId") int id, @RequestBody BuoiHoc buoiHoc) {
         BuoiHoc existing = this.buoiHocService.findById(id);
         if (existing == null) {

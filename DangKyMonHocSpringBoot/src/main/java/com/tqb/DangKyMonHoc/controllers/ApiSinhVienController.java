@@ -11,6 +11,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,12 +27,13 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/api")
+@CrossOrigin
 public class ApiSinhVienController {
 
     @Autowired
     private SinhVienService sinhVienService;
 
-    @GetMapping("/sinhvien/{sinhVienId}")
+    @GetMapping("/secure/admin/sinhvien/{sinhVienId}")
     public ResponseEntity<SinhVien> getSinhVienById(@PathVariable(value = "sinhVienId") int id) {
         SinhVien existing = this.sinhVienService.findById(id);
         if (existing == null) {
@@ -41,12 +43,12 @@ public class ApiSinhVienController {
         }
     }
 
-    @GetMapping("/sinhvien")
+    @GetMapping("/secure/admin/sinhvien")
     public ResponseEntity<List<SinhVien>> getSinhVien(@RequestParam Map<String,String> params) {
         return new ResponseEntity<>(this.sinhVienService.findSinhVien(params), HttpStatus.OK);
     }
 
-    @PostMapping("/sinhvien")
+    @PostMapping("/secure/admin/sinhvien")
     public ResponseEntity<?> create(@RequestBody SinhVien sinhVien) {
         if (sinhVien.getId() != null) {
             return ResponseEntity
@@ -64,7 +66,7 @@ public class ApiSinhVienController {
         }
     }
 
-    @PutMapping("/sinhvien/{sinhVienId}")
+    @PutMapping("/secure/admin/sinhvien/{sinhVienId}")
     public ResponseEntity<SinhVien> update(@PathVariable(value = "sinhVienId") int id, @RequestBody SinhVien sinhVien) {
         SinhVien existing = this.sinhVienService.findById(id);
         if (existing == null) {

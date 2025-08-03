@@ -50,5 +50,10 @@ public class NguoiDungServiceImpl implements NguoiDungService{
         return new org.springframework.security.core.userdetails.User(
                 nguoiDung.getEmail(), nguoiDung.getMatKhau(), authorities);
     }
+
+    @Override
+    public NguoiDung findByEmail(String email) {
+        return this.nguoiDungRepo.findByEmail(email);
+    }
     
 }

@@ -11,6 +11,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,6 +28,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/api")
+@CrossOrigin
 public class ApiQuyDinhController {
     
     @Autowired
@@ -47,7 +49,7 @@ public class ApiQuyDinhController {
         return new ResponseEntity<>(this.quyDinhService.findQuyDinh(params), HttpStatus.OK);
     }
     
-    @PostMapping("/quydinh")
+    @PostMapping("/secure/admin/quydinh")
     public ResponseEntity<?> create(@RequestBody QuyDinh quyDinh){
         if(quyDinh.getId()!=null){
             return ResponseEntity
@@ -65,7 +67,7 @@ public class ApiQuyDinhController {
         }
     }
     
-    @PutMapping("/quydinh/{quyDinhId}")
+    @PutMapping("/secure/admin/quydinh/{quyDinhId}")
     public ResponseEntity<QuyDinh> update(@PathVariable(value="quyDinhId") int id, @RequestBody QuyDinh quyDinh){
         QuyDinh existing = this.quyDinhService.findById(id);
         if(existing==null){
@@ -76,7 +78,7 @@ public class ApiQuyDinhController {
         }
     }
     
-    @DeleteMapping("/quydinh/{quyDinhId}")
+    @DeleteMapping("/secure/admin/quydinh/{quyDinhId}")
     public ResponseEntity<QuyDinh> delete(@PathVariable(value="quyDinhId") int id){
         QuyDinh existing = this.quyDinhService.findById(id);
         if(existing == null){

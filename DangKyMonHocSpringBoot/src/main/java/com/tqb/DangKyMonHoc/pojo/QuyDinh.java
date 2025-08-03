@@ -39,7 +39,7 @@ public class QuyDinh implements Serializable {
     private String ten;
     @Basic(optional = false)
     @Column(name = "gia_tri")
-    private String giaTri;
+    private int giaTri;
 
     public QuyDinh() {
     }
@@ -48,7 +48,7 @@ public class QuyDinh implements Serializable {
         this.id = id;
     }
 
-    public QuyDinh(Integer id, String ten, String giaTri) {
+    public QuyDinh(Integer id, String ten, int giaTri) {
         this.id = id;
         this.ten = ten;
         this.giaTri = giaTri;
@@ -70,11 +70,11 @@ public class QuyDinh implements Serializable {
         this.ten = ten;
     }
 
-    public String getGiaTri() {
+    public int getGiaTri() {
         return giaTri;
     }
 
-    public void setGiaTri(String giaTri) {
+    public void setGiaTri(int giaTri) {
         this.giaTri = giaTri;
     }
 

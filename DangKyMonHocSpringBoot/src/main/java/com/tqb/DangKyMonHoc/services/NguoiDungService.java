@@ -14,5 +14,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 public interface NguoiDungService extends UserDetailsService{
     
     NguoiDung login(String email, String matKhau);
+    NguoiDung findByEmail(String email);
     
 }

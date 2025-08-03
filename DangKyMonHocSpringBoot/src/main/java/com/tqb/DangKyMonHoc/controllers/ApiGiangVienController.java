@@ -11,6 +11,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,12 +27,13 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/api")
+@CrossOrigin
 public class ApiGiangVienController {
 
     @Autowired
     private GiangVienService giangVienService;
 
-    @GetMapping("/giangvien/{giangVienId}")
+    @GetMapping("/secure/admin/giangvien/{giangVienId}")
     public ResponseEntity<GiangVien> getGiangVienById(@PathVariable(value = "giangVienId") int id) {
         GiangVien existing = this.giangVienService.findById(id);
         if (existing == null) {
@@ -41,12 +43,12 @@ public class ApiGiangVienController {
         }
     }
 
-    @GetMapping("/giangvien")
+    @GetMapping("/secure/admin/giangvien")
     public ResponseEntity<List<GiangVien>> getGiangVien(@RequestParam Map<String,String> params) {
         return new ResponseEntity<>(this.giangVienService.findGiangVien(params), HttpStatus.OK);
     }
 
-    @PostMapping("/giangvien")
+    @PostMapping("/secure/admin/giangvien")
     public ResponseEntity<?> create(@RequestBody GiangVien giangVien) {
         if (giangVien.getId() != null) {
             return ResponseEntity
@@ -64,7 +66,7 @@ public class ApiGiangVienController {
         }
     }
 
-    @PutMapping("/giangvien/{giangVienId}")
+    @PutMapping("/secure/admin/giangvien/{giangVienId}")
     public ResponseEntity<GiangVien> update(@PathVariable(value = "giangVienId") int id, @RequestBody GiangVien giangVien) {
         GiangVien existing = this.giangVienService.findById(id);
         if (existing == null) {

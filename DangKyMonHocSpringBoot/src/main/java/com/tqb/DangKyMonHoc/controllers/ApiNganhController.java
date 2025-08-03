@@ -11,6 +11,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,6 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/api")
+@CrossOrigin
 public class ApiNganhController {
     
     @Autowired
@@ -46,7 +48,7 @@ public class ApiNganhController {
         }
     }
     
-    @PostMapping("/nganh")
+    @PostMapping("/secure/admin/nganh")
     public ResponseEntity<?> create(@RequestBody Nganh nganh) {
         if (nganh.getId() != null) {
             return ResponseEntity
@@ -64,7 +66,7 @@ public class ApiNganhController {
         }
     }
     
-    @PutMapping("/nganh/{nganhId}")
+    @PutMapping("/secure/admin/nganh/{nganhId}")
     public ResponseEntity<Nganh> update(@PathVariable(value = "nganhId") int id, @RequestBody Nganh nganh) {
         Nganh existing = this.nganhService.findById(id);
         if (existing == null) {

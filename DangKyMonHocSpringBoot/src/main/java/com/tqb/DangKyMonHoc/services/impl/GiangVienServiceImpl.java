@@ -5,7 +5,9 @@
 package com.tqb.DangKyMonHoc.services.impl;
 
 import com.tqb.DangKyMonHoc.pojo.GiangVien;
+import com.tqb.DangKyMonHoc.pojo.NguoiDung;
 import com.tqb.DangKyMonHoc.repositories.GiangVienRepository;
+import com.tqb.DangKyMonHoc.repositories.NguoiDungRepository;
 import com.tqb.DangKyMonHoc.services.GiangVienService;
 import java.util.List;
 import java.util.Map;
@@ -23,6 +25,9 @@ public class GiangVienServiceImpl implements GiangVienService {
     @Autowired
     private GiangVienRepository giangVienRepo;
     
+    @Autowired
+    private NguoiDungRepository nguoiDungRepo;
+
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
 
@@ -44,10 +49,29 @@ public class GiangVienServiceImpl implements GiangVienService {
 
     @Override
     public GiangVien addOrUpdate(GiangVien giangVien) {
-        if (giangVien.getNguoiDung() != null
-                && (giangVien.getNguoiDung().getMatKhau() == null || giangVien.getNguoiDung().getMatKhau().isEmpty())) {
-            giangVien.getNguoiDung().setMatKhau(this.passwordEncoder.encode("123456"));
+        if (giangVien.getNguoiDung() != null) {
+            giangVien.getNguoiDung().setVaiTro("ROLE_GIANG_VIEN");
+
+            NguoiDung nguoiDung = giangVien.getNguoiDung();
+
+            if (nguoiDung.getId() != null) {
+                NguoiDung existing = nguoiDungRepo.findById(nguoiDung.getId()).orElse(null);
+                if (existing != null) {
+                    existing.setHoTen(nguoiDung.getHoTen());
+                    existing.setEmail(nguoiDung.getEmail());
+
+                    if (nguoiDung.getMatKhau() != null && !nguoiDung.getMatKhau().isEmpty()) {
+                        existing.setMatKhau(this.passwordEncoder.encode(nguoiDung.getMatKhau()));
+                    }
+
+                    giangVien.setNguoiDung(existing);
+                }
+            } else {
+                nguoiDung.setMatKhau(this.passwordEncoder.encode("123456"));
+                giangVien.setNguoiDung(nguoiDung);
+            }
         }
+
         return this.giangVienRepo.save(giangVien);
     }
 
