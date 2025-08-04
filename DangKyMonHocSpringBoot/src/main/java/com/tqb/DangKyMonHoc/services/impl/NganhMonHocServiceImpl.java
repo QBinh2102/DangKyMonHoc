@@ -40,13 +40,13 @@ public class NganhMonHocServiceImpl implements NganhMonHocService {
         boolean hasNganhId = nganhId != null && !nganhId.isEmpty();
         boolean hasMonHocId = monHocId != null && !monHocId.isEmpty();
         if (hasNganhId && hasMonHocId) {
-            return this.nganhMonHocRepo.findById_NganhIdAndId_MonHocId(Integer.parseInt(nganhId), Integer.parseInt(monHocId));
+            return this.nganhMonHocRepo.findByNganhId_IdAndMonHocId_Id(Integer.parseInt(nganhId), Integer.parseInt(monHocId));
         } else if (hasNganhId) {
-            return this.nganhMonHocRepo.findById_NganhId(Integer.parseInt(nganhId));
+            return this.nganhMonHocRepo.findByNganhId_Id(Integer.parseInt(nganhId));
         } else if (hasMonHocId) {
-            return this.nganhMonHocRepo.findById_MonHocId(Integer.parseInt(monHocId));
+            return this.nganhMonHocRepo.findByMonHocId_Id(Integer.parseInt(monHocId));
         } else {
-            return this.nganhMonHocRepo.findAllByOrderById_NganhIdAscId_MonHocIdAsc();
+            return this.nganhMonHocRepo.findAllByOrderByNganhId_IdAscMonHocId_IdAsc();
         }
     }
 

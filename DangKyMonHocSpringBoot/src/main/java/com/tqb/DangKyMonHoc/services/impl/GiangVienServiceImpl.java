@@ -24,7 +24,7 @@ public class GiangVienServiceImpl implements GiangVienService {
 
     @Autowired
     private GiangVienRepository giangVienRepo;
-    
+
     @Autowired
     private NguoiDungRepository nguoiDungRepo;
 
@@ -39,9 +39,13 @@ public class GiangVienServiceImpl implements GiangVienService {
     @Override
     public List<GiangVien> findGiangVien(Map<String, String> params) {
         String hoTen = params.get("hoTen");
+        String khoaId = params.get("khoaId");
         boolean hasHoTen = hoTen != null && !hoTen.isEmpty();
+        boolean hasKhoaId = khoaId != null && !khoaId.isEmpty();
         if (hasHoTen) {
             return this.giangVienRepo.findByNguoiDung_HoTenContainingIgnoreCaseOrderByIdAsc(hoTen);
+        } else if (hasKhoaId) {
+            return this.giangVienRepo.findByKhoaId_IdOrderByIdAsc(Integer.parseInt(khoaId));
         } else {
             return this.giangVienRepo.findAllByOrderByIdAsc();
         }

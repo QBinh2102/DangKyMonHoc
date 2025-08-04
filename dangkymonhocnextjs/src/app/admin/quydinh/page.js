@@ -44,6 +44,7 @@ const QuyDinh = () => {
             <div className="text-center mt-5 mb-5">
                 <h1>QUẢN LÝ QUY ĐỊNH</h1>
             </div>
+
             {msg && (
                 msg.includes("thành công") ? (
                     <div className="alert alert-success text-center" role="alert">
@@ -55,11 +56,13 @@ const QuyDinh = () => {
                     </div>
                 )
             )}
+
             <div className="d-flex justify-content-end mb-3">
                 <button className="btn btn-success" onClick={() => router.push('/admin/quydinh/them')}>
                     Thêm
                 </button>
             </div>
+            
             {loading ? (
                 <div className="text-center">
                     <p>Đang tải dữ liệu...</p>
@@ -70,7 +73,7 @@ const QuyDinh = () => {
                         <thead>
                             <tr>
                                 <th>Id</th>
-                                <th>Qui Định</th>
+                                <th>Quy Định</th>
                                 <th>Giá trị</th>
                                 <th>Công Cụ</th>
                             </tr>

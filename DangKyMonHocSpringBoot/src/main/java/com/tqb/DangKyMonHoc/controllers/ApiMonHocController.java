@@ -48,7 +48,7 @@ public class ApiMonHocController {
         return new ResponseEntity<>(this.monHocService.findMonHoc(params), HttpStatus.OK);
     }
 
-    @PostMapping("/monhoc")
+    @PostMapping("/secure/admin/monhoc")
     public ResponseEntity<?> create(@RequestBody MonHoc monHoc) {
         if (monHoc.getId() != null) {
             return ResponseEntity
@@ -66,7 +66,7 @@ public class ApiMonHocController {
         }
     }
 
-    @PutMapping("/monhoc/{monHocId}")
+    @PutMapping("/secure/admin/monhoc/{monHocId}")
     public ResponseEntity<MonHoc> update(@PathVariable(value = "monHocId") int id, @RequestBody MonHoc monHoc) {
         MonHoc existing = this.monHocService.findById(id);
         if (existing == null) {

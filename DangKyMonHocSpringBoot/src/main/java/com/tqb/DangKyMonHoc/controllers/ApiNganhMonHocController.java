@@ -38,7 +38,7 @@ public class ApiNganhMonHocController {
         return new ResponseEntity<>(this.nganhMonHocService.findNganhMonHoc(params), HttpStatus.OK);
     }
 
-    @PostMapping("/nganhmonhoc")
+    @PostMapping("/secure/admin/nganhmonhoc")
     public ResponseEntity<?> create(@RequestBody NganhMonHoc nganhMonHoc) {
         try {
             NganhMonHoc newNganhMonHoc = this.nganhMonHocService.add(nganhMonHoc);
@@ -54,7 +54,7 @@ public class ApiNganhMonHocController {
         }
     }
 
-    @DeleteMapping("/nganhmonhoc")
+    @DeleteMapping("/secure/admin/nganhmonhoc")
     public ResponseEntity<?> delete(@RequestBody NganhMonHocPK id) {
         try {
             NganhMonHoc deleted = this.nganhMonHocService.delete(id);

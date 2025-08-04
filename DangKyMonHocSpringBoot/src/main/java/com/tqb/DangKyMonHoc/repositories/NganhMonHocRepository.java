@@ -15,9 +15,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
  */
 public interface NganhMonHocRepository extends JpaRepository<NganhMonHoc, NganhMonHocPK> {
     
-    List<NganhMonHoc> findById_NganhId(int nganhId);
-    List<NganhMonHoc> findById_MonHocId(int monHocId);
-    List<NganhMonHoc> findById_NganhIdAndId_MonHocId(int nganhId, int monHocId);
-    List<NganhMonHoc> findAllByOrderById_NganhIdAscId_MonHocIdAsc();
+    List<NganhMonHoc> findByNganhId_Id(int nganhId);
+    List<NganhMonHoc> findByMonHocId_Id(int monHocId);
+    List<NganhMonHoc> findByNganhId_IdAndMonHocId_Id(int nganhId, int monHocId);
+    List<NganhMonHoc> findAllByOrderByNganhId_IdAscMonHocId_IdAsc();
     
 }

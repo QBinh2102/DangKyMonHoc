@@ -122,18 +122,15 @@ CREATE TABLE diem (
 -- ========================
 CREATE TABLE buoi_hoc (
     id INT PRIMARY KEY AUTO_INCREMENT,
-    khoa_id INT NOT NULL,
-    nganh_id INT NOT NULL,
     mon_hoc_id INT NOT NULL,
     giang_vien_id INT NOT NULL,
     hoc_ky_id INT NOT NULL,
     ca VARCHAR(10),
     si_so INT DEFAULT 50,
-    FOREIGN KEY (khoa_id) REFERENCES khoa(id),
-    FOREIGN KEY (nganh_id) REFERENCES nganh(id),
     FOREIGN KEY (mon_hoc_id) REFERENCES mon_hoc(id),
     FOREIGN KEY (giang_vien_id) REFERENCES giang_vien(id),
-    FOREIGN KEY (hoc_ky_id) REFERENCES hoc_ky(id)
+    FOREIGN KEY (hoc_ky_id) REFERENCES hoc_ky(id),
+    UNIQUE (mon_hoc_id, giang_vien_id, hoc_ky_id, ca, si_so)
 );
 
 -- THỜI KHÓA BIỂU

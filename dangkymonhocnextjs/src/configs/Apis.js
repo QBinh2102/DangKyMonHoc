@@ -8,7 +8,7 @@ export const endpoints = {
     'dangNhap': '/login',
     //Học kỳ
     'hocKy': '/secure/admin/hocky',
-    'hocKyMoiNhat': '/secure/admin/hocKy/latest',
+    'hocKyMoiNhat': '/secure/admin/hocky/latest',
     'hocKyId': (hocKyId) => `/secure/admin/hocky/${hocKyId}`,
     //Khoa
     'khoa': '/khoa',
@@ -20,6 +20,14 @@ export const endpoints = {
     'nganhId': (nganhId) => `/nganh/${nganhId}`,
     'themNganh': '/secure/admin/nganh',
     'suaNganhId': (nganhId) => `/secure/admin/nganh/${nganhId}`,
+    //Môn học
+    'monHoc': '/monhoc',
+    'monHocId': (monHocId) => `/monhoc/${monHocId}`,
+    'themMonHoc': '/secure/admin/monhoc',
+    'suaMonHocId': (monHocId) => `/secure/admin/${monHocId}`,
+    //Ngành môn học
+    'nganhMonHoc': '/nganhmonhoc',
+    'themHoacXoaNganhMonHoc': (nganhMonHocId) => `/secure/admin/${nganhMonHocId}`,
     //Giảng viên
     'themHoacLayGiangVien': '/secure/admin/giangvien',
     'suaHoacLayGiangVienId': (giangVienId) => `/secure/admin/giangvien/${giangVienId}`,
