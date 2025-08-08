@@ -14,6 +14,7 @@ import com.tqb.DangKyMonHoc.repositories.NganhRepository;
 import com.tqb.DangKyMonHoc.services.NganhMonHocService;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -40,13 +41,13 @@ public class NganhMonHocServiceImpl implements NganhMonHocService {
         boolean hasNganhId = nganhId != null && !nganhId.isEmpty();
         boolean hasMonHocId = monHocId != null && !monHocId.isEmpty();
         if (hasNganhId && hasMonHocId) {
-            return this.nganhMonHocRepo.findByNganhId_IdAndMonHocId_Id(Integer.parseInt(nganhId), Integer.parseInt(monHocId));
+            return this.nganhMonHocRepo.findById_NganhIdAndId_MonHocId(Integer.parseInt(nganhId), Integer.parseInt(monHocId));
         } else if (hasNganhId) {
-            return this.nganhMonHocRepo.findByNganhId_Id(Integer.parseInt(nganhId));
+            return this.nganhMonHocRepo.findById_NganhId(Integer.parseInt(nganhId));
         } else if (hasMonHocId) {
-            return this.nganhMonHocRepo.findByMonHocId_Id(Integer.parseInt(monHocId));
+            return this.nganhMonHocRepo.findById_MonHocId(Integer.parseInt(monHocId));
         } else {
-            return this.nganhMonHocRepo.findAllByOrderByNganhId_IdAscMonHocId_IdAsc();
+            return this.nganhMonHocRepo.findAllByOrderById_NganhIdAscId_MonHocIdAsc();
         }
     }
 
@@ -73,12 +74,9 @@ public class NganhMonHocServiceImpl implements NganhMonHocService {
     }
 
     @Override
-    public NganhMonHoc delete(NganhMonHocPK id) {
-        NganhMonHoc existing = this.nganhMonHocRepo.findById(id)
-                .orElseThrow(() -> new RuntimeException("Không tìm thấy bản ghi để xóa"));
-
-        this.nganhMonHocRepo.deleteById(id);
-        return existing;
+    public void deleteByIdMonHocId(int monHocId) {
+        List<NganhMonHoc> danhSach = this.nganhMonHocRepo.findById_MonHocId(monHocId);
+        this.nganhMonHocRepo.deleteAll(danhSach);
     }
 
 }

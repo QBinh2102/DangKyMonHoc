@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -54,14 +55,10 @@ public class ApiNganhMonHocController {
         }
     }
 
-    @DeleteMapping("/secure/admin/nganhmonhoc")
-    public ResponseEntity<?> delete(@RequestBody NganhMonHocPK id) {
-        try {
-            NganhMonHoc deleted = this.nganhMonHocService.delete(id);
-            return new ResponseEntity<>(deleted, HttpStatus.OK);
-        } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-        }
+    @DeleteMapping("/secure/admin/nganhmonhoc/{monHocId}")
+    public ResponseEntity<?> deleteByMonHocId(@PathVariable int monHocId) {
+        this.nganhMonHocService.deleteByIdMonHocId(monHocId);
+        return ResponseEntity.ok("Đã xoá tất cả ngành-môn học của môn có ID = " + monHocId);
     }
 
 }

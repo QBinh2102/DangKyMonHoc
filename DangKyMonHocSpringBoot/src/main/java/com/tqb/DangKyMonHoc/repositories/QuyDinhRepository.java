@@ -16,5 +16,7 @@ public interface QuyDinhRepository extends JpaRepository<QuyDinh, Integer>{
     
     QuyDinh findById(int id);
     List<QuyDinh> findAllByOrderByIdAsc();
+    List<QuyDinh> findByTenContainingIgnoreCaseOrderByIdAsc(String quyDinh);
+    QuyDinh findByTen (String ten);
     
 }

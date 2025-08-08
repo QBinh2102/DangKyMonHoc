@@ -50,7 +50,6 @@ const BuoiHoc = () => {
                                 <th>Môn Học</th>
                                 <th>Giảng Viên</th>
                                 <th>Học Kỳ</th>
-                                <th>Ca</th>
                                 <th>Sĩ Số</th>
                                 <th>Công Cụ</th>
                             </tr>
@@ -62,7 +61,6 @@ const BuoiHoc = () => {
                                     <td>{bh.monHocId.tenMon}</td>
                                     <td>{bh.giangVienId.nguoiDung.hoTen}</td>
                                     <td>{bh.hocKyId.ky} - {bh.hocKyId.namHoc}</td>
-                                    <td>{bh.ca}</td>
                                     <td>{bh.siSo}</td>
                                     <td>
                                         <button className="btn btn-warning" onClick={() => router.push(`/admin/buoihoc/${bh.id}`)}>

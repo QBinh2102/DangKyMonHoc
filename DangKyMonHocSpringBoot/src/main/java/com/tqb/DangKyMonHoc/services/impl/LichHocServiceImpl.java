@@ -4,9 +4,17 @@
  */
 package com.tqb.DangKyMonHoc.services.impl;
 
+import com.tqb.DangKyMonHoc.pojo.BuoiHoc;
 import com.tqb.DangKyMonHoc.pojo.LichHoc;
+import com.tqb.DangKyMonHoc.pojo.MonHoc;
+import com.tqb.DangKyMonHoc.pojo.QuyDinh;
 import com.tqb.DangKyMonHoc.repositories.LichHocRepository;
+import com.tqb.DangKyMonHoc.services.BuoiHocService;
 import com.tqb.DangKyMonHoc.services.LichHocService;
+import com.tqb.DangKyMonHoc.services.QuyDinhService;
+import java.time.LocalTime;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +29,12 @@ public class LichHocServiceImpl implements LichHocService {
 
     @Autowired
     private LichHocRepository lichHocRepo;
+
+    @Autowired
+    private QuyDinhService quyDinhService;
+
+    @Autowired
+    private BuoiHocService buoiHocService;
 
     @Override
     public LichHoc findById(int id) {
@@ -40,6 +54,50 @@ public class LichHocServiceImpl implements LichHocService {
 
     @Override
     public LichHoc addOrUpdate(LichHoc lichHoc) {
+        if (lichHoc.getId() == null) {
+            QuyDinh soGioMotBuoi = this.quyDinhService.findByTen("Số giờ 1 buổi học");
+            if (soGioMotBuoi != null) {
+                int soGioHoc = soGioMotBuoi.getGiaTri();
+                LocalTime gioBatDau = lichHoc.getGioBatDau();
+                LocalTime gioKetThuc = gioBatDau.plusHours(soGioHoc);
+                lichHoc.setGioKetThuc(gioKetThuc);
+            }
+
+            BuoiHoc buoiHoc = this.buoiHocService.findById(lichHoc.getBuoiHocId().getId());
+            MonHoc monHoc = buoiHoc.getMonHocId();
+            Date ngayBatDau = lichHoc.getNgayBatDau();
+            int soBuoi = 0;
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(ngayBatDau);
+            if (lichHoc.getLoai().equals("LyThuyet")) {
+                QuyDinh soBuoiTinChiLT = this.quyDinhService.findByTen("Số buổi 1 tín chỉ lý thuyết");
+                if (soBuoiTinChiLT != null) {
+                    soBuoi = soBuoiTinChiLT.getGiaTri() * monHoc.getTinChiLyThuyet();
+                }
+            } else {
+                QuyDinh soBuoiTinChiTH = this.quyDinhService.findByTen("Số buổi 1 tín chỉ thực hành");
+                if (soBuoiTinChiTH != null) {
+                    soBuoi = soBuoiTinChiTH.getGiaTri() * monHoc.getTinChiThucHanh();
+                }
+            }
+            cal.add(Calendar.WEEK_OF_YEAR, soBuoi - 1);
+            Date ngayKetThuc = cal.getTime();
+            lichHoc.setNgayKetThuc(ngayKetThuc);
+
+            Calendar calThu = Calendar.getInstance();
+            calThu.setTime(ngayBatDau);
+            int thu = calThu.get(Calendar.DAY_OF_WEEK) - 1;
+            String[] tenThu = {
+                "Chủ nhật",
+                "Thứ 2",
+                "Thứ 3",
+                "Thứ 4",
+                "Thứ 5",
+                "Thứ 6",
+                "Thứ 7"
+            };
+            lichHoc.setThu(tenThu[thu]);
+        }
         return this.lichHocRepo.save(lichHoc);
     }
 

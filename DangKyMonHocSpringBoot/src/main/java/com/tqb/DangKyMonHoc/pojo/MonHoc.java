@@ -34,7 +34,8 @@ import java.util.Set;
     @NamedQuery(name = "MonHoc.findAll", query = "SELECT m FROM MonHoc m"),
     @NamedQuery(name = "MonHoc.findById", query = "SELECT m FROM MonHoc m WHERE m.id = :id"),
     @NamedQuery(name = "MonHoc.findByTenMon", query = "SELECT m FROM MonHoc m WHERE m.tenMon = :tenMon"),
-    @NamedQuery(name = "MonHoc.findBySoTinChi", query = "SELECT m FROM MonHoc m WHERE m.soTinChi = :soTinChi"),
+    @NamedQuery(name = "MonHoc.findByTinChiLyThuyet", query = "SELECT m FROM MonHoc m WHERE m.tinChiLyThuyet = :tinChiLyThuyet"),
+    @NamedQuery(name = "MonHoc.findByTinChiThucHanh", query = "SELECT m FROM MonHoc m WHERE m.tinChiThucHanh = :tinChiThucHanh"),
     @NamedQuery(name = "MonHoc.findByPhanTramGiuaKy", query = "SELECT m FROM MonHoc m WHERE m.phanTramGiuaKy = :phanTramGiuaKy"),
     @NamedQuery(name = "MonHoc.findByPhanTramCuoiKy", query = "SELECT m FROM MonHoc m WHERE m.phanTramCuoiKy = :phanTramCuoiKy"),
     @NamedQuery(name = "MonHoc.findByDiemQuaMon", query = "SELECT m FROM MonHoc m WHERE m.diemQuaMon = :diemQuaMon")})
@@ -53,8 +54,11 @@ public class MonHoc implements Serializable {
     @Column(name = "mo_ta")
     private String moTa;
     @Basic(optional = false)
-    @Column(name = "so_tin_chi")
-    private int soTinChi;
+    @Column(name = "tin_chi_ly_thuyet")
+    private int tinChiLyThuyet;
+    @Basic(optional = false)
+    @Column(name = "tin_chi_thuc_hanh")
+    private int tinChiThucHanh;
     @Basic(optional = false)
     @Column(name = "phan_tram_giua_ky")
     private int phanTramGiuaKy;
@@ -91,10 +95,11 @@ public class MonHoc implements Serializable {
         this.id = id;
     }
 
-    public MonHoc(Integer id, String tenMon, int soTinChi, int phanTramGiuaKy, int phanTramCuoiKy, BigDecimal diemQuaMon) {
+    public MonHoc(Integer id, String tenMon, int tinChiLyThuyet, int tinChiThucHanh, int phanTramGiuaKy, int phanTramCuoiKy, BigDecimal diemQuaMon) {
         this.id = id;
         this.tenMon = tenMon;
-        this.soTinChi = soTinChi;
+        this.tinChiLyThuyet = tinChiLyThuyet;
+        this.tinChiThucHanh = tinChiThucHanh;
         this.phanTramGiuaKy = phanTramGiuaKy;
         this.phanTramCuoiKy = phanTramCuoiKy;
         this.diemQuaMon = diemQuaMon;
@@ -124,12 +129,20 @@ public class MonHoc implements Serializable {
         this.moTa = moTa;
     }
 
-    public int getSoTinChi() {
-        return soTinChi;
+    public int getTinChiLyThuyet() {
+        return tinChiLyThuyet;
     }
 
-    public void setSoTinChi(int soTinChi) {
-        this.soTinChi = soTinChi;
+    public void setTinChiLyThuyet(int tinChiLyThuyet) {
+        this.tinChiLyThuyet = tinChiLyThuyet;
+    }
+
+    public int getTinChiThucHanh() {
+        return tinChiThucHanh;
+    }
+
+    public void setTinChiThucHanh(int tinChiThucHanh) {
+        this.tinChiThucHanh = tinChiThucHanh;
     }
 
     public int getPhanTramGiuaKy() {

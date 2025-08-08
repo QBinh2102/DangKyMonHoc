@@ -40,3 +40,11 @@ a {
     color-scheme: light;
   }
 }
+
+.lich-hoc-group {
+  border: 1px solid #ccc;      /* viền mỏng */
+  border-radius: 8px;          /* bo góc */
+  padding: 15px;               /* khoảng cách bên trong */
+  margin-bottom: 20px;         /* cách nhóm dưới */
+  background-color: #fdfdfd;   /* màu nền nhẹ */
+}

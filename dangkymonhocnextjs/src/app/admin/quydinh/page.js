@@ -94,8 +94,7 @@ const QuyDinh = () => {
                                             onClick={() => {
                                                 if (window.confirm(`Bạn có chắc muốn xóa quy định "${quyDinh.ten}" không?`)) {
                                                     deleteQuyDinh(quyDinh.id);
-                                                    console.log("Đã xác nhận xóa ID:", quyDinh.id);
-                                                }
+                                                };
                                             }}
                                         >
                                             <span className="text-xl">🗑️</span>

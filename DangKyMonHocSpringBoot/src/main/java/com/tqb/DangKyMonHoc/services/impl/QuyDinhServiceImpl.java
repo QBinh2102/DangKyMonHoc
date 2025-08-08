@@ -17,8 +17,8 @@ import org.springframework.stereotype.Service;
  * @author toquocbinh2102
  */
 @Service
-public class QuyDinhServiceImpl implements QuyDinhService{
-    
+public class QuyDinhServiceImpl implements QuyDinhService {
+
     @Autowired
     private QuyDinhRepository quyDinhRepo;
 
@@ -29,7 +29,13 @@ public class QuyDinhServiceImpl implements QuyDinhService{
 
     @Override
     public List<QuyDinh> findQuyDinh(Map<String, String> params) {
-        return this.quyDinhRepo.findAllByOrderByIdAsc();
+        String quyDinh = params.get("quyDinh");
+        boolean hasQuyDinh = quyDinh != null && !quyDinh.isEmpty();
+        if (hasQuyDinh) {
+            return this.quyDinhRepo.findByTenContainingIgnoreCaseOrderByIdAsc(quyDinh);
+        } else {
+            return this.quyDinhRepo.findAllByOrderByIdAsc();
+        }
     }
 
     @Override
@@ -42,5 +48,10 @@ public class QuyDinhServiceImpl implements QuyDinhService{
         this.quyDinhRepo.delete(quyDinh);
         return quyDinh;
     }
-    
+
+    @Override
+    public QuyDinh findByTen(String ten) {
+        return this.quyDinhRepo.findByTen(ten);
+    }
+
 }

@@ -10,8 +10,13 @@ const ThemMonHoc = () => {
         field: "tenMon",
         type: "text",
     }, {
-        label: "Số tín chỉ",
-        field: "soTinChi",
+        label: "Số chỉ lý thuyết",
+        field: "tinChiLyThuyet",
+        type: "number",
+        min: 0,
+    }, {
+        label: "Số chỉ thực hành",
+        field: "tinChiThucHanh",
         type: "number",
         min: 0,
     }, {
@@ -20,7 +25,7 @@ const ThemMonHoc = () => {
         type: "number",
         min: 0,
         max: 10,
-    }]
+    }];
 
     const loaiDiem = [{
         label: "Giữa kỳ 30% - Cuối kỳ 70%",
@@ -31,10 +36,12 @@ const ThemMonHoc = () => {
     }, {
         label: "Giữa kỳ 50% - Cuối kỳ 50%",
         value: "50-50",
-    }]
+    }];
 
     const [listKhoa, setListKhoa] = useState([]);
     const [listNganh, setListNganh] = useState([]);
+    const [selectedLoaiDiem, setSelectedLoaiDiem] = useState("");
+    const [selectedKhoaId, setSelectedKhoaId] = useState("");
     const [selectedNganhs, setSelectedNganhs] = useState([]);
     const [newMonHoc, setNewMonHoc] = useState({
         khoaId: {},
@@ -50,7 +57,7 @@ const ThemMonHoc = () => {
         } catch (ex) {
             console.error(ex);
         }
-    }
+    };
 
     const loadNganhTheoKhoa = async (khoaId) => {
         try {
@@ -60,15 +67,16 @@ const ThemMonHoc = () => {
         } catch (ex) {
             console.error(ex);
         }
-    }
+    };
 
     const chooseKhoa = async (e) => {
         const khoaId = e.target.value;
+        setSelectedKhoaId(khoaId);
 
-        setNewMonHoc({ ...newMonHoc, khoaId: { ...newMonHoc.khoaId, id: e.target.value } })
+        setNewMonHoc({ ...newMonHoc, khoaId: { ...newMonHoc.khoaId, id: khoaId } })
 
         { khoaId ? await loadNganhTheoKhoa(khoaId) : setListNganh([]) };
-    }
+    };
 
     useEffect(() => {
         loadKhoa();
@@ -76,27 +84,51 @@ const ThemMonHoc = () => {
 
     const chooseLoaiDiem = (e) => {
         const value = e.target.value;
+        setSelectedLoaiDiem(value);
         const [phanTramGiuaKy, phanTramCuoiKy] = value.split('-').map(Number);
         setNewMonHoc({
             ...newMonHoc,
             phanTramGiuaKy,
             phanTramCuoiKy,
-        })
-    }
+        });
+    };
 
-    const updateMonHoc = async (e) => {
+    const addMonHoc = async (e) => {
         e.preventDefault();
         setLoading(true);
         try {
-            await authApis().post(endpoints['themMonHoc'], newMonHoc);
+            let res = await authApis().post(endpoints['themMonHoc'], newMonHoc);
+            const monHocId = res.data.id;
+
+            if (selectedNganhs.length > 0) {
+                const uploads = selectedNganhs.map(i => ({
+                    id: {
+                        nganhId: parseInt(i),
+                        monHocId: monHocId,
+                    }
+                }))
+
+                for (const upload of uploads) {
+                    await authApis().post(endpoints['themNganhMonHoc'], upload);
+                }
+            }
+
             setMsg("Thêm môn học thành công!");
+            setNewMonHoc({
+                khoaId: {},
+            });
+            setListNganh([]);
+            setSelectedNganhs([]);
+            setSelectedLoaiDiem("");
+            setSelectedKhoaId("");
+            await loadKhoa();
         } catch (ex) {
             setMsg("Thêm môn học thất bại!");
             console.error(ex);
         } finally {
             setLoading(false);
         }
-    }
+    };
 
     return (
         <div>
@@ -117,7 +149,7 @@ const ThemMonHoc = () => {
             )}
 
             <div>
-                <form onSubmit={updateMonHoc} className="w-50 mx-auto">
+                <form onSubmit={addMonHoc} className="w-50 mx-auto">
                     {info.map(i => (
                         <div className="mt-3 mb-3" key={i.field}>
                             <label htmlFor={i.field} className="form-label">{i.label}</label>
@@ -140,6 +172,7 @@ const ThemMonHoc = () => {
                         <select
                             id="loaiDiem"
                             className="form-select"
+                            value={selectedLoaiDiem}
                             onChange={chooseLoaiDiem}
                             required
                         >
@@ -155,6 +188,7 @@ const ThemMonHoc = () => {
                         <select
                             id="khoaId"
                             className="form-select"
+                            value={selectedKhoaId}
                             onChange={chooseKhoa}
                             required
                         >
@@ -175,7 +209,7 @@ const ThemMonHoc = () => {
                                         type="checkbox"
                                         id={nganh.id}
                                         value={nganh.id}
-                                        checked={selectedNganhs.includes(nganh.id)}
+                                        checked={selectedNganhs.includes(nganh.id.toString())}
                                         onChange={(e) => {
                                             if (e.target.checked) {
                                                 setSelectedNganhs([...selectedNganhs, e.target.value]);

@@ -48,7 +48,7 @@ public class ApiLichHocController {
         return new ResponseEntity<>(this.lichHocService.findLichHoc(params), HttpStatus.OK);
     }
 
-    @PostMapping("/lichhoc")
+    @PostMapping("/secure/admin/lichhoc")
     public ResponseEntity<?> create(@RequestBody LichHoc lichHoc) {
         if (lichHoc.getId() != null) {
             return ResponseEntity
@@ -66,7 +66,7 @@ public class ApiLichHocController {
         }
     }
 
-    @PutMapping("/lichhoc/{lichHocId}")
+    @PutMapping("/secure/admin/lichhoc/{lichHocId}")
     public ResponseEntity<LichHoc> update(@PathVariable(value = "lichHocId") int id, @RequestBody LichHoc lichHoc) {
         LichHoc existing = this.lichHocService.findById(id);
         if (existing == null) {

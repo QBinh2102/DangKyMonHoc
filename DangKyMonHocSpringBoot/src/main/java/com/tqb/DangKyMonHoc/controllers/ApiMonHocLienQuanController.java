@@ -38,7 +38,7 @@ public class ApiMonHocLienQuanController {
         return new ResponseEntity<>(this.monHocLienQuanService.findMonHocLienQuan(params), HttpStatus.OK);
     }
 
-    @PostMapping("/monhoclienquan")
+    @PostMapping("/secure/admin/monhoclienquan")
     public ResponseEntity<?> create(@RequestBody MonHocLienQuan monHocLienQuan) {
         try {
             MonHocLienQuan newMonHocLienQuan = monHocLienQuanService.add(monHocLienQuan);
@@ -50,7 +50,7 @@ public class ApiMonHocLienQuanController {
         }
     }
     
-    @DeleteMapping("/monhoclienquan")
+    @DeleteMapping("/secure/admin/monhoclienquan")
     public ResponseEntity<?> delete(@RequestBody MonHocLienQuanPK id) {
         boolean deleted = monHocLienQuanService.delete(id);
         if (deleted) {

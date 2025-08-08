@@ -10,10 +10,12 @@ const SuaQuyDinh = () => {
         label: "Quy định",
         field: "ten",
         type: "text",
+        disabled: true,
     }, {
         label: "Giá trị",
         field: "giaTri",
         type: "number",
+        disabled: false,
         min: 0,
     }];
 
@@ -90,6 +92,7 @@ const SuaQuyDinh = () => {
                                     name={i.label}
                                     value={quyDinh[i.field] || ''}
                                     min={i.min !== undefined ? i.min : undefined}
+                                    disabled={i.disabled}
                                     onChange={(e) => setQuyDinh({ ...quyDinh, [i.field]: e.target.value })}
                                     required
                                 />

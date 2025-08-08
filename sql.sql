@@ -6,6 +6,14 @@ CREATE TABLE hoc_ky (
     UNIQUE(ky, nam_hoc)
 );
 
+-- PHÒNG
+CREATE TABLE phong_hoc (
+	id INT PRIMARY KEY AUTO_INCREMENT,
+    ten_phong VARCHAR(20) NOT NULL,
+    loai ENUM('LyThuyet', 'ThucHanh') NOT NULL,
+    UNIQUE(ten_phong, loai)
+);
+
 -- ========================
 -- 1. KHOA (Faculty)
 -- ========================
@@ -69,7 +77,8 @@ CREATE TABLE mon_hoc (
     id INT PRIMARY KEY AUTO_INCREMENT,
     ten_mon VARCHAR(100) NOT NULL,
     mo_ta TEXT,
-    so_tin_chi INT NOT NULL,
+    tin_chi_ly_thuyet INT NOT NULL,
+    tin_chi_thuc_hanh INT NOT NULL,
     phan_tram_giua_ky INT NOT NULL DEFAULT 30,
     phan_tram_cuoi_ky INT NOT NULL DEFAULT 70,
     diem_qua_mon DECIMAL(4,2) NOT NULL DEFAULT 5.0,
@@ -125,12 +134,12 @@ CREATE TABLE buoi_hoc (
     mon_hoc_id INT NOT NULL,
     giang_vien_id INT NOT NULL,
     hoc_ky_id INT NOT NULL,
-    ca VARCHAR(10),
     si_so INT DEFAULT 50,
+    loai ENUM('LT', 'LT-TH'),
     FOREIGN KEY (mon_hoc_id) REFERENCES mon_hoc(id),
     FOREIGN KEY (giang_vien_id) REFERENCES giang_vien(id),
     FOREIGN KEY (hoc_ky_id) REFERENCES hoc_ky(id),
-    UNIQUE (mon_hoc_id, giang_vien_id, hoc_ky_id, ca, si_so)
+    UNIQUE (mon_hoc_id, giang_vien_id, hoc_ky_id, si_so)
 );
 
 -- THỜI KHÓA BIỂU
@@ -186,8 +195,12 @@ CREATE TABLE quy_dinh (
 -- 12. DỮ LIỆU MẪU
 -- ========================
 INSERT INTO quy_dinh (ten, gia_tri) VALUES 
-    ('Số tín chỉ tối thiểu', 12),
-    ('Số tín chỉ tối đa', 24);
+    ('Số tiền 1 tín chỉ', 300000),
+    ('Số tín chỉ tối đa', 24),
+    ('Số buổi 1 tín chỉ lý thuyết', 3),
+    ('Số buổi 1 tín chỉ thực hành', 6),
+    ('Số giờ 1 buổi học', 4);
+    
 
 -- Thêm học kỳ
 INSERT INTO hoc_ky (ky, nam_hoc)
@@ -205,6 +218,31 @@ VALUES
     ('Học kỳ 2', '2024-2025'),
     ('Học kỳ 3', '2024-2025'),
     ('Học kỳ 1', '2025-2026');
+
+-- Thêm phòng học
+INSERT INTO phong_hoc (ten_phong, loai)
+VALUES
+	("101",'LyThuyet'),
+    ("102",'LyThuyet'),
+    ("103",'LyThuyet'),
+    ("104",'LyThuyet'),
+    ("201",'LyThuyet'),
+    ("202",'LyThuyet'),
+    ("203",'LyThuyet'),
+    ("204",'LyThuyet'),
+    ("301",'LyThuyet'),
+    ("302",'LyThuyet'),
+    ("303",'LyThuyet'),
+    ("304",'LyThuyet'),
+    ("PM.101", 'ThucHanh'),
+    ("PM.102", 'ThucHanh'),
+    ("PM.103", 'ThucHanh'),
+    ("PM.201", 'ThucHanh'),
+    ("PM.202", 'ThucHanh'),
+    ("PM.203", 'ThucHanh'),
+    ("PM.301", 'ThucHanh'),
+    ("PM.302", 'ThucHanh'),
+    ("PM.303", 'ThucHanh');
 
 -- Thêm khoa
 INSERT INTO khoa (ten_khoa)
@@ -279,45 +317,45 @@ VALUES ('Admin Hệ Thống', 'admin@admin.vn', '$2a$10$YJWUKd2V8ZTn/uiiz6UQGOrE
 
     
 -- Thêm môn học
-INSERT INTO mon_hoc (ten_mon, mo_ta, so_tin_chi, phan_tram_giua_ky, phan_tram_cuoi_ky, diem_qua_mon, khoa_id)
+INSERT INTO mon_hoc (ten_mon, mo_ta, tin_chi_ly_thuyet, tin_chi_thuc_hanh, phan_tram_giua_ky, phan_tram_cuoi_ky, diem_qua_mon, khoa_id)
 VALUES
-('Nhập môn tin học', '', 3, 40, 60, 5, 1),
-('Cơ sở lập trình', '', 4, 40, 60, 5, 1),
-('Hệ điều hành và Kiến trúc máy tính', '', 3, 30, 70, 5, 1),
-('Kỹ thuật lập trình', '', 4, 40, 60, 5, 1),
-('Ứng dụng web', '', 3, 30, 70, 5, 1),
-('Cấu trúc dữ liệu và thuật giải 1', '', 4, 40, 60, 5, 1),
-('Cơ sở dữ liệu', '', 4, 40, 60, 5, 1),
-('Toán rời rạc', '', 4, 40, 60, 5, 1),
-('Cấu trúc dữ liệu và thuật giải 2', '', 3, 40, 60, 5, 1),
-('Mạng máy tính', '', 4, 40, 60, 5, 1),
-('Lập trình hướng đối tượng', '', 4, 40, 60, 5, 1),
-('Kỹ năng nghề nghiệp', '', 3, 40, 60, 5, 1),
-('Phân tích thiết kế hệ thống', '', 4, 50, 50, 5, 1),
-('Mẫu thiết kế hướng đối tượng', '', 3, 40, 60, 5, 1),
-('Trí tuệ nhân tạo', '', 3, 50, 50, 5, 1),
-('Quản trị hệ cơ sở dữ liệu', '', 3, 40, 60, 5, 1),
-('Công nghệ phần mềm', '', 3, 40, 60, 5, 1),
-('Các công nghệ lập trình hiện đại', '', 3, 40, 60, 5, 1),
-('Máy học', '', 3, 40, 60, 5, 1),
-('Kiểm thử phần mềm', '', 3, 40, 60, 5, 1),
-('Phát triển hệ thống web', '', 3, 30, 70, 5, 1),
-('Thiết kế web', '', 3, 40, 60, 5, 1),
-('Cấu trúc dữ liệu và thuật giải', '', 4, 40, 60, 5, 1),
-('Công nghệ mã nguồn mở', '', 3, 50, 50, 5, 1),
-('Lập trình giao diện', '', 3, 50, 50, 5, 1),
-('Quản trị mạng', '', 3, 40, 60, 5, 1),
-('An toàn hệ thống thông tin', '', 3, 40, 60, 5, 1),
-('Hệ thống quản lý nguồn lực doanh nghiệp', '', 3, 50, 50, 5, 1),
-('Hệ thống thông tin quản lý', '', 3, 50, 50, 5, 1),
-('Lập trình cơ sở dữ liệu', '', 3, 50, 50, 5, 1),
-('Phát triển hệ thống thông tin quản lý', '', 3, 50, 50, 5, 1),
-('Đồ án ngành', '', 4, 40, 60, 5, 1),
-('Thực tập tốt nghiệp', '', 4, 30, 70, 5, 1),
-('Khóa luận tốt nghiệp', '', 6, 0, 100, 5, 1),
-('Đồ án ngành Hệ thống thông tin quản lý', '', 4, 40, 60, 5, 1),
-('Thực tập tốt nghiệp', '', 4, 30, 70, 5, 1),
-('Khóa luận tốt nghiệp', '', 6, 0, 100, 5, 1);
+('Nhập môn tin học', '', 2, 1, 40, 60, 5, 1),
+('Cơ sở lập trình', '', 3, 1, 40, 60, 5, 1),
+('Hệ điều hành và Kiến trúc máy tính', '', 3, 0, 30, 70, 5, 1),
+('Kỹ thuật lập trình', '', 3, 1, 40, 60, 5, 1),
+('Ứng dụng web', '', 2, 1, 30, 70, 5, 1),
+('Cấu trúc dữ liệu và thuật giải 1', '', 3, 1, 40, 60, 5, 1),
+('Cơ sở dữ liệu', '', 3, 1, 40, 60, 5, 1),
+('Toán rời rạc', '', 4, 0, 40, 60, 5, 1),
+('Cấu trúc dữ liệu và thuật giải 2', '', 2, 1, 40, 60, 5, 1),
+('Mạng máy tính', '', 3, 1, 40, 60, 5, 1),
+('Lập trình hướng đối tượng', '', 3, 1, 40, 60, 5, 1),
+('Kỹ năng nghề nghiệp', '', 3, 0, 40, 60, 5, 1),
+('Phân tích thiết kế hệ thống', '', 4, 0, 50, 50, 5, 1),
+('Mẫu thiết kế hướng đối tượng', '', 2, 1, 40, 60, 5, 1),
+('Trí tuệ nhân tạo', '', 2, 1, 50, 50, 5, 1),
+('Quản trị hệ cơ sở dữ liệu', '', 2, 1, 40, 60, 5, 1),
+('Công nghệ phần mềm', '', 2, 1, 40, 60, 5, 1),
+('Các công nghệ lập trình hiện đại', '', 2, 1, 40, 60, 5, 1),
+('Máy học', '', 2, 1, 40, 60, 5, 1),
+('Kiểm thử phần mềm', '', 2, 1, 40, 60, 5, 1),
+('Phát triển hệ thống web', '', 2, 1, 30, 70, 5, 1),
+('Thiết kế web', '', 2, 1, 40, 60, 5, 1),
+('Cấu trúc dữ liệu và thuật giải', '', 3, 1, 40, 60, 5, 1),
+('Công nghệ mã nguồn mở', '', 2, 1, 50, 50, 5, 1),
+('Lập trình giao diện', '', 2, 1, 50, 50, 5, 1),
+('Quản trị mạng', '', 2, 1, 40, 60, 5, 1),
+('An toàn hệ thống thông tin', '', 2, 1, 40, 60, 5, 1),
+('Hệ thống quản lý nguồn lực doanh nghiệp', '', 2, 1, 50, 50, 5, 1),
+('Hệ thống thông tin quản lý', '', 3, 0, 50, 50, 5, 1),
+('Lập trình cơ sở dữ liệu', '', 2, 1, 50, 50, 5, 1),
+('Phát triển hệ thống thông tin quản lý', '', 3, 0, 50, 50, 5, 1),
+('Đồ án ngành', '', 0, 4, 40, 60, 5, 1),
+('Thực tập tốt nghiệp', '', 0, 4, 30, 70, 5, 1),
+('Khóa luận tốt nghiệp', '', 0, 6, 0, 100, 5, 1),
+('Đồ án ngành Hệ thống thông tin quản lý', '', 0, 4, 40, 60, 5, 1),
+('Thực tập tốt nghiệp', '', 0, 4, 30, 70, 5, 1),
+('Khóa luận tốt nghiệp', '', 0, 6, 0, 100, 5, 1);
 
 -- Thêm môn liên quan
 INSERT INTO mon_hoc_lien_quan (mon_hoc_id, lien_quan_id, nganh_id, loai)
@@ -706,20 +744,19 @@ VALUES
     
     
 -- Thêm buổi học
-INSERT INTO buoi_hoc(mon_hoc_id, giang_vien_id, hoc_ky_id, ca, si_so)
+INSERT INTO buoi_hoc(mon_hoc_id, giang_vien_id, hoc_ky_id, si_so, loai)
 VALUES
-	(13,9,12,"",10),
-    (26,11,12,"",10),
-    (14,10,12,"01",5),
-    (14,10,12,"02",5);
+	(13,9,12,10,'LT'),
+    (26,11,12,10,'LT-TH'),
+    (14,10,12,10,'LT-TH');
     
 INSERT INTO lich_hoc(buoi_hoc_id, thu, gio_bat_dau, gio_ket_thuc, ngay_bat_dau, ngay_ket_thuc, phong, loai)
 VALUES
-	(1, "Thứ 4", "13:00:00", "17:30:00", "2025-09-10",  "2025-11-05", "301", 'LyThuyet'),
-    (2, "Thứ 4", "07:30:00", "11:00:00", "2025-09-10",  "2025-11-05", "301", 'LyThuyet'),
-    (3, "Thứ 6", "13:00:00", "17:30:00", "2025-09-12",  "2025-11-07", "204", 'LyThuyet'),
-    (3, "Thứ 6", "07:30:00", "11:00:00", "2025-09-19",  "2025-11-28", "PM.301", 'ThucHanh'),
-    (3, "Thứ 6", "07:30:00", "11:00:00", "2025-09-26",  "2025-12-05", "PM.301", 'ThucHanh');
+	(1, "Thứ 4", "13:00:00", "17:00:00", "2025-10-08", "2025-12-24", "301", 'LyThuyet'),
+    (2, "Thứ 2", "07:30:00", "11:30:00", "2025-10-06", "2025-11-10", "301", 'LyThuyet'),
+    (2, "Thứ 2", "13:00:00", "17:00:00", "2025-10-06", "2025-11-10", "PM.204", 'ThucHanh'),
+    (3, "Thứ 6", "13:00:00", "17:00:00", "2025-10-10", "2025-11-14", "304", 'LyThuyet'),
+    (3, "Thứ 6", "07:30:00", "11:30:00", "2025-10-10", "2025-11-14", "PM.305", 'ThucHanh');
     
 INSERT INTO dang_ky(sinh_vien_id, buoi_hoc_id, hoc_ky_id, trang_thai)
 VALUES

@@ -50,7 +50,8 @@ const MonHoc = () => {
                             <tr>
                                 <th>Id</th>
                                 <th>Tên môn</th>
-                                <th>Số tín chỉ</th>
+                                <th>Tín chỉ lý thuyết</th>
+                                <th>Tín chỉ thực hành</th>
                                 <th>Phần trăm giữa kỳ</th>
                                 <th>Phần trăm cuối kỳ</th>
                                 <th>Điểm qua môn</th>
@@ -63,7 +64,8 @@ const MonHoc = () => {
                                 <tr key={mh.id}>
                                     <td>{mh.id}</td>
                                     <td>{mh.tenMon}</td>
-                                    <td>{mh.soTinChi}</td>
+                                    <td>{mh.tinChiLyThuyet}</td>
+                                    <td>{mh.tinChiThucHanh}</td>
                                     <td>{mh.phanTramGiuaKy}</td>
                                     <td>{mh.phanTramCuoiKy}</td>
                                     <td>{mh.diemQuaMon}</td>

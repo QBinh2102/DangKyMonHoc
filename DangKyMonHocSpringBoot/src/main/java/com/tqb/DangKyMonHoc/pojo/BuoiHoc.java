@@ -30,8 +30,8 @@ import java.util.Set;
 @NamedQueries({
     @NamedQuery(name = "BuoiHoc.findAll", query = "SELECT b FROM BuoiHoc b"),
     @NamedQuery(name = "BuoiHoc.findById", query = "SELECT b FROM BuoiHoc b WHERE b.id = :id"),
-    @NamedQuery(name = "BuoiHoc.findByCa", query = "SELECT b FROM BuoiHoc b WHERE b.ca = :ca"),
-    @NamedQuery(name = "BuoiHoc.findBySiSo", query = "SELECT b FROM BuoiHoc b WHERE b.siSo = :siSo")})
+    @NamedQuery(name = "BuoiHoc.findBySiSo", query = "SELECT b FROM BuoiHoc b WHERE b.siSo = :siSo"),
+    @NamedQuery(name = "BuoiHoc.findByLoai", query = "SELECT b FROM BuoiHoc b WHERE b.loai = :loai")})
 public class BuoiHoc implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -40,10 +40,10 @@ public class BuoiHoc implements Serializable {
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
-    @Column(name = "ca")
-    private String ca;
     @Column(name = "si_so")
     private Integer siSo;
+    @Column(name = "loai")
+    private String loai;
     @JoinColumn(name = "giang_vien_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private GiangVien giangVienId;
@@ -75,20 +75,20 @@ public class BuoiHoc implements Serializable {
         this.id = id;
     }
 
-    public String getCa() {
-        return ca;
-    }
-
-    public void setCa(String ca) {
-        this.ca = ca;
-    }
-
     public Integer getSiSo() {
         return siSo;
     }
 
     public void setSiSo(Integer siSo) {
         this.siSo = siSo;
+    }
+
+    public String getLoai() {
+        return loai;
+    }
+
+    public void setLoai(String loai) {
+        this.loai = loai;
     }
 
     public GiangVien getGiangVienId() {

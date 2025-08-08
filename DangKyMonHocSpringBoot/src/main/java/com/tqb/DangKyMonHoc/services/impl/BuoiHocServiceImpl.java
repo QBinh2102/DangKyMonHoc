@@ -7,6 +7,7 @@ package com.tqb.DangKyMonHoc.services.impl;
 import com.tqb.DangKyMonHoc.pojo.BuoiHoc;
 import com.tqb.DangKyMonHoc.repositories.BuoiHocRepository;
 import com.tqb.DangKyMonHoc.services.BuoiHocService;
+import com.tqb.DangKyMonHoc.services.HocKyService;
 import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,9 @@ public class BuoiHocServiceImpl implements BuoiHocService {
 
     @Autowired
     private BuoiHocRepository buoiHocRepo;
+    
+    @Autowired
+    private HocKyService hocKyService;
 
     @Override
     public BuoiHoc findById(int id) {
@@ -46,6 +50,9 @@ public class BuoiHocServiceImpl implements BuoiHocService {
 
     @Override
     public BuoiHoc addOrUpdate(BuoiHoc buoiHoc) {
+        if(buoiHoc.getId()==null){
+            buoiHoc.setHocKyId(this.hocKyService.findTopByOrderByIdDesc());
+        }
         return this.buoiHocRepo.save(buoiHoc);
     }
 

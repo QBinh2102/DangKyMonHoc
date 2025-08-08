@@ -16,6 +16,7 @@ public interface QuyDinhService {
     
     QuyDinh findById(int id);
     List<QuyDinh> findQuyDinh(Map<String,String> params);
+    QuyDinh findByTen(String ten);
     QuyDinh addOrUpdate(QuyDinh quyDinh);
     QuyDinh delete(QuyDinh quyDinh);
     

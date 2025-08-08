@@ -17,6 +17,5 @@ public interface NganhMonHocService {
     
     List<NganhMonHoc> findNganhMonHoc(Map<String,String> params);
     NganhMonHoc add(NganhMonHoc nganhMonHoc);
-    NganhMonHoc delete(NganhMonHocPK id);
-    
+    void deleteByIdMonHocId(int monHocId);
 }

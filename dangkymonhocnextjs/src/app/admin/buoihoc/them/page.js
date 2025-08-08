@@ -21,7 +21,6 @@ const ThemBuoiHoc = () => {
         hocKyId: {},
         siSo: 0,
     });
-    const [loaiBuoiHoc, setLoaiBuoiHoc] = useState("");
     const [loading, setLoading] = useState(false);
     const [msg, setMsg] = useState("");
 
@@ -95,31 +94,7 @@ const ThemBuoiHoc = () => {
         setLoading(true);
         setMsg("");
         try {
-            if (loaiBuoiHoc === "lt") {
-                const payload = {
-                    ...newBuoiHoc,
-                    ca: ""
-                };
-                await authApis().post(endpoints['themHoacLayBuoiHoc'], payload);
-            } else if (loaiBuoiHoc === "lt-th") {
-                const siSo = parseInt(newBuoiHoc.siSo);
-                const siSo1 = Math.ceil(siSo / 2);
-                const siSo2 = siSo - siSo1;
-                const buoi1 = {
-                    ...newBuoiHoc,
-                    ca: "01",
-                    siSo: siSo1,
-                };
-                const buoi2 = {
-                    ...newBuoiHoc,
-                    ca: "02",
-                    siSo: siSo2,
-                }
-
-                await authApis().post(endpoints['themHoacLayBuoiHoc'], buoi1);
-                await authApis().post(endpoints['themHoacLayBuoiHoc'], buoi2);
-            }
-
+            await authApis().post(endpoints['themHoacLayBuoiHoc'], newBuoiHoc);
             setMsg("Thêm thành công!");
             setNewBuoiHoc({
                 monHocId: {},
@@ -132,7 +107,6 @@ const ThemBuoiHoc = () => {
             setListNganh([]);
             setListGiangVien([]);
             setListMonHoc([]);
-            setLoaiBuoiHoc("");
         } catch (ex) {
             setMsg("Thêm thất bại!");
             console.error(ex);
@@ -225,8 +199,8 @@ const ThemBuoiHoc = () => {
                     <select
                         className="form-select"
                         id="loaiBuoiHoc"
-                        value={loaiBuoiHoc}
-                        onChange={(e) => setLoaiBuoiHoc(e.target.value)}
+                        value={newBuoiHoc.loai}
+                        onChange={(e) => setNewBuoiHoc({ ...newBuoiHoc, loai: e.target.value })}
                         required
                     >
                         <option value="">-- Chọn loại --</option>
