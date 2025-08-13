@@ -39,7 +39,6 @@ import java.util.Set;
     @NamedQuery(name = "LichHoc.findByGioKetThuc", query = "SELECT l FROM LichHoc l WHERE l.gioKetThuc = :gioKetThuc"),
     @NamedQuery(name = "LichHoc.findByNgayBatDau", query = "SELECT l FROM LichHoc l WHERE l.ngayBatDau = :ngayBatDau"),
     @NamedQuery(name = "LichHoc.findByNgayKetThuc", query = "SELECT l FROM LichHoc l WHERE l.ngayKetThuc = :ngayKetThuc"),
-    @NamedQuery(name = "LichHoc.findByPhong", query = "SELECT l FROM LichHoc l WHERE l.phong = :phong"),
     @NamedQuery(name = "LichHoc.findByLoai", query = "SELECT l FROM LichHoc l WHERE l.loai = :loai")})
 public class LichHoc implements Serializable {
 
@@ -53,12 +52,10 @@ public class LichHoc implements Serializable {
     private String thu;
     @Basic(optional = false)
     @Column(name = "gio_bat_dau")
-    @Temporal(TemporalType.TIME)
     @JsonFormat(pattern = "HH:mm:ss")
     private LocalTime gioBatDau;
     @Basic(optional = false)
     @Column(name = "gio_ket_thuc")
-    @Temporal(TemporalType.TIME)
     @JsonFormat(pattern = "HH:mm:ss")
     private LocalTime gioKetThuc;
     @Basic(optional = false)
@@ -69,16 +66,19 @@ public class LichHoc implements Serializable {
     @Column(name = "ngay_ket_thuc")
     @Temporal(TemporalType.DATE)
     private Date ngayKetThuc;
-    @Column(name = "phong")
-    private String phong;
     @Column(name = "loai")
     private String loai;
+    @Column(name = "lan")
+    private int lan = 1;
     @OneToMany(mappedBy = "lichHocId")
     @JsonIgnore
     private Set<ThoiKhoaBieu> thoiKhoaBieuSet;
     @JoinColumn(name = "buoi_hoc_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private BuoiHoc buoiHocId;
+    @JoinColumn(name = "phong_hoc_id", referencedColumnName = "id")
+    @ManyToOne(optional = false)
+    private PhongHoc phongHocId;
 
     public LichHoc() {
     }
@@ -143,20 +143,20 @@ public class LichHoc implements Serializable {
         this.ngayKetThuc = ngayKetThuc;
     }
 
-    public String getPhong() {
-        return phong;
-    }
-
-    public void setPhong(String phong) {
-        this.phong = phong;
-    }
-
     public String getLoai() {
         return loai;
     }
 
     public void setLoai(String loai) {
         this.loai = loai;
+    }
+    
+    public int getLan() {
+        return lan;
+    }
+
+    public void setLan(int lan) {
+        this.lan = lan;
     }
 
     public Set<ThoiKhoaBieu> getThoiKhoaBieuSet() {
@@ -173,6 +173,14 @@ public class LichHoc implements Serializable {
 
     public void setBuoiHocId(BuoiHoc buoiHocId) {
         this.buoiHocId = buoiHocId;
+    }
+
+    public PhongHoc getPhongHocId() {
+        return phongHocId;
+    }
+
+    public void setPhongHocId(PhongHoc phongHocId) {
+        this.phongHocId = phongHocId;
     }
 
     @Override

@@ -4,8 +4,8 @@
  */
 package com.tqb.DangKyMonHoc.controllers;
 
-import com.tqb.DangKyMonHoc.pojo.LichHoc;
-import com.tqb.DangKyMonHoc.services.LichHocService;
+import com.tqb.DangKyMonHoc.pojo.PhongHoc;
+import com.tqb.DangKyMonHoc.services.PhongHocService;
 import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,57 +28,53 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api")
 @CrossOrigin
-public class ApiLichHocController {
-
+public class ApiPhongHocController {
+    
     @Autowired
-    private LichHocService lichHocService;
-
-    @GetMapping("/lichhoc/{lichHocId}")
-    public ResponseEntity<LichHoc> getLichHocById(@PathVariable(value = "lichHocId") int id) {
-        LichHoc existing = this.lichHocService.findById(id);
-        if (existing == null) {
+    private PhongHocService phongHocService;
+    
+    @GetMapping("/phonghoc")
+    public ResponseEntity<List<PhongHoc>> getPhongHoc(@RequestParam Map<String,String> params){
+        return new ResponseEntity<>(this.phongHocService.findPhongHoc(params), HttpStatus.OK);
+    }
+    
+    @GetMapping("/phonghoc/{phongHocId}")
+    public ResponseEntity<PhongHoc> getPhongHocById(@PathVariable(value="phongHocId") int id){
+        PhongHoc existing = this.phongHocService.findById(id);
+        if(existing!=null){
+            return new ResponseEntity<>(this.phongHocService.findById(id), HttpStatus.OK);
+        }else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        } else {
-            return new ResponseEntity<>(existing, HttpStatus.OK);
         }
     }
-
-    @GetMapping("/lichhoc")
-    public ResponseEntity<List<LichHoc>> getLichHoc(@RequestParam Map<String, String> params) {
-        return new ResponseEntity<>(this.lichHocService.findLichHoc(params), HttpStatus.OK);
-    }
-
-    @PostMapping("/secure/admin/lichhoc")
-    public ResponseEntity<?> create(@RequestBody LichHoc lichHoc) {
-        if (lichHoc.getId() != null) {
+    
+    @PostMapping("/secure/admin/phonghoc")
+    public ResponseEntity<?> createPhongHoc(@RequestBody PhongHoc phongHoc){
+        if (phongHoc.getId() != null) {
             return ResponseEntity
                     .status(HttpStatus.CONFLICT)
                     .body("ID phải để trống khi tạo mới.");
         }
-
+        
         try {
-            LichHoc newLichHoc = this.lichHocService.addOrUpdate(lichHoc);
-            return new ResponseEntity<>(newLichHoc, HttpStatus.CREATED);
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity
-                    .status(HttpStatus.BAD_REQUEST)
-                    .body(e.getMessage());
+            PhongHoc newPhongHoc = this.phongHocService.addOrUpdate(phongHoc);
+            return new ResponseEntity<>(newPhongHoc, HttpStatus.CREATED);
         } catch (Exception e) {
             return ResponseEntity
                     .status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("Lỗi khi tạo: " + e.getMessage());
         }
     }
-
-    @PutMapping("/secure/admin/lichhoc/{lichHocId}")
-    public ResponseEntity<LichHoc> update(@PathVariable(value = "lichHocId") int id, @RequestBody LichHoc lichHoc) {
-        LichHoc existing = this.lichHocService.findById(id);
+    
+    @PutMapping("/secure/admin/phonghoc/{phongHocId}")
+    public ResponseEntity<PhongHoc> update(@PathVariable(value = "phongHocId") int id, @RequestBody PhongHoc phongHoc) {
+        PhongHoc existing = this.phongHocService.findById(id);
         if (existing == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } else {
-            lichHoc.setId(id);
-            return new ResponseEntity<>(this.lichHocService.addOrUpdate(lichHoc), HttpStatus.OK);
+            phongHoc.setId(id);
+            return new ResponseEntity<>(this.phongHocService.addOrUpdate(phongHoc), HttpStatus.OK);
         }
     }
-
+    
 }

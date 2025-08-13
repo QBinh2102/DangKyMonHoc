@@ -1,8 +1,9 @@
 'use client'
 
-import { authApis, endpoints } from "@/configs/Apis";
+import Apis, { authApis, endpoints } from "@/configs/Apis";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import "../../admin.css";
 
 const SuaBuoiHoc = () => {
 
@@ -41,12 +42,43 @@ const SuaBuoiHoc = () => {
         }
     });
 
+    const [listPhongHoc, setListPhongHoc] = useState({ phongLyThuyet: [], phongThucHanh: [] });
+    const [listLichHoc, setListLichHoc] = useState([]);
+
+    const loadPhongHoc = async (loai) => {
+        try {
+            let dsPhongLT = await Apis.get(`${endpoints['phongHoc']}?loai=LyThuyet`);
+            let phongLyThuyet = dsPhongLT.data;
+            let phongThucHanh = [];
+            if (loai === "LT-TH") {
+                let dsPhongTH = await Apis.get(`${endpoints['phongHoc']}?loai=ThucHanh`);
+                phongThucHanh = dsPhongTH.data;
+            }
+            setListPhongHoc({
+                phongLyThuyet,
+                phongThucHanh,
+            });
+        } catch (ex) {
+            console.error(ex);
+        }
+    }
+
+    const loadLichHoc = async (buoiHocId) => {
+        try {
+            let res = await Apis.get(`${endpoints['lichHoc']}?buoiHocId=${buoiHocId}`);
+            setListLichHoc(res.data);
+        } catch (ex) {
+            console.error(ex);
+        }
+    }
 
     const loadBuoiHoc = async () => {
         setLoading(true);
         try {
             let res = await authApis().get(endpoints['suaHoacLayBuoiHocId'](id));
             setBuoiHoc(res.data);
+            await loadPhongHoc(res.data.loai);
+            await loadLichHoc(res.data.id);
             console.info(res.data);
         } catch (ex) {
             console.error(ex);
@@ -59,9 +91,15 @@ const SuaBuoiHoc = () => {
         loadBuoiHoc();
     }, [id]);
 
-    const getLoai = (loai) => {
+    const getLoaiBuoiHoc = (loai) => {
         if (loai === "LT") return "Lý thuyết";
         if (loai === "LT-TH") return "Lý thuyết - thực hành";
+        return loai ?? "";
+    }
+
+    const getLoaiLichHoc = (loai) => {
+        if (loai === "LyThuyet") return "Lý thuyết";
+        if (loai === "ThucHanh") return "Thực hành";
         return loai ?? "";
     }
 
@@ -107,6 +145,7 @@ const SuaBuoiHoc = () => {
                 lyThuyet: {},
                 thucHanh: {}
             });
+            await loadBuoiHoc();
         } catch (ex) {
             setMsg("Thêm thất bại!");
         }
@@ -125,6 +164,12 @@ const SuaBuoiHoc = () => {
             setUpdateLoading(true);
         }
     }
+
+    const grouped = listLichHoc.reduce((groups, item) => {
+        if (!groups[item.lan]) groups[item.lan] = [];
+        groups[item.lan].push(item);
+        return groups;
+    }, {});
 
     return (
         <div>
@@ -194,7 +239,7 @@ const SuaBuoiHoc = () => {
                                     id={i.field}
                                     type={i.type}
                                     className="form-control"
-                                    value={i.field === "loai" ? getLoai(buoiHoc[i.field]) : buoiHoc[i.field] ?? ""}
+                                    value={i.field === "loai" ? getLoaiBuoiHoc(buoiHoc[i.field]) : buoiHoc[i.field] ?? ""}
                                     disabled={i.disabled}
                                     min={i.min !== undefined ? i.min : undefined}
                                     onChange={(e) => setBuoiHoc({ ...buoiHoc, [i.field]: e.target.value })}
@@ -208,7 +253,7 @@ const SuaBuoiHoc = () => {
                             <div className="lich-hoc-group">
                                 <h5>Lý thuyết</h5>
                                 <div className="row mt-3 mb-3 align-items-center">
-                                    <div className="col-md-3">
+                                    <div className="col-md-4">
                                         <input
                                             type="time"
                                             className="form-control"
@@ -226,7 +271,7 @@ const SuaBuoiHoc = () => {
                                         />
                                     </div>
 
-                                    <div className="col-md-3">
+                                    <div className="col-md-4">
                                         <input
                                             type="date"
                                             className="form-control"
@@ -235,21 +280,24 @@ const SuaBuoiHoc = () => {
                                         />
                                     </div>
 
-                                    <div className="col-md-3">
-                                        <input
-                                            type="text"
-                                            className="form-control"
-                                            placeholder="Phòng"
-                                            value={newLichHoc.lyThuyet.phong || ""}
-                                            onChange={(e) => setNewLichHoc({ ...newLichHoc, lyThuyet: { ...newLichHoc.lyThuyet, phong: e.target.value } })}
-                                        />
+                                    <div className="col-md-4">
+                                        <select
+                                            className="form-select"
+                                            value={newLichHoc.lyThuyet.phongHocId || ""}
+                                            onChange={(e) => setNewLichHoc({ ...newLichHoc, lyThuyet: { ...newLichHoc.lyThuyet, phongHocId: e.target.value } })}
+                                        >
+                                            <option value="">--Chọn phòng --</option>
+                                            {listPhongHoc.phongLyThuyet.map(i => (
+                                                <option key={i.id} value={i.id}>{i.tenPhong}</option>
+                                            ))}
+                                        </select>
                                     </div>
                                 </div>
                                 {buoiHoc.loai === "LT-TH" && (
                                     <>
                                         <h5>Thực hành</h5>
                                         <div className="row mt-3 mb-3 align-items-center">
-                                            <div className="col-md-3">
+                                            <div className="col-md-4">
                                                 <input
                                                     type="time"
                                                     className="form-control"
@@ -267,7 +315,7 @@ const SuaBuoiHoc = () => {
                                                 />
                                             </div>
 
-                                            <div className="col-md-3">
+                                            <div className="col-md-4">
                                                 <input
                                                     type="date"
                                                     className="form-control"
@@ -276,14 +324,17 @@ const SuaBuoiHoc = () => {
                                                 />
                                             </div>
 
-                                            <div className="col-md-3">
-                                                <input
-                                                    type="text"
-                                                    className="form-control"
-                                                    placeholder="Phòng"
-                                                    value={newLichHoc.thucHanh.phong || ""}
-                                                    onChange={(e) => setNewLichHoc({ ...newLichHoc, thucHanh: { ...newLichHoc.thucHanh, phong: e.target.value } })}
-                                                />
+                                            <div className="col-md-4">
+                                                <select
+                                                    className="form-select"
+                                                    value={newLichHoc.thucHanh.phongHocId || ""}
+                                                    onChange={(e) => setNewLichHoc({ ...newLichHoc, thucHanh: { ...newLichHoc.thucHanh, phongHocId: e.target.value } })}
+                                                >
+                                                    <option value="">--Chọn phòng --</option>
+                                                    {listPhongHoc.phongThucHanh.map(i => (
+                                                        <option key={i.id} value={i.id}>{i.tenPhong}</option>
+                                                    ))}
+                                                </select>
                                             </div>
                                         </div>
                                     </>
@@ -295,6 +346,31 @@ const SuaBuoiHoc = () => {
                             </div>
 
                         </div>
+
+                        <table className="table table-bordered">
+                            <tbody>
+                                {Object.entries(grouped).map(([lan, items]) => {
+                                    // Sắp lý thuyết trước, thực hành sau
+                                    const sortedItems = items.sort((a, b) =>
+                                        a.loai === 'LyThuyet' ? -1 : 1
+                                    );
+
+                                    return sortedItems.map((i, idx) => (
+                                        <tr key={i.id}>
+                                            {/* Chỉ in số "lần" ở hàng đầu tiên của nhóm */}
+                                            {idx === 0 && (
+                                                <td rowSpan={sortedItems.length} style={{ fontWeight: 'bold', textAlign: 'center' }}>
+                                                    Lần {lan}
+                                                </td>
+                                            )}
+                                            <td>
+                                                {getLoaiLichHoc(i.loai)} - {i.thu}, {i.gioBatDau}, {i.ngayBatDau} - {i.ngayKetThuc}, {i.phongHocId.tenPhong}
+                                            </td>
+                                        </tr>
+                                    ));
+                                })}
+                            </tbody>
+                        </table>
 
                         <div className="text-center mt-3 mb-3">
                             <button type="submit" className="text-center btn btn-primary" disabled={updateLoading}>

@@ -1,0 +1,29 @@
+.chart-container {
+  width: 400px;      /* chiều rộng chart */
+  height: 400px;     /* chiều cao chart */
+  margin: 0 auto;    /* canh giữa */
+}
+
+.lich-hoc-group {
+  border: 1px solid #ccc;      /* viền mỏng */
+  border-radius: 8px;          /* bo góc */
+  padding: 15px;               /* khoảng cách bên trong */
+  margin-bottom: 20px;         /* cách nhóm dưới */
+  background-color: #fdfdfd;   /* màu nền nhẹ */
+}
+
+.lich-hoc-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 16px;
+}
+
+.lich-hoc-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: #f9f9f9;
+}

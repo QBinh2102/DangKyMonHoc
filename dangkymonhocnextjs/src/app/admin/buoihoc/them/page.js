@@ -204,8 +204,8 @@ const ThemBuoiHoc = () => {
                         required
                     >
                         <option value="">-- Chọn loại --</option>
-                        <option value="lt">Lý thuyết</option>
-                        <option value="lt-th">Lý thuyết - Thực hành</option>
+                        <option value="LT">Lý thuyết</option>
+                        <option value="LT-TH">Lý thuyết - Thực hành</option>
                     </select>
                 </div>
 

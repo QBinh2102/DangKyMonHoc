@@ -4,19 +4,19 @@
  */
 package com.tqb.DangKyMonHoc.services;
 
-import com.tqb.DangKyMonHoc.pojo.MonHoc;
+import com.tqb.DangKyMonHoc.pojo.PhongHoc;
 import java.util.List;
 import java.util.Map;
-import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Service;
 
 /**
  *
  * @author toquocbinh2102
  */
-public interface MonHocService {
+public interface PhongHocService {
     
-    MonHoc findById(int id);
-    List<MonHoc> findMonHoc(Map<String,String> params);
-    MonHoc addOrUpdate(MonHoc monHoc);
+    PhongHoc findById (int id);
+    List<PhongHoc> findPhongHoc (Map<String, String> params);
+    PhongHoc addOrUpdate (PhongHoc phongHoc);
     
 }

@@ -10,6 +10,11 @@ export const endpoints = {
     'hocKy': '/secure/admin/hocky',
     'hocKyMoiNhat': '/secure/admin/hocky/latest',
     'hocKyId': (hocKyId) => `/secure/admin/hocky/${hocKyId}`,
+    // Phòng học
+    'phongHoc': '/phonghoc',
+    'phongHocId': (phongHocId) => `/phonghoc/${phongHocId}`,
+    'themPhongHoc': '/secure/admin/phonghoc',
+    'suaPhongHocId': (phongHocId) => `/secure/admin/phonghoc/${phongHocId}`,
     // Khoa
     'khoa': '/khoa',
     'khoaId': (khoaId) => `/khoa/${khoaId}`,
@@ -50,6 +55,8 @@ export const endpoints = {
     'quyDinhId': (quyDinhId) => `/quydinh/${quyDinhId}`,
     'themQuyDinh': '/secure/admin/quydinh',
     'suaHoacXoaQuyDinhId': (quyDinhId) => `/secure/admin/quydinh/${quyDinhId}`,
+    // Thống kê
+    'thongKe': '/secure/admin/thongke',
 }
 
 export const authApis = () => {

@@ -3,32 +3,27 @@
 import { authApis, endpoints } from "@/configs/Apis";
 import { useState } from "react";
 
-const ThemQuyDinh = () => {
+const ThemPhongHoc = () => {
 
     const info = [{
-        label: "Quy định",
-        field: "ten",
+        label: "Phòng",
+        field: "tenPhong",
         type: "text",
-    }, {
-        label: "Giá trị",
-        field: "giaTri",
-        type: "number",
-        min: 0,
     }];
-    const [newQuyDinh, setNewQuyDinh] = useState({});
+    const [newPhongHoc, setNewPhongHoc] = useState({});
     const [loading, setLoading] = useState(false);
     const [msg, setMsg] = useState("");
 
-    const addQuyDinh = async (e) => {
+    const addPhongHoc = async (e) => {
         e.preventDefault();
         setLoading(true);
         try {
-            await authApis().post(endpoints['themQuyDinh'], newQuyDinh);
-            setNewQuyDinh({});
-            setMsg("Thêm quy định thành công!");
+            await authApis().post(endpoints['themPhongHoc'], newPhongHoc);
+            setMsg("Thêm thành công!");
+            setNewPhongHoc({});
         } catch (ex) {
+            setMsg("Thêm thất bại!");
             console.error(ex);
-            setMsg("Thêm quy định thất bại!");
         } finally {
             setLoading(false);
         }
@@ -37,7 +32,7 @@ const ThemQuyDinh = () => {
     return (
         <div>
             <div className="text-center mt-5 mb-5">
-                <h1>THÊM QUY ĐỊNH</h1>
+                <h1>THÊM PHÒNG HỌC</h1>
             </div>
 
             {msg && (
@@ -51,9 +46,9 @@ const ThemQuyDinh = () => {
                     </div>
                 )
             )}
-            
+
             <div>
-                <form onSubmit={addQuyDinh} className="w-50 mx-auto">
+                <form onSubmit={addPhongHoc} className="w-50 mx-auto">
                     {info.map(i => (
                         <div className="mb-3 mt-3" key={i.field}>
                             <label htmlFor={i.field} className="form-label">{i.label}</label>
@@ -61,14 +56,29 @@ const ThemQuyDinh = () => {
                                 id={i.field}
                                 className="form-control"
                                 type={i.type}
-                                value={newQuyDinh[i.field] || ''}
-                                min={i.min !== undefined ? i.min : undefined}
-                                onChange={e => setNewQuyDinh({ ...newQuyDinh, [i.field]: e.target.value })}
+                                value={newPhongHoc[i.field] || ''}
+                                onChange={e => setNewPhongHoc({ ...newPhongHoc, [i.field]: e.target.value })}
                                 placeholder={i.label}
                                 required
                             />
                         </div>
                     ))}
+
+                    <div className="mt-3 mb-3">
+                        <label htmlFor="loai" className="form-label">Loại</label>
+                        <select
+                            id="loai"
+                            className="form-select"
+                            value={newPhongHoc.loai || ""}
+                            onChange={(e) => setNewPhongHoc({ ...newPhongHoc, loai: e.target.value })}
+                            required
+                        >
+                            <option value="">-- Chọn loại --</option>
+                            <option value="LyThuyet">Lý Thuyết</option>
+                            <option value="ThucHanh">Thực Hành</option>
+                        </select>
+                    </div>
+
                     <div className="text-center">
                         <button type="submit" className="text-center btn btn-primary" disabled={loading}>
                             {loading ?
@@ -83,4 +93,4 @@ const ThemQuyDinh = () => {
         </div>
     );
 }
-export default ThemQuyDinh;
+export default ThemPhongHoc;

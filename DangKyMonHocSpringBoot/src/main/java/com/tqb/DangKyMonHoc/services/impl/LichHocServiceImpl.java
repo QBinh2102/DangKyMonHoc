@@ -26,21 +26,21 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class LichHocServiceImpl implements LichHocService {
-
+    
     @Autowired
     private LichHocRepository lichHocRepo;
-
+    
     @Autowired
     private QuyDinhService quyDinhService;
-
+    
     @Autowired
     private BuoiHocService buoiHocService;
-
+    
     @Override
     public LichHoc findById(int id) {
         return this.lichHocRepo.findById(id);
     }
-
+    
     @Override
     public List<LichHoc> findLichHoc(Map<String, String> params) {
         String buoiHocId = params.get("buoiHocId");
@@ -51,21 +51,16 @@ public class LichHocServiceImpl implements LichHocService {
             return this.lichHocRepo.findAllByOrderByIdAsc();
         }
     }
-
+    
     @Override
     public LichHoc addOrUpdate(LichHoc lichHoc) {
         if (lichHoc.getId() == null) {
-            QuyDinh soGioMotBuoi = this.quyDinhService.findByTen("Số giờ 1 buổi học");
-            if (soGioMotBuoi != null) {
-                int soGioHoc = soGioMotBuoi.getGiaTri();
-                LocalTime gioBatDau = lichHoc.getGioBatDau();
-                LocalTime gioKetThuc = gioBatDau.plusHours(soGioHoc);
-                lichHoc.setGioKetThuc(gioKetThuc);
-            }
-
+            LocalTime gioBatDau = lichHoc.getGioBatDau();
+            Date ngayBatDau = lichHoc.getNgayBatDau();
             BuoiHoc buoiHoc = this.buoiHocService.findById(lichHoc.getBuoiHocId().getId());
             MonHoc monHoc = buoiHoc.getMonHocId();
-            Date ngayBatDau = lichHoc.getNgayBatDau();
+
+            // Set ngày kết thúc
             int soBuoi = 0;
             Calendar cal = Calendar.getInstance();
             cal.setTime(ngayBatDau);
@@ -83,7 +78,21 @@ public class LichHocServiceImpl implements LichHocService {
             cal.add(Calendar.WEEK_OF_YEAR, soBuoi - 1);
             Date ngayKetThuc = cal.getTime();
             lichHoc.setNgayKetThuc(ngayKetThuc);
+            
+            boolean isTrungLichHoc = this.lichHocRepo.existsLichHocTrung(lichHoc.getPhongHocId().getId(), gioBatDau, ngayBatDau, ngayKetThuc);
+            if (isTrungLichHoc) {
+                throw new IllegalArgumentException("Trùng lịch học: phòng và giờ này đã được sử dụng trong thời gian đó.");
+            }
 
+            // Set giờ kết thúc
+            QuyDinh soGioMotBuoi = this.quyDinhService.findByTen("Số giờ 1 buổi học");
+            if (soGioMotBuoi != null) {
+                int soGioHoc = soGioMotBuoi.getGiaTri();
+                LocalTime gioKetThuc = gioBatDau.plusHours(soGioHoc);
+                lichHoc.setGioKetThuc(gioKetThuc);
+            }
+
+            // Set thứ
             Calendar calThu = Calendar.getInstance();
             calThu.setTime(ngayBatDau);
             int thu = calThu.get(Calendar.DAY_OF_WEEK) - 1;
@@ -96,9 +105,15 @@ public class LichHocServiceImpl implements LichHocService {
                 "Thứ 6",
                 "Thứ 7"
             };
+            
+            LichHoc existingLichHoc = this.lichHocRepo.findTopByBuoiHocId_IdAndLoaiOrderByIdDesc(lichHoc.getBuoiHocId().getId(), lichHoc.getLoai());
+            if (existingLichHoc != null) {
+                lichHoc.setLan(existingLichHoc.getLan() + 1);
+            }
+            
             lichHoc.setThu(tenThu[thu]);
         }
         return this.lichHocRepo.save(lichHoc);
     }
-
+    
 }

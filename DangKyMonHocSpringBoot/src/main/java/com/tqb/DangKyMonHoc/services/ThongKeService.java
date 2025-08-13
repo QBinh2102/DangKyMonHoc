@@ -4,18 +4,12 @@
  */
 package com.tqb.DangKyMonHoc.services;
 
-import com.tqb.DangKyMonHoc.pojo.HocKy;
-import java.util.List;
+import com.tqb.DangKyMonHoc.pojo.ThongKeDTO;
 
 /**
  *
  * @author toquocbinh2102
  */
-public interface HocKyService {
-    
-    HocKy findById(int id);
-    HocKy findTopByOrderByIdDesc();
-    List<HocKy> findAllByOrderByIdAsc();
-    HocKy add(HocKy hocKy);
-    
+public interface ThongKeService {
+    ThongKeDTO thongKe(int hocKyId, int khoaId, int monHocId);
 }

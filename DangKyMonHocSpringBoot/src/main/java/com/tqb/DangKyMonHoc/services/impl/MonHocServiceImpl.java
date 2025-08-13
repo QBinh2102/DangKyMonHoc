@@ -17,8 +17,8 @@ import org.springframework.stereotype.Service;
  * @author toquocbinh2102
  */
 @Service
-public class MonHocServiceImpl implements MonHocService{
-    
+public class MonHocServiceImpl implements MonHocService {
+
     @Autowired
     private MonHocRepository monHocRepo;
 
@@ -28,12 +28,18 @@ public class MonHocServiceImpl implements MonHocService{
     }
 
     @Override
-    public List<MonHoc> findMonHoc(Map<String,String> params) {
+    public List<MonHoc> findMonHoc(Map<String, String> params) {
         String tenMon = params.get("tenMon");
-        boolean hasTenMon = tenMon!=null && !tenMon.isEmpty();
-        if(hasTenMon){
+        String hocKyId = params.get("hocKyId");
+        String khoaId = params.get("khoaId");
+        boolean hasTenMon = tenMon != null && !tenMon.isEmpty();
+        boolean hasHocKyId = hocKyId != null && !hocKyId.isEmpty();
+        boolean hasKhoaId = khoaId != null && !khoaId.isEmpty();
+        if (hasTenMon) {
             return this.monHocRepo.findByTenMonContainingIgnoreCaseOrderByIdAsc(tenMon);
-        }else{
+        } else if (hasHocKyId && hasKhoaId) {
+            return this.monHocRepo.findMonHocByHocKyAndKhoaFromDangKy(Integer.parseInt(hocKyId), Integer.parseInt(khoaId));
+        } else {
             return this.monHocRepo.findAllByOrderByIdAsc();
         }
     }
@@ -42,5 +48,5 @@ public class MonHocServiceImpl implements MonHocService{
     public MonHoc addOrUpdate(MonHoc monHoc) {
         return this.monHocRepo.save(monHoc);
     }
-    
+
 }

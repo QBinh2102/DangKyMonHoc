@@ -4,33 +4,25 @@ import Apis, { authApis, endpoints } from "@/configs/Apis";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
-const SuaQuyDinh = () => {
+const SuaPhongHoc = () => {
 
     const info = [{
-        label: "Quy định",
-        field: "ten",
+        label: "Phòng",
+        field: "tenPhong",
         type: "text",
-        disabled: true,
-    }, {
-        label: "Giá trị",
-        field: "giaTri",
-        type: "number",
-        disabled: false,
-        min: 0,
     }];
 
     const { id } = useParams();
-    const [quyDinh, setQuyDinh] = useState({});
+    const [phongHoc, setPhongHoc] = useState({});
     const [loading, setLoading] = useState(false);
     const [updateLoading, setUpdateLoading] = useState(false);
     const [msg, setMsg] = useState("");
 
-    const loadQuyDinh = async () => {
+    const loadPhongHoc = async () => {
         setLoading(true);
         try {
-            let res = await Apis.get(endpoints['quyDinhId'](id));
-            setQuyDinh(res.data);
-            console.info(res.data);
+            let res = await Apis.get(endpoints['phongHocId'](id));
+            setPhongHoc(res.data);
         } catch (ex) {
             console.error(ex);
             setMsg("Không thể tải dữ liệu!");
@@ -40,18 +32,19 @@ const SuaQuyDinh = () => {
     }
 
     useEffect(() => {
-        loadQuyDinh();
+        loadPhongHoc();
     }, [id]);
 
-    const updateQuyDinh = async (e) => {
+    const updatePhongHoc = async (e) => {
         e.preventDefault();
         setUpdateLoading(true);
         try {
-            await authApis().put(endpoints['suaHoacXoaQuyDinhId'](id), quyDinh);
+            await authApis().put(endpoints['suaPhongHocId'](id), phongHoc);
             setMsg("Cập nhật thành công!");
-            await loadQuyDinh();
+            await loadPhongHoc();
         } catch (ex) {
             setMsg("Cập nhật thất bại!");
+            console.error(ex);
         } finally {
             setUpdateLoading(false);
         }
@@ -60,7 +53,7 @@ const SuaQuyDinh = () => {
     return (
         <div>
             <div className="text-center mt-5 mb-5">
-                <h1>THÔNG TIN QUY ĐỊNH</h1>
+                <h1>THÔNG TIN PHÒNG HỌC</h1>
             </div>
 
             {msg && (
@@ -81,7 +74,7 @@ const SuaQuyDinh = () => {
                 </div>
             ) : (
                 <div>
-                    <form onSubmit={updateQuyDinh} className="w-50 mx-auto">
+                    <form onSubmit={updatePhongHoc} className="w-50 mx-auto">
                         {info.map(i => (
                             <div className="mb-3 mt-3" key={i.field}>
                                 <label htmlFor={i.field} className="form-label">{i.label}</label>
@@ -90,14 +83,27 @@ const SuaQuyDinh = () => {
                                     type={i.type}
                                     className="form-control"
                                     placeholder={i.label}
-                                    value={quyDinh[i.field] || ''}
-                                    min={i.min !== undefined ? i.min : undefined}
-                                    disabled={i.disabled}
-                                    onChange={(e) => setQuyDinh({ ...quyDinh, [i.field]: e.target.value })}
+                                    value={phongHoc[i.field] || ''}
+                                    onChange={(e) => setPhongHoc({ ...phongHoc, [i.field]: e.target.value })}
                                     required
                                 />
                             </div>
                         ))}
+
+                        <div className="mt-3 mb-3">
+                            <label htmlFor="loai" className="form-label">Loại</label>
+                            <select
+                                id="loai"
+                                className="form-select"
+                                value={phongHoc.loai || ""}
+                                onChange={(e) => setPhongHoc({ ...phongHoc, loai: e.target.value })}
+                                required
+                            >
+                                <option value="">--Chọn loại --</option>
+                                <option value="LyThuyet">Lý Thuyết</option>
+                                <option value="ThucHanh">Thực Hành</option>
+                            </select>
+                        </div>
 
                         <div className="text-center">
                             <button type="submit" className="text-center btn btn-primary" disabled={updateLoading}>
@@ -115,4 +121,4 @@ const SuaQuyDinh = () => {
         </div >
     );
 }
-export default SuaQuyDinh;
+export default SuaPhongHoc;
