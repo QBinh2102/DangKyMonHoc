@@ -30,9 +30,11 @@ public class ThoiKhoaBieuServiceImpl implements ThoiKhoaBieuService{
     @Override
     public List<ThoiKhoaBieu> findThoiKhoaBieu(Map<String, String> params) {
         String sinhVienId = params.get("sinhVienId");
+        String hocKyId = params.get("hocKyId");
         boolean hasSinhVienId = sinhVienId!=null&&!sinhVienId.isEmpty();
-        if(hasSinhVienId){
-            return this.thoiKhoaBieuRepo.findBySinhVienId_IdOrderByIdAsc(Integer.parseInt(sinhVienId));
+        boolean hasHocKyId = hocKyId!=null&&!hocKyId.isEmpty();
+        if(hasSinhVienId&&hasHocKyId){
+            return this.thoiKhoaBieuRepo.findBySinhVienId_IdAndHocKyId_IdOrderByIdAsc(Integer.parseInt(sinhVienId), Integer.parseInt(hocKyId));
         }else{
             return this.thoiKhoaBieuRepo.findAllByOrderByIdAsc();
         }

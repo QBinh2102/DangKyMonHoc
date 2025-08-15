@@ -4,7 +4,7 @@
  */
 package com.tqb.DangKyMonHoc.services;
 
-import com.tqb.DangKyMonHoc.pojo.PhongHoc;
+import com.tqb.DangKyMonHoc.pojo.Lop;
 import java.util.List;
 import java.util.Map;
 
@@ -12,10 +12,10 @@ import java.util.Map;
  *
  * @author toquocbinh2102
  */
-public interface PhongHocService {
+public interface LopService {
     
-    PhongHoc findById (int id);
-    List<PhongHoc> findPhongHoc (Map<String, String> params);
-    PhongHoc addOrUpdate (PhongHoc phongHoc);
+    Lop findById(int id);
+    List<Lop> findLop(Map<String,String> params);
+    Lop addOrUpdate(Lop lop);
     
 }

@@ -4,18 +4,17 @@
  */
 package com.tqb.DangKyMonHoc.services;
 
-import com.tqb.DangKyMonHoc.pojo.PhongHoc;
+import com.tqb.DangKyMonHoc.pojo.TietHoc;
 import java.util.List;
-import java.util.Map;
 
 /**
  *
  * @author toquocbinh2102
  */
-public interface PhongHocService {
+public interface TietHocService {
     
-    PhongHoc findById (int id);
-    List<PhongHoc> findPhongHoc (Map<String, String> params);
-    PhongHoc addOrUpdate (PhongHoc phongHoc);
+    TietHoc findById(int id);
+    List<TietHoc> findTietHoc();
+    TietHoc addOrUpdate(TietHoc tietHoc);
     
 }

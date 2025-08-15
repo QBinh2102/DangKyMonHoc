@@ -56,14 +56,17 @@ public class SinhVien implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "sinhVienId")
     @JsonIgnore
     private Set<DangKy> dangKySet;
-    @OneToMany(mappedBy = "sinhVienId")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "sinhVienId")
     @JsonIgnore
     private Set<ThoiKhoaBieu> thoiKhoaBieuSet;
     @JoinColumn(name = "khoa_id", referencedColumnName = "id")
-    @ManyToOne
+    @ManyToOne(optional = false)
     private Khoa khoaId;
+    @JoinColumn(name = "lop_id", referencedColumnName = "id")
+    @ManyToOne(optional = false)
+    private Lop lopId;
     @JoinColumn(name = "nganh_id", referencedColumnName = "id")
-    @ManyToOne
+    @ManyToOne(optional = false)
     private Nganh nganhId;
     @JoinColumn(name = "id", referencedColumnName = "id", insertable = false, updatable = false)
     @OneToOne(optional = false)
@@ -139,6 +142,14 @@ public class SinhVien implements Serializable {
 
     public void setKhoaId(Khoa khoaId) {
         this.khoaId = khoaId;
+    }
+
+    public Lop getLopId() {
+        return lopId;
+    }
+
+    public void setLopId(Lop lopId) {
+        this.lopId = lopId;
     }
 
     public Nganh getNganhId() {

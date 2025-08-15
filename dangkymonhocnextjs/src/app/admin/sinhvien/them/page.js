@@ -25,6 +25,8 @@ const ThemSinhVien = () => {
     });
     const [listKhoa, setListKhoa] = useState([]);
     const [listNganh, setListNganh] = useState([]);
+    const [selectedNganh, setSelectedNganh] = useState("");
+    const [listLop, setListLop] = useState([]);
     const [loading, setLoading] = useState(false);
     const [msg, setMsg] = useState("");
 
@@ -60,10 +62,34 @@ const ThemSinhVien = () => {
                 id: khoaId,
             },
             nganhId: {},
+            lopId: {},
         })
 
-        { khoaId ? await loadNganhTheoKhoa(khoaId) : setListNganh([]) };
+        { khoaId ? await loadNganhTheoKhoa(khoaId) : setListNganh([]), setListLop([]); };
     }
+
+    const chooseNganh = async (e) => {
+        const nganhId = e.target.value;
+        setSelectedNganh(nganhId);
+        setNewSinhVien({ ...newSinhVien, nganhId: { id: e.target.value } });
+    }
+
+    const loadLop = async (nganhId) => {
+        try {
+            let res = await Apis.get(`${endpoints['lop']}?nganhId=${nganhId}`);
+            setListLop(res.data);
+        } catch (ex) {
+            console.error(ex);
+        }
+    }
+
+    useEffect(() => {
+        if (selectedNganh) {
+            loadLop(selectedNganh);
+        } else {
+            setListLop([]);
+        }
+    }, [selectedNganh]);
 
     const addSinhVien = async (e) => {
         e.preventDefault();
@@ -144,12 +170,28 @@ const ThemSinhVien = () => {
                         className="form-select"
                         id="nganhId"
                         value={newSinhVien.nganhId.id || ""}
-                        onChange={(e) => setNewSinhVien({ ...newSinhVien, nganhId: { id: e.target.value } })}
+                        onChange={chooseNganh}
                         required
                     >
                         <option value="">-- Chọn ngành --</option>
                         {listNganh.map(nganh => (
                             <option key={nganh.id} value={nganh.id}>{nganh.tenNganh}</option>
+                        ))}
+                    </select>
+                </div>
+
+                <div className="mt-3 mb-3">
+                    <label htmlFor="lopId" className="form-label">Lớp</label>
+                    <select
+                        className="form-select"
+                        id="lopId"
+                        value={newSinhVien.lopId?.id || ""}
+                        onChange={(e) => setNewSinhVien({ ...newSinhVien, lopId: { id: e.target.value } })}
+                        required
+                    >
+                        <option value="">-- Chọn lớp --</option>
+                        {listLop.map(lop => (
+                            <option key={lop.id} value={lop.id}>{lop.maLop}</option>
                         ))}
                     </select>
                 </div>

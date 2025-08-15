@@ -4,7 +4,7 @@
  */
 package com.tqb.DangKyMonHoc.repositories;
 
-import com.tqb.DangKyMonHoc.pojo.ThoiKhoaBieu;
+import com.tqb.DangKyMonHoc.pojo.TietHoc;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -12,10 +12,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
  *
  * @author toquocbinh2102
  */
-public interface ThoiKhoaBieuRepository extends JpaRepository<ThoiKhoaBieu, Integer>{
+public interface TietHocRepository extends JpaRepository<TietHoc, Integer>{
     
-    ThoiKhoaBieu findById(int id);
-    List<ThoiKhoaBieu> findBySinhVienId_IdAndHocKyId_IdOrderByIdAsc(int sinhVienId, int hocKyId);
-    List<ThoiKhoaBieu> findAllByOrderByIdAsc();
+    TietHoc findById(int id);
+    List<TietHoc> findAllByOrderByIdAsc();
     
 }

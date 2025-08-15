@@ -23,14 +23,12 @@ public interface LichHocRepository extends JpaRepository<LichHoc, Integer> {
     List<LichHoc> findByBuoiHocId_IdOrderByIdAsc(int buoiHocId);
 
     List<LichHoc> findAllByOrderByIdAsc();
-    
-    LichHoc findTopByBuoiHocId_IdAndLoaiOrderByIdDesc(int buoiHocId, String loai);
 
     @Query("""
         SELECT COUNT(l) > 0
         FROM LichHoc l
         WHERE l.phongHocId.id = :phongId
-          AND l.gioBatDau = :gioBatDau
+          AND l.tietHocId.gioBatDau = :gioBatDau
           AND FUNCTION('dayofweek', l.ngayBatDau) = FUNCTION('dayofweek', :ngayBatDau)
           AND (
                 (:ngayBatDau BETWEEN l.ngayBatDau AND l.ngayKetThuc)

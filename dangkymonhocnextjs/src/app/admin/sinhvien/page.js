@@ -50,9 +50,11 @@ const SinhVien = () => {
                             <tr>
                                 <th>Id</th>
                                 <th>Họ Tên</th>
+                                <th>Mã Lớp</th>
                                 <th>Email</th>
                                 <th>Khóa Học</th>
                                 <th>Học Ngành</th>
+                                <th>Học Khoa</th>
                                 <th>Công Cụ</th>
                             </tr>
                         </thead>
@@ -61,9 +63,11 @@ const SinhVien = () => {
                                 <tr key={sv.id}>
                                     <td>{sv.id}</td>
                                     <td>{sv.nguoiDung.hoTen}</td>
+                                    <td>{sv.lopId.maLop}</td>
                                     <td>{sv.nguoiDung.email}</td>
                                     <td>{sv.khoaHoc}</td>
                                     <td>{sv.nganhId.tenNganh}</td>
+                                    <td>{sv.khoaId.tenKhoa}</td>
                                     <td>
                                         <button className="btn btn-warning" onClick={() => router.push(`/admin/sinhvien/${sv.id}`)}>
                                             <span className="text-xl">✏️</span>

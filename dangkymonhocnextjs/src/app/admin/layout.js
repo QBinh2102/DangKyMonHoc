@@ -6,10 +6,12 @@ import cookie from "react-cookies";
 
 const menuItems = [
     { label: "Học Kỳ", href: "/admin/hocky" },
+    { label: "Tiết Học", href: "/admin/tiethoc" },
     { label: "Phòng Học", href: "/admin/phonghoc" },
     { label: "Khoa", href: "/admin/khoa" },
     { label: "Ngành", href: "/admin/nganh" },
     { label: "Môn Học", href: "/admin/monhoc" },
+    { label: "Lớp", href: "/admin/lop" },
     { label: "Giảng Viên", href: "/admin/giangvien" },
     { label: "Sinh Viên", href: "/admin/sinhvien" },
     { label: "Buổi Học", href: "/admin/buoihoc" },

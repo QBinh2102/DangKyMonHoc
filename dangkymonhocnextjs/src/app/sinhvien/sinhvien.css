@@ -1,0 +1,21 @@
+.thong-tin-container {
+    border: 2px solid #ccc;
+    padding: 16px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    max-width: 500px;
+    background: #fafafa;
+}
+
+.thong-tin-container h2 {
+    margin-top: 20px;
+    font-size: 18px;
+    color: #333;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 4px;
+}
+
+.info-row {
+    margin: 6px 0;
+}

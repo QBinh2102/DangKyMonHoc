@@ -13,7 +13,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.NamedQueries;
@@ -50,9 +49,6 @@ public class MonHoc implements Serializable {
     @Basic(optional = false)
     @Column(name = "ten_mon")
     private String tenMon;
-    @Lob
-    @Column(name = "mo_ta")
-    private String moTa;
     @Basic(optional = false)
     @Column(name = "tin_chi_ly_thuyet")
     private int tinChiLyThuyet;
@@ -119,14 +115,6 @@ public class MonHoc implements Serializable {
 
     public void setTenMon(String tenMon) {
         this.tenMon = tenMon;
-    }
-
-    public String getMoTa() {
-        return moTa;
-    }
-
-    public void setMoTa(String moTa) {
-        this.moTa = moTa;
     }
 
     public int getTinChiLyThuyet() {

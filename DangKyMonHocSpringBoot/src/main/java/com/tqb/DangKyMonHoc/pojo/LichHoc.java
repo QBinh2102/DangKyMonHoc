@@ -4,9 +4,9 @@
  */
 package com.tqb.DangKyMonHoc.pojo;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Basic;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -21,7 +21,6 @@ import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 import java.io.Serializable;
-import java.time.LocalTime;
 import java.util.Date;
 import java.util.Set;
 
@@ -35,8 +34,6 @@ import java.util.Set;
     @NamedQuery(name = "LichHoc.findAll", query = "SELECT l FROM LichHoc l"),
     @NamedQuery(name = "LichHoc.findById", query = "SELECT l FROM LichHoc l WHERE l.id = :id"),
     @NamedQuery(name = "LichHoc.findByThu", query = "SELECT l FROM LichHoc l WHERE l.thu = :thu"),
-    @NamedQuery(name = "LichHoc.findByGioBatDau", query = "SELECT l FROM LichHoc l WHERE l.gioBatDau = :gioBatDau"),
-    @NamedQuery(name = "LichHoc.findByGioKetThuc", query = "SELECT l FROM LichHoc l WHERE l.gioKetThuc = :gioKetThuc"),
     @NamedQuery(name = "LichHoc.findByNgayBatDau", query = "SELECT l FROM LichHoc l WHERE l.ngayBatDau = :ngayBatDau"),
     @NamedQuery(name = "LichHoc.findByNgayKetThuc", query = "SELECT l FROM LichHoc l WHERE l.ngayKetThuc = :ngayKetThuc"),
     @NamedQuery(name = "LichHoc.findByLoai", query = "SELECT l FROM LichHoc l WHERE l.loai = :loai")})
@@ -51,14 +48,6 @@ public class LichHoc implements Serializable {
     @Column(name = "thu")
     private String thu;
     @Basic(optional = false)
-    @Column(name = "gio_bat_dau")
-    @JsonFormat(pattern = "HH:mm:ss")
-    private LocalTime gioBatDau;
-    @Basic(optional = false)
-    @Column(name = "gio_ket_thuc")
-    @JsonFormat(pattern = "HH:mm:ss")
-    private LocalTime gioKetThuc;
-    @Basic(optional = false)
     @Column(name = "ngay_bat_dau")
     @Temporal(TemporalType.DATE)
     private Date ngayBatDau;
@@ -68,9 +57,7 @@ public class LichHoc implements Serializable {
     private Date ngayKetThuc;
     @Column(name = "loai")
     private String loai;
-    @Column(name = "lan")
-    private int lan = 1;
-    @OneToMany(mappedBy = "lichHocId")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "lichHocId")
     @JsonIgnore
     private Set<ThoiKhoaBieu> thoiKhoaBieuSet;
     @JoinColumn(name = "buoi_hoc_id", referencedColumnName = "id")
@@ -79,6 +66,9 @@ public class LichHoc implements Serializable {
     @JoinColumn(name = "phong_hoc_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private PhongHoc phongHocId;
+    @JoinColumn(name = "tiet_hoc_id", referencedColumnName = "id")
+    @ManyToOne(optional = false)
+    private TietHoc tietHocId;
 
     public LichHoc() {
     }
@@ -87,10 +77,8 @@ public class LichHoc implements Serializable {
         this.id = id;
     }
 
-    public LichHoc(Integer id, LocalTime gioBatDau, LocalTime gioKetThuc, Date ngayBatDau, Date ngayKetThuc) {
+    public LichHoc(Integer id, Date ngayBatDau, Date ngayKetThuc) {
         this.id = id;
-        this.gioBatDau = gioBatDau;
-        this.gioKetThuc = gioKetThuc;
         this.ngayBatDau = ngayBatDau;
         this.ngayKetThuc = ngayKetThuc;
     }
@@ -109,22 +97,6 @@ public class LichHoc implements Serializable {
 
     public void setThu(String thu) {
         this.thu = thu;
-    }
-
-    public LocalTime getGioBatDau() {
-        return gioBatDau;
-    }
-
-    public void setGioBatDau(LocalTime gioBatDau) {
-        this.gioBatDau = gioBatDau;
-    }
-
-    public LocalTime getGioKetThuc() {
-        return gioKetThuc;
-    }
-
-    public void setGioKetThuc(LocalTime gioKetThuc) {
-        this.gioKetThuc = gioKetThuc;
     }
 
     public Date getNgayBatDau() {
@@ -150,14 +122,6 @@ public class LichHoc implements Serializable {
     public void setLoai(String loai) {
         this.loai = loai;
     }
-    
-    public int getLan() {
-        return lan;
-    }
-
-    public void setLan(int lan) {
-        this.lan = lan;
-    }
 
     public Set<ThoiKhoaBieu> getThoiKhoaBieuSet() {
         return thoiKhoaBieuSet;
@@ -181,6 +145,14 @@ public class LichHoc implements Serializable {
 
     public void setPhongHocId(PhongHoc phongHocId) {
         this.phongHocId = phongHocId;
+    }
+
+    public TietHoc getTietHocId() {
+        return tietHocId;
+    }
+
+    public void setTietHocId(TietHoc tietHocId) {
+        this.tietHocId = tietHocId;
     }
 
     @Override

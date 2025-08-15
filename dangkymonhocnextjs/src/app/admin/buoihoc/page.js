@@ -48,6 +48,7 @@ const BuoiHoc = () => {
                             <tr>
                                 <th>Id</th>
                                 <th>Môn Học</th>
+                                <th>Mã Lớp</th>
                                 <th>Giảng Viên</th>
                                 <th>Học Kỳ</th>
                                 <th>Sĩ Số</th>
@@ -59,6 +60,7 @@ const BuoiHoc = () => {
                                 <tr key={bh.id}>
                                     <td>{bh.id}</td>
                                     <td>{bh.monHocId.tenMon}</td>
+                                    <td>{bh.lopId.maLop}</td>
                                     <td>{bh.giangVienId.nguoiDung.hoTen}</td>
                                     <td>{bh.hocKyId.ky} - {bh.hocKyId.namHoc}</td>
                                     <td>{bh.siSo}</td>

@@ -43,10 +43,10 @@ public class Khoa implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "khoaId")
     @JsonIgnore
     private Set<MonHoc> monHocSet;
-    @OneToMany(mappedBy = "khoaId")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "khoaId")
     @JsonIgnore
     private Set<GiangVien> giangVienSet;
-    @OneToMany(mappedBy = "khoaId")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "khoaId")
     @JsonIgnore
     private Set<SinhVien> sinhVienSet;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "khoaId")

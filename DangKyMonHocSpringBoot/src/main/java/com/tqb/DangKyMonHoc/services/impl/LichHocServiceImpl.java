@@ -55,7 +55,6 @@ public class LichHocServiceImpl implements LichHocService {
     @Override
     public LichHoc addOrUpdate(LichHoc lichHoc) {
         if (lichHoc.getId() == null) {
-            LocalTime gioBatDau = lichHoc.getGioBatDau();
             Date ngayBatDau = lichHoc.getNgayBatDau();
             BuoiHoc buoiHoc = this.buoiHocService.findById(lichHoc.getBuoiHocId().getId());
             MonHoc monHoc = buoiHoc.getMonHocId();
@@ -79,18 +78,18 @@ public class LichHocServiceImpl implements LichHocService {
             Date ngayKetThuc = cal.getTime();
             lichHoc.setNgayKetThuc(ngayKetThuc);
             
-            boolean isTrungLichHoc = this.lichHocRepo.existsLichHocTrung(lichHoc.getPhongHocId().getId(), gioBatDau, ngayBatDau, ngayKetThuc);
+            boolean isTrungLichHoc = this.lichHocRepo.existsLichHocTrung(lichHoc.getPhongHocId().getId(), lichHoc.getTietHocId().getGioBatDau(), ngayBatDau, ngayKetThuc);
             if (isTrungLichHoc) {
                 throw new IllegalArgumentException("Trùng lịch học: phòng và giờ này đã được sử dụng trong thời gian đó.");
             }
 
-            // Set giờ kết thúc
-            QuyDinh soGioMotBuoi = this.quyDinhService.findByTen("Số giờ 1 buổi học");
-            if (soGioMotBuoi != null) {
-                int soGioHoc = soGioMotBuoi.getGiaTri();
-                LocalTime gioKetThuc = gioBatDau.plusHours(soGioHoc);
-                lichHoc.setGioKetThuc(gioKetThuc);
-            }
+//            // Set giờ kết thúc
+//            QuyDinh soGioMotBuoi = this.quyDinhService.findByTen("Số giờ 1 buổi học");
+//            if (soGioMotBuoi != null) {
+//                int soGioHoc = soGioMotBuoi.getGiaTri();
+//                LocalTime gioKetThuc = gioBatDau.plusHours(soGioHoc);
+//                lichHoc.setGioKetThuc(gioKetThuc);
+//            }
 
             // Set thứ
             Calendar calThu = Calendar.getInstance();
@@ -105,11 +104,6 @@ public class LichHocServiceImpl implements LichHocService {
                 "Thứ 6",
                 "Thứ 7"
             };
-            
-            LichHoc existingLichHoc = this.lichHocRepo.findTopByBuoiHocId_IdAndLoaiOrderByIdDesc(lichHoc.getBuoiHocId().getId(), lichHoc.getLoai());
-            if (existingLichHoc != null) {
-                lichHoc.setLan(existingLichHoc.getLan() + 1);
-            }
             
             lichHoc.setThu(tenThu[thu]);
         }

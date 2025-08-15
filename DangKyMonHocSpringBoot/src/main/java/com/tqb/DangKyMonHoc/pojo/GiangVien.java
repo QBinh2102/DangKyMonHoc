@@ -44,7 +44,7 @@ public class GiangVien implements Serializable {
     @JsonIgnore
     private Set<BuoiHoc> buoiHocSet;
     @JoinColumn(name = "khoa_id", referencedColumnName = "id")
-    @ManyToOne
+    @ManyToOne(optional = false)
     private Khoa khoaId;
     @JoinColumn(name = "id", referencedColumnName = "id", insertable = false, updatable = false)
     @OneToOne(optional = false)

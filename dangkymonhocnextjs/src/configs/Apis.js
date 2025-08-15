@@ -10,6 +10,11 @@ export const endpoints = {
     'hocKy': '/secure/admin/hocky',
     'hocKyMoiNhat': '/secure/admin/hocky/latest',
     'hocKyId': (hocKyId) => `/secure/admin/hocky/${hocKyId}`,
+    // Tiết học
+    'tietHoc': '/tiethoc',
+    'tietHocId': (tietHocId) => `/tiethoc/${tietHocId}`,
+    'themTietHoc': '/secure/admin/tiethoc',
+    'suaTietHocId': (tietHocId) => `/secure/admin/tiethoc/${tietHocId}`,
     // Phòng học
     'phongHoc': '/phonghoc',
     'phongHocId': (phongHocId) => `/phonghoc/${phongHocId}`,
@@ -37,6 +42,11 @@ export const endpoints = {
     // Môn học liên quan
     'monHocLienQuan': '/monhoclienquan',
     'themHoacXoaMonHocLienQuan': '/secure/admin/monhoclienquan',
+    // Lớp
+    'lop': '/lop',
+    'lopId': (lopId) => `/lop/${lopId}`,
+    'themLop': '/secure/admin/lop',
+    'suaLopId': (lopId) => `/secure/admin/lop/${lopId}`,
     // Giảng viên
     'themHoacLayGiangVien': '/secure/admin/giangvien',
     'suaHoacLayGiangVienId': (giangVienId) => `/secure/admin/giangvien/${giangVienId}`,

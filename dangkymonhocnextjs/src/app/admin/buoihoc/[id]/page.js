@@ -20,50 +20,13 @@ const SuaBuoiHoc = () => {
         min: 0,
     }]
     const { id } = useParams();
-    const [buoiHoc, setBuoiHoc] = useState({
-        monHocId: {},
-        giangVienId: {},
-        hocKyId: {},
-    });
+    const [buoiHoc, setBuoiHoc] = useState({});
+    const [listLichHoc, setListLichHoc] = useState([]);
     const [loading, setLoading] = useState(false);
     const [updateLoading, setUpdateLoading] = useState(false);
     const [msg, setMsg] = useState("");
 
-    const [newLichHoc, setNewLichHoc] = useState({
-        lyThuyet: {
-            gioBatDau: "",
-            ngayBatDau: "",
-            phong: "",
-        },
-        thucHanh: {
-            gioBatDau: "",
-            ngayBatDau: "",
-            phong: "",
-        }
-    });
-
-    const [listPhongHoc, setListPhongHoc] = useState({ phongLyThuyet: [], phongThucHanh: [] });
-    const [listLichHoc, setListLichHoc] = useState([]);
-
-    const loadPhongHoc = async (loai) => {
-        try {
-            let dsPhongLT = await Apis.get(`${endpoints['phongHoc']}?loai=LyThuyet`);
-            let phongLyThuyet = dsPhongLT.data;
-            let phongThucHanh = [];
-            if (loai === "LT-TH") {
-                let dsPhongTH = await Apis.get(`${endpoints['phongHoc']}?loai=ThucHanh`);
-                phongThucHanh = dsPhongTH.data;
-            }
-            setListPhongHoc({
-                phongLyThuyet,
-                phongThucHanh,
-            });
-        } catch (ex) {
-            console.error(ex);
-        }
-    }
-
-    const loadLichHoc = async (buoiHocId) => {
+    const loadLichHocTheoBuoiHoc = async (buoiHocId) => {
         try {
             let res = await Apis.get(`${endpoints['lichHoc']}?buoiHocId=${buoiHocId}`);
             setListLichHoc(res.data);
@@ -77,9 +40,7 @@ const SuaBuoiHoc = () => {
         try {
             let res = await authApis().get(endpoints['suaHoacLayBuoiHocId'](id));
             setBuoiHoc(res.data);
-            await loadPhongHoc(res.data.loai);
-            await loadLichHoc(res.data.id);
-            console.info(res.data);
+            await loadLichHocTheoBuoiHoc(res.data.id);
         } catch (ex) {
             console.error(ex);
         } finally {
@@ -87,67 +48,27 @@ const SuaBuoiHoc = () => {
         }
     }
 
+
+
     useEffect(() => {
         loadBuoiHoc();
-    }, [id]);
+    }, []);
 
     const getLoaiBuoiHoc = (loai) => {
-        if (loai === "LT") return "Lý thuyết";
-        if (loai === "LT-TH") return "Lý thuyết - thực hành";
-        return loai ?? "";
+        if (loai === "LT") {
+            return "Lý thuyết";
+        } else if (loai === "TH") {
+            return "Thực hành";
+        } else {
+            return "Lý thuyết - Thực hành";
+        }
     }
 
     const getLoaiLichHoc = (loai) => {
-        if (loai === "LyThuyet") return "Lý thuyết";
-        if (loai === "ThucHanh") return "Thực hành";
-        return loai ?? "";
-    }
-
-    const validateLichHoc = () => {
-        if (!newLichHoc.lyThuyet.gioBatDau || !newLichHoc.lyThuyet.ngayBatDau || !newLichHoc.lyThuyet.phong)
-            return false;
-
-        if (buoiHoc.loai === "LT-TH") {
-            if (!newLichHoc.thucHanh.gioBatDau || !newLichHoc.thucHanh.ngayBatDau || !newLichHoc.thucHanh.phong)
-                return false;
-        }
-
-        return true;
-    }
-
-    const addLichHoc = async (e) => {
-        e.preventDefault();
-        if (!validateLichHoc) {
-            alert("Vui lòng nhập đủ thông tin trước khi thêm.");
-            return;
-        }
-
-        setMsg("");
-        try {
-            const newLichHocLT = {
-                ...newLichHoc.lyThuyet,
-                buoiHocId: parseInt(id),
-                loai: "LyThuyet",
-            }
-            console.log(newLichHocLT);
-            await authApis().post(endpoints['themLichHoc'], newLichHocLT); // Thêm lịch học lý thuyết
-
-            if (buoiHoc.loai === "LT-TH") {
-                const newLichHocTH = {
-                    ...newLichHoc.thucHanh,
-                    buoiHocId: parseInt(id),
-                    loai: "ThucHanh",
-                }
-                await authApis().post(endpoints['themLichHoc'], newLichHocTH); // Thêm lịch học thực hành
-            }
-            setMsg("Thêm thành công!");
-            setNewLichHoc({
-                lyThuyet: {},
-                thucHanh: {}
-            });
-            await loadBuoiHoc();
-        } catch (ex) {
-            setMsg("Thêm thất bại!");
+        if (loai === "LyThuyet") {
+            return "Lý thuyết";
+        } else {
+            return "Thực hành";
         }
     }
 
@@ -157,19 +78,14 @@ const SuaBuoiHoc = () => {
         try {
             await authApis().put(endpoints['suaHoacLayBuoiHocId'](id), buoiHoc);
             setMsg("Cập nhật thành công!");
+            await loadBuoiHoc();
         } catch (ex) {
             setMsg("Cập nhật thất bại!");
             console.error(ex);
         } finally {
-            setUpdateLoading(true);
+            setUpdateLoading(false);
         }
     }
-
-    const grouped = listLichHoc.reduce((groups, item) => {
-        if (!groups[item.lan]) groups[item.lan] = [];
-        groups[item.lan].push(item);
-        return groups;
-    }, {});
 
     return (
         <div>
@@ -202,9 +118,8 @@ const SuaBuoiHoc = () => {
                                 id="monHocId"
                                 type="text"
                                 className="form-control"
-                                value={buoiHoc.monHocId.tenMon || ""}
+                                value={buoiHoc.monHocId?.tenMon || ""}
                                 disabled
-                                required
                             />
                         </div>
 
@@ -214,9 +129,19 @@ const SuaBuoiHoc = () => {
                                 id="giangVienId"
                                 type="text"
                                 className="form-control"
-                                value={buoiHoc.giangVienId.nguoiDung?.hoTen || ""}
+                                value={buoiHoc.giangVienId?.nguoiDung?.hoTen || ""}
                                 disabled
-                                required
+                            />
+                        </div>
+
+                        <div className="mt-3 mb-3">
+                            <label htmlFor="lopId" className="form-label">Mã lớp</label>
+                            <input
+                                id="lopId"
+                                type="text"
+                                className="form-control"
+                                value={buoiHoc.lopId?.maLop || ""}
+                                disabled
                             />
                         </div>
 
@@ -226,9 +151,8 @@ const SuaBuoiHoc = () => {
                                 id="hocKyId"
                                 type="text"
                                 className="form-control"
-                                value={`${buoiHoc.hocKyId.ky} - ${buoiHoc.hocKyId.namHoc}` || ""}
+                                value={`${buoiHoc.hocKyId?.ky} - ${buoiHoc.hocKyId?.namHoc}` || ""}
                                 disabled
-                                required
                             />
                         </div>
 
@@ -248,129 +172,12 @@ const SuaBuoiHoc = () => {
                             </div>
                         ))}
 
-                        <div>
-                            <h2>Lịch học</h2>
-                            <div className="lich-hoc-group">
-                                <h5>Lý thuyết</h5>
-                                <div className="row mt-3 mb-3 align-items-center">
-                                    <div className="col-md-4">
-                                        <input
-                                            type="time"
-                                            className="form-control"
-                                            value={newLichHoc.lyThuyet.gioBatDau || ""}
-                                            onChange={(e) => {
-                                                let timeValue = e.target.value;
-                                                if (timeValue && timeValue.length === 5) {
-                                                    timeValue += ":00";
-                                                }
-                                                setNewLichHoc({
-                                                    ...newLichHoc,
-                                                    lyThuyet: { ...newLichHoc.lyThuyet, gioBatDau: timeValue }
-                                                });
-                                            }}
-                                        />
-                                    </div>
-
-                                    <div className="col-md-4">
-                                        <input
-                                            type="date"
-                                            className="form-control"
-                                            value={newLichHoc.lyThuyet.ngayBatDau || ""}
-                                            onChange={(e) => setNewLichHoc({ ...newLichHoc, lyThuyet: { ...newLichHoc.lyThuyet, ngayBatDau: e.target.value } })}
-                                        />
-                                    </div>
-
-                                    <div className="col-md-4">
-                                        <select
-                                            className="form-select"
-                                            value={newLichHoc.lyThuyet.phongHocId || ""}
-                                            onChange={(e) => setNewLichHoc({ ...newLichHoc, lyThuyet: { ...newLichHoc.lyThuyet, phongHocId: e.target.value } })}
-                                        >
-                                            <option value="">--Chọn phòng --</option>
-                                            {listPhongHoc.phongLyThuyet.map(i => (
-                                                <option key={i.id} value={i.id}>{i.tenPhong}</option>
-                                            ))}
-                                        </select>
-                                    </div>
-                                </div>
-                                {buoiHoc.loai === "LT-TH" && (
-                                    <>
-                                        <h5>Thực hành</h5>
-                                        <div className="row mt-3 mb-3 align-items-center">
-                                            <div className="col-md-4">
-                                                <input
-                                                    type="time"
-                                                    className="form-control"
-                                                    value={newLichHoc.thucHanh.gioBatDau || ""}
-                                                    onChange={(e) => {
-                                                        let timeValue = e.target.value;
-                                                        if (timeValue && timeValue.length === 5) {
-                                                            timeValue += ":00";
-                                                        }
-                                                        setNewLichHoc({
-                                                            ...newLichHoc,
-                                                            thucHanh: { ...newLichHoc.thucHanh, gioBatDau: timeValue }
-                                                        });
-                                                    }}
-                                                />
-                                            </div>
-
-                                            <div className="col-md-4">
-                                                <input
-                                                    type="date"
-                                                    className="form-control"
-                                                    value={newLichHoc.thucHanh.ngayBatDau || ""}
-                                                    onChange={(e) => setNewLichHoc({ ...newLichHoc, thucHanh: { ...newLichHoc.thucHanh, ngayBatDau: e.target.value } })}
-                                                />
-                                            </div>
-
-                                            <div className="col-md-4">
-                                                <select
-                                                    className="form-select"
-                                                    value={newLichHoc.thucHanh.phongHocId || ""}
-                                                    onChange={(e) => setNewLichHoc({ ...newLichHoc, thucHanh: { ...newLichHoc.thucHanh, phongHocId: e.target.value } })}
-                                                >
-                                                    <option value="">--Chọn phòng --</option>
-                                                    {listPhongHoc.phongThucHanh.map(i => (
-                                                        <option key={i.id} value={i.id}>{i.tenPhong}</option>
-                                                    ))}
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </>
-                                )}
-
-                                <div className="col-md-2 ms-auto">
-                                    <button type="button" className="btn btn-success w-100" onClick={addLichHoc}>Thêm</button>
-                                </div>
+                        {listLichHoc.map(lh => (
+                            <div key={lh.id} className="mt-3 mb-3">
+                                <label htmlFor={lh.id} className="form-label">{getLoaiLichHoc(lh.loai)}</label>
+                                <p id={lh.id}>{lh.thu}, {lh.tietHocId.gioBatDau} - {lh.tietHocId.gioKetThuc}, {lh.ngayBatDau} - {lh.ngayKetThuc}, phòng {lh.phongHocId.tenPhong}</p>
                             </div>
-
-                        </div>
-
-                        <table className="table table-bordered">
-                            <tbody>
-                                {Object.entries(grouped).map(([lan, items]) => {
-                                    // Sắp lý thuyết trước, thực hành sau
-                                    const sortedItems = items.sort((a, b) =>
-                                        a.loai === 'LyThuyet' ? -1 : 1
-                                    );
-
-                                    return sortedItems.map((i, idx) => (
-                                        <tr key={i.id}>
-                                            {/* Chỉ in số "lần" ở hàng đầu tiên của nhóm */}
-                                            {idx === 0 && (
-                                                <td rowSpan={sortedItems.length} style={{ fontWeight: 'bold', textAlign: 'center' }}>
-                                                    Lần {lan}
-                                                </td>
-                                            )}
-                                            <td>
-                                                {getLoaiLichHoc(i.loai)} - {i.thu}, {i.gioBatDau}, {i.ngayBatDau} - {i.ngayKetThuc}, {i.phongHocId.tenPhong}
-                                            </td>
-                                        </tr>
-                                    ));
-                                })}
-                            </tbody>
-                        </table>
+                        ))}
 
                         <div className="text-center mt-3 mb-3">
                             <button type="submit" className="text-center btn btn-primary" disabled={updateLoading}>

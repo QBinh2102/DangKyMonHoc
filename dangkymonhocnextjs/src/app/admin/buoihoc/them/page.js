@@ -14,20 +14,38 @@ const ThemBuoiHoc = () => {
     const [listKhoa, setListKhoa] = useState([]);
     const [listNganh, setListNganh] = useState([]);
     const [listMonHoc, setListMonHoc] = useState([]);
+    const [selectedMonHoc, setSelectedMonHoc] = useState("");
     const [listGiangVien, setListGiangVien] = useState([]);
+    const [listLop, setListLop] = useState([]);
+    const [loai, setLoai] = useState("");
     const [newBuoiHoc, setNewBuoiHoc] = useState({
         monHocId: {},
         giangVienId: {},
         hocKyId: {},
         siSo: 0,
     });
+
+    const [listTietHoc, setListTietHoc] = useState([]);
+    const [selectedNgay, setSelectedNgay] = useState("");
+    const [newLichHoc, setNewLichHoc] = useState({
+        lyThuyet: {
+            tietHocId: "",
+            phong: "",
+        },
+        thucHanh: {
+            tietHocId: "",
+            phong: "",
+        }
+    });
+    const [listPhongHoc, setListPhongHoc] = useState({ phongLyThuyet: [], phongThucHanh: [] });
     const [loading, setLoading] = useState(false);
     const [msg, setMsg] = useState("");
 
-    const loadHocKyMoiNhat = async () => {
+    const loadTietHoc = async () => {
+        setListTietHoc([]);
         try {
-            let res = await authApis().get(endpoints['hocKyMoiNhat']);
-            setNewBuoiHoc({ ...newBuoiHoc, hocKyId: { id: res.data.id } });
+            let res = await Apis.get(endpoints['tietHoc']);
+            setListTietHoc(res.data);
         } catch (ex) {
             console.error(ex);
         }
@@ -46,7 +64,7 @@ const ThemBuoiHoc = () => {
 
     useEffect(() => {
         loadKhoa();
-        loadHocKyMoiNhat();
+        loadTietHoc();
     }, []);
 
     const loadNganhTheoKhoa = async (khoaId) => {
@@ -84,9 +102,93 @@ const ThemBuoiHoc = () => {
         }
     }
 
+    const loadLop = async (nganhId) => {
+        try {
+            let res = await Apis.get(`${endpoints['lop']}?nganhId=${nganhId}`);
+            setListLop(res.data);
+        } catch (ex) {
+            console.error(ex);
+        }
+    }
+
     const chooseNganh = async (e) => {
         const nganhId = e.target.value;
-        { nganhId ? await loadMonHocTheoNganh(nganhId) : setListMonHoc([]) };
+        { nganhId ? (await loadMonHocTheoNganh(nganhId), await loadLop(nganhId)) : (setListMonHoc([]), setListLop([])) };
+    }
+
+    const loadPhongHoc = async (loai) => {
+        try {
+            let dsPhongLT = await Apis.get(`${endpoints['phongHoc']}?loai=LyThuyet`);
+            let phongLyThuyet = dsPhongLT.data;
+            let phongThucHanh = [];
+            if (loai === "LT-TH") {
+                let dsPhongTH = await Apis.get(`${endpoints['phongHoc']}?loai=ThucHanh`);
+                phongThucHanh = dsPhongTH.data;
+            }
+            setListPhongHoc({
+                phongLyThuyet,
+                phongThucHanh,
+            });
+        } catch (ex) {
+            console.error(ex);
+        }
+    }
+
+    const loadMonHoc = async (monHocId) => {
+        try {
+            let res = await Apis.get(endpoints['monHocId'](monHocId));
+
+            let loaiTmp = "";
+            if (res.data.tinChiLyThuyet !== 0 && res.data.tinChiThucHanh !== 0) {
+                loaiTmp = "LT-TH";
+            } else if (res.data.tinChiLyThuyet !== 0) {
+                loaiTmp = "LT";
+            } else {
+                loaiTmp = "TH";
+            }
+
+            setLoai(loaiTmp);
+            setNewBuoiHoc(prev => ({ ...prev, loai: loaiTmp })); // dùng prev để không mất dữ liệu cũ
+            await loadPhongHoc(loaiTmp);
+
+        } catch (ex) {
+            console.error(ex);
+        }
+    };
+
+    const chooseMonHoc = async (e) => {
+        const monHocId = e.target.value;
+        setSelectedMonHoc(monHocId);
+
+        if (monHocId) {
+            await loadMonHoc(monHocId);
+            setNewBuoiHoc(prev => ({ ...prev, monHocId: { ...prev.monHocId, id: monHocId } }));
+        } else {
+            setListMonHoc([]);
+        }
+    };
+
+    const addLichHoc = async (buoiHocId) => {
+        try {
+            if (loai === "LT" || loai === "LT-TH") {
+                const newLichHocLT = {
+                    ...newLichHoc.lyThuyet,
+                    buoiHocId: buoiHocId,
+                    loai: "LyThuyet",
+                }
+                await authApis().post(endpoints['themLichHoc'], newLichHocLT); // Thêm lịch học lý thuyết
+            };
+            if (loai === "TH" || loai === "LT-TH") {
+                const newLichHocTH = {
+                    ...newLichHoc.thucHanh,
+                    buoiHocId: buoiHocId,
+                    loai: "ThucHanh",
+                }
+                await authApis().post(endpoints['themLichHoc'], newLichHocTH); // Thêm lịch học thực hành
+            }
+        } catch (ex) {
+            console.error(ex);
+        }
     }
 
     const addBuoiHoc = async (e) => {
@@ -94,7 +196,12 @@ const ThemBuoiHoc = () => {
         setLoading(true);
         setMsg("");
         try {
-            await authApis().post(endpoints['themHoacLayBuoiHoc'], newBuoiHoc);
+            //Thêm buổi học
+            let res = await authApis().post(endpoints['themHoacLayBuoiHoc'], newBuoiHoc);
+
+            //Thêm lịch học
+            await addLichHoc(res.data.id);
+
             setMsg("Thêm thành công!");
             setNewBuoiHoc({
                 monHocId: {},
@@ -102,8 +209,12 @@ const ThemBuoiHoc = () => {
                 hocKyId: {},
                 siSo: 0,
             });
+            setNewLichHoc({
+                lyThuyet: {},
+                thucHanh: {}
+            });
             await loadKhoa();
-            await loadHocKyMoiNhat();
+            setSelectedMonHoc("");
             setListNganh([]);
             setListGiangVien([]);
             setListMonHoc([]);
@@ -169,7 +280,7 @@ const ThemBuoiHoc = () => {
                     <select
                         className="form-select"
                         id="monHocId"
-                        onChange={(e) => setNewBuoiHoc({ ...newBuoiHoc, monHocId: { ...newBuoiHoc.monHocId, id: e.target.value } })}
+                        onChange={chooseMonHoc}
                         required
                     >
                         <option value="">-- Chọn môn học --</option>
@@ -195,17 +306,18 @@ const ThemBuoiHoc = () => {
                 </div>
 
                 <div className="mt-3 mb-3">
-                    <label htmlFor="loaiBuoiHoc" className="form-label">Loại buổi học</label>
+                    <label htmlFor="lopId" className="form-label">Mã lớp</label>
                     <select
                         className="form-select"
-                        id="loaiBuoiHoc"
-                        value={newBuoiHoc.loai}
-                        onChange={(e) => setNewBuoiHoc({ ...newBuoiHoc, loai: e.target.value })}
+                        id="lopId"
+                        value={newBuoiHoc.lopId?.id || ""}
+                        onChange={(e) => setNewBuoiHoc({ ...newBuoiHoc, lopId: { id: e.target.value } })}
                         required
                     >
-                        <option value="">-- Chọn loại --</option>
-                        <option value="LT">Lý thuyết</option>
-                        <option value="LT-TH">Lý thuyết - Thực hành</option>
+                        <option value="">-- Chọn lớp --</option>
+                        {listLop.map(lop => (
+                            <option key={lop.id} value={lop.id}>{lop.maLop}</option>
+                        ))}
                     </select>
                 </div>
 
@@ -224,7 +336,146 @@ const ThemBuoiHoc = () => {
                     </div>
                 ))}
 
-                <div className="text-center">
+                {selectedMonHoc !== "" && ( // Chọn lịch học
+                    <>
+                        <h2>THÊM LỊCH HỌC</h2>
+                        <label className="form-label">Ngày bắt đầu</label>
+                        <div className="col-md-4">
+                            <input
+                                type="date"
+                                className="form-control"
+                                value={selectedNgay || ""}
+                                onChange={(e) => (
+                                    setSelectedNgay(e.target.value),
+                                    setNewLichHoc({
+                                        ...newLichHoc,
+                                        lyThuyet: {
+                                            ...newLichHoc.lyThuyet,
+                                            ngayBatDau: selectedNgay,
+                                        },
+                                        thucHanh: {
+                                            ...newLichHoc.thucHanh,
+                                            ngayBatDau: selectedNgay,
+                                        },
+                                    })
+                                )
+                                }
+                            />
+                        </div>
+                        {(loai === "LT" || loai === "LT-TH") && (
+                            <div className="row mt-3 mb-3 align-items-center">
+                                <label className="form-label">Lịch lý thuyết</label>
+                                <div className="col-md-4">
+                                    <select
+                                        className="form-select"
+                                        value={newLichHoc.lyThuyet?.tietHocId || ""}
+                                        onChange={(e) =>
+                                            setNewLichHoc({
+                                                ...newLichHoc,
+                                                lyThuyet: {
+                                                    ...newLichHoc.lyThuyet,
+                                                    tietHocId: Number(e.target.value),
+                                                },
+                                            })
+                                        }
+                                    >
+                                        <option value="">-- Chọn tiết --</option>
+                                        {listTietHoc
+                                            .filter(t => t.id !== Number(newLichHoc.thucHanh?.tietHocId))
+                                            .map((i) => (
+                                                <option key={i.id} value={i.id}>
+                                                    {i.tiet}
+                                                </option>
+                                            ))
+                                        }
+                                    </select>
+                                </div>
+
+
+
+                                <div className="col-md-4">
+                                    <select
+                                        className="form-select"
+                                        value={newLichHoc.lyThuyet?.phongHocId || ""}
+                                        onChange={(e) =>
+                                            setNewLichHoc({
+                                                ...newLichHoc,
+                                                lyThuyet: {
+                                                    ...newLichHoc.lyThuyet,
+                                                    phongHocId: e.target.value,
+                                                },
+                                            })
+                                        }
+                                    >
+                                        <option value="">--Chọn phòng --</option>
+                                        {listPhongHoc.phongLyThuyet?.map((i) => (
+                                            <option key={i.id} value={i.id}>
+                                                {i.tenPhong}
+                                            </option>
+                                        ))}
+                                    </select>
+                                </div>
+                            </div>
+                        )}
+
+                        {(loai === "TH" || loai === "LT-TH") && (
+                            <div className="row mt-3 mb-3 align-items-center">
+                                <label className="form-label">Lịch thực hành</label>
+                                <div className="col-md-4">
+                                    <select
+                                        className="form-select"
+                                        value={newLichHoc.thucHanh?.tietHocId || ""}
+                                        onChange={(e) =>
+                                            setNewLichHoc({
+                                                ...newLichHoc,
+                                                thucHanh: {
+                                                    ...newLichHoc.thucHanh,
+                                                    tietHocId: Number(e.target.value),
+                                                },
+                                            })
+                                        }
+                                    >
+                                        <option value="">-- Chọn tiết --</option>
+                                        {listTietHoc
+                                            .filter(t => t.id !== Number(newLichHoc.lyThuyet?.tietHocId))
+                                            .map((i) => (
+                                                <option key={i.id} value={i.id}>
+                                                    {i.tiet}
+                                                </option>
+                                            ))
+                                        }
+                                    </select>
+                                </div>
+
+
+                                <div className="col-md-4">
+                                    <select
+                                        className="form-select"
+                                        value={newLichHoc.thucHanh?.phongHocId || ""}
+                                        onChange={(e) =>
+                                            setNewLichHoc({
+                                                ...newLichHoc,
+                                                thucHanh: {
+                                                    ...newLichHoc.thucHanh,
+                                                    phongHocId: e.target.value,
+                                                },
+                                            })
+                                        }
+                                    >
+                                        <option value="">--Chọn phòng --</option>
+                                        {listPhongHoc.phongThucHanh?.map((i) => (
+                                            <option key={i.id} value={i.id}>
+                                                {i.tenPhong}
+                                            </option>
+                                        ))}
+                                    </select>
+                                </div>
+                            </div>
+                        )}
+                    </>
+                )}
+
+                <div className="text-center mt-3 mb-3">
                     <button type="submit" className="btn btn-primary" disabled={loading}>
                         {loading ?
                             <>
@@ -233,8 +484,8 @@ const ThemBuoiHoc = () => {
                             </> : "Thêm"}
                     </button>
                 </div>
-            </form>
-        </div>
+            </form >
+        </div >
     );
 }
 export default ThemBuoiHoc;

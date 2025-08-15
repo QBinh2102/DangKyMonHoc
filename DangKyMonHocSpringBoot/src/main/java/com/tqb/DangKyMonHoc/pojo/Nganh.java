@@ -53,7 +53,10 @@ public class Nganh implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "nganh")
     @JsonIgnore
     private Set<MonHocLienQuan> monHocLienQuanSet;
-    @OneToMany(mappedBy = "nganhId")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "nganhId")
+    @JsonIgnore
+    private Set<Lop> lopSet;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "nganhId")
     @JsonIgnore
     private Set<SinhVien> sinhVienSet;
     @JoinColumn(name = "khoa_id", referencedColumnName = "id")
@@ -102,6 +105,14 @@ public class Nganh implements Serializable {
 
     public void setMonHocLienQuanSet(Set<MonHocLienQuan> monHocLienQuanSet) {
         this.monHocLienQuanSet = monHocLienQuanSet;
+    }
+
+    public Set<Lop> getLopSet() {
+        return lopSet;
+    }
+
+    public void setLopSet(Set<Lop> lopSet) {
+        this.lopSet = lopSet;
     }
 
     public Set<SinhVien> getSinhVienSet() {

@@ -34,11 +34,14 @@ public class ThoiKhoaBieu implements Serializable {
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
+    @JoinColumn(name = "hoc_ky_id", referencedColumnName = "id")
+    @ManyToOne(optional = false)
+    private HocKy hocKyId;
     @JoinColumn(name = "lich_hoc_id", referencedColumnName = "id")
-    @ManyToOne
+    @ManyToOne(optional = false)
     private LichHoc lichHocId;
     @JoinColumn(name = "sinh_vien_id", referencedColumnName = "id")
-    @ManyToOne
+    @ManyToOne(optional = false)
     private SinhVien sinhVienId;
 
     public ThoiKhoaBieu() {
@@ -54,6 +57,14 @@ public class ThoiKhoaBieu implements Serializable {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public HocKy getHocKyId() {
+        return hocKyId;
+    }
+
+    public void setHocKyId(HocKy hocKyId) {
+        this.hocKyId = hocKyId;
     }
 
     public LichHoc getLichHocId() {

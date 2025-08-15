@@ -50,6 +50,9 @@ public class BuoiHoc implements Serializable {
     @JoinColumn(name = "hoc_ky_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private HocKy hocKyId;
+    @JoinColumn(name = "lop_id", referencedColumnName = "id")
+    @ManyToOne(optional = false)
+    private Lop lopId;
     @JoinColumn(name = "mon_hoc_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private MonHoc monHocId;
@@ -105,6 +108,14 @@ public class BuoiHoc implements Serializable {
 
     public void setHocKyId(HocKy hocKyId) {
         this.hocKyId = hocKyId;
+    }
+
+    public Lop getLopId() {
+        return lopId;
+    }
+
+    public void setLopId(Lop lopId) {
+        this.lopId = lopId;
     }
 
     public MonHoc getMonHocId() {
