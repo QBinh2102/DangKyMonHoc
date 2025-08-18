@@ -33,3 +33,28 @@
   margin: 6px 0;
   font-size: 14px;
 }
+
+.decuong-link {
+  display: inline-block;
+  color: #1e3a8a;         /* xanh navy */
+  font-weight: 500;
+  text-decoration: none;  /* bỏ gạch chân */
+  padding: 6px 10px;
+  border-radius: 6px;
+  transition: all 0.2s ease-in-out;
+}
+
+.decuong-link:hover {
+  background-color: #e0f2fe; /* xanh nhạt */
+  color: #0c4a6e;           /* xanh đậm hơn */
+  text-decoration: underline;
+}
+
+.decuong-item {
+  display: inline-block;
+  color: #1e3a8a;
+  font-weight: 500;
+  padding: 6px 10px;
+  border-radius: 6px;
+  margin: 2px 0;
+}

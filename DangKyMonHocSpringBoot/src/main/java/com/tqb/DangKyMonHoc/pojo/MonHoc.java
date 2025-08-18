@@ -13,7 +13,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.NamedQueries;
 import jakarta.persistence.NamedQuery;
@@ -37,7 +36,8 @@ import java.util.Set;
     @NamedQuery(name = "MonHoc.findByTinChiThucHanh", query = "SELECT m FROM MonHoc m WHERE m.tinChiThucHanh = :tinChiThucHanh"),
     @NamedQuery(name = "MonHoc.findByPhanTramGiuaKy", query = "SELECT m FROM MonHoc m WHERE m.phanTramGiuaKy = :phanTramGiuaKy"),
     @NamedQuery(name = "MonHoc.findByPhanTramCuoiKy", query = "SELECT m FROM MonHoc m WHERE m.phanTramCuoiKy = :phanTramCuoiKy"),
-    @NamedQuery(name = "MonHoc.findByDiemQuaMon", query = "SELECT m FROM MonHoc m WHERE m.diemQuaMon = :diemQuaMon")})
+    @NamedQuery(name = "MonHoc.findByDiemQuaMon", query = "SELECT m FROM MonHoc m WHERE m.diemQuaMon = :diemQuaMon"),
+    @NamedQuery(name = "MonHoc.findByDeCuong", query = "SELECT m FROM MonHoc m WHERE m.deCuong = :deCuong")})
 public class MonHoc implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -65,9 +65,8 @@ public class MonHoc implements Serializable {
     @Basic(optional = false)
     @Column(name = "diem_qua_mon")
     private BigDecimal diemQuaMon;
-    @ManyToMany(mappedBy = "monHocSet")
-    @JsonIgnore
-    private Set<Nganh> nganhSet;
+    @Column(name = "de_cuong")
+    private String deCuong;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "monHocId")
     @JsonIgnore
     private Set<BuoiHoc> buoiHocSet;
@@ -83,6 +82,9 @@ public class MonHoc implements Serializable {
     @JoinColumn(name = "khoa_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Khoa khoaId;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "monHoc")
+    @JsonIgnore
+    private Set<NganhMonHoc> nganhMonHocSet;
 
     public MonHoc() {
     }
@@ -157,12 +159,12 @@ public class MonHoc implements Serializable {
         this.diemQuaMon = diemQuaMon;
     }
 
-    public Set<Nganh> getNganhSet() {
-        return nganhSet;
+    public String getDeCuong() {
+        return deCuong;
     }
 
-    public void setNganhSet(Set<Nganh> nganhSet) {
-        this.nganhSet = nganhSet;
+    public void setDeCuong(String deCuong) {
+        this.deCuong = deCuong;
     }
 
     public Set<BuoiHoc> getBuoiHocSet() {
@@ -203,6 +205,14 @@ public class MonHoc implements Serializable {
 
     public void setKhoaId(Khoa khoaId) {
         this.khoaId = khoaId;
+    }
+
+    public Set<NganhMonHoc> getNganhMonHocSet() {
+        return nganhMonHocSet;
+    }
+
+    public void setNganhMonHocSet(Set<NganhMonHoc> nganhMonHocSet) {
+        this.nganhMonHocSet = nganhMonHocSet;
     }
 
     @Override

@@ -54,6 +54,7 @@ CREATE TABLE nguoi_dung (
     gioi_tinh ENUM('nam', 'nu'),
     so_dien_thoai VARCHAR(15),
     email VARCHAR(100) NOT NULL UNIQUE,
+    cccd VARCHAR(15) NOT NULL,
     mat_khau VARCHAR(255) NOT NULL,
     avatar VARCHAR(255),
     vai_tro ENUM('ROLE_SINH_VIEN', 'ROLE_GIANG_VIEN', 'ROLE_ADMIN') NOT NULL
@@ -97,6 +98,7 @@ CREATE TABLE mon_hoc (
     phan_tram_giua_ky INT NOT NULL DEFAULT 30,
     phan_tram_cuoi_ky INT NOT NULL DEFAULT 70,
     diem_qua_mon DECIMAL(4,2) NOT NULL DEFAULT 5.0,
+    de_cuong VARCHAR(255),
     khoa_id INT NOT NULL,
     FOREIGN KEY (khoa_id) REFERENCES khoa(id)
 );
@@ -292,25 +294,25 @@ VALUES
 -- ==========================
 -- THÊM GIẢNG VIÊN
 -- ==========================
-INSERT INTO nguoi_dung (ho_ten, ngay_sinh, gioi_tinh, so_dien_thoai, email, mat_khau, avatar, vai_tro) VALUES
-    ('Nguyễn Văn Ón', '1975-10-07', 'nam', '0123456789', 'onnguyenvan@giangvien.edu.vn', '$2a$10$Tl8uVg4Yq2h6zSUx3mPngOvPZYQ3UFHiHV5bFa//v5G/cR0gBwhZm', 'https://res.cloudinary.com/dbhhpljbo/image/upload/v1755243635/356743267_641722777924328_3854581708681478680_n_rnpytv.jpg', 'ROLE_GIANG_VIEN'),
-    ('Trần Thị Tuyết', '1975-10-07', 'nu', '0123456789', 'tuyettranthi@giangvien.edu.vn', '$2a$10$Tl8uVg4Yq2h6zSUx3mPngOvPZYQ3UFHiHV5bFa//v5G/cR0gBwhZm', 'https://res.cloudinary.com/dbhhpljbo/image/upload/v1755243635/356743267_641722777924328_3854581708681478680_n_rnpytv.jpg', 'ROLE_GIANG_VIEN'),
-    ('Lê Minh Bảo', '1975-10-07', 'nam', '0123456789', 'baoleminh@giangvien.edu.vn', '$2a$10$Tl8uVg4Yq2h6zSUx3mPngOvPZYQ3UFHiHV5bFa//v5G/cR0gBwhZm', 'https://res.cloudinary.com/dbhhpljbo/image/upload/v1755243635/356743267_641722777924328_3854581708681478680_n_rnpytv.jpg', 'ROLE_GIANG_VIEN'),
-    ('Nguyễn Hữu Khuê', '1975-10-07', 'nam', '0123456789', 'khuenguyenhuu@giangvien.edu.vn', '$2a$10$Tl8uVg4Yq2h6zSUx3mPngOvPZYQ3UFHiHV5bFa//v5G/cR0gBwhZm', 'https://res.cloudinary.com/dbhhpljbo/image/upload/v1755243635/356743267_641722777924328_3854581708681478680_n_rnpytv.jpg', 'ROLE_GIANG_VIEN'),
-    ('Phạm Minh Trang', '1975-10-07', 'nu', '0123456789', 'trangphamminh@giangvien.edu.vn', '$2a$10$Tl8uVg4Yq2h6zSUx3mPngOvPZYQ3UFHiHV5bFa//v5G/cR0gBwhZm', 'https://res.cloudinary.com/dbhhpljbo/image/upload/v1755243635/356743267_641722777924328_3854581708681478680_n_rnpytv.jpg', 'ROLE_GIANG_VIEN'),
-    ('Đỗ Quang Hùng', '1975-10-07', 'nam', '0123456789', 'hungdoquang@giangvien.edu.vn', '$2a$10$Tl8uVg4Yq2h6zSUx3mPngOvPZYQ3UFHiHV5bFa//v5G/cR0gBwhZm', 'https://res.cloudinary.com/dbhhpljbo/image/upload/v1755243635/356743267_641722777924328_3854581708681478680_n_rnpytv.jpg', 'ROLE_GIANG_VIEN'),
-    ('Phùng Thị Anh', '1975-10-07', 'nu', '0123456789', 'anhphungthi@giangvien.edu.vn', '$2a$10$Tl8uVg4Yq2h6zSUx3mPngOvPZYQ3UFHiHV5bFa//v5G/cR0gBwhZm', 'https://res.cloudinary.com/dbhhpljbo/image/upload/v1755243635/356743267_641722777924328_3854581708681478680_n_rnpytv.jpg', 'ROLE_GIANG_VIEN'),
-    ('Võ Văn Kiệt', '1975-10-07', 'nam', '0123456789', 'kietvovan@giangvien.edu.vn', '$2a$10$Tl8uVg4Yq2h6zSUx3mPngOvPZYQ3UFHiHV5bFa//v5G/cR0gBwhZm', 'https://res.cloudinary.com/dbhhpljbo/image/upload/v1755243635/356743267_641722777924328_3854581708681478680_n_rnpytv.jpg', 'ROLE_GIANG_VIEN'),
-    ('Dương Minh Công', '1975-10-07', 'nam', '0123456789', 'congminhduong@giangvien.edu.vn', '$2a$10$Tl8uVg4Yq2h6zSUx3mPngOvPZYQ3UFHiHV5bFa//v5G/cR0gBwhZm', 'https://res.cloudinary.com/dbhhpljbo/image/upload/v1755243635/356743267_641722777924328_3854581708681478680_n_rnpytv.jpg', 'ROLE_GIANG_VIEN'),
-    ('Nguyễn Lộc Thành', '1975-10-07', 'nam', '0123456789', 'thanhnguenloc@giangvien.edu.vn', '$2a$10$Tl8uVg4Yq2h6zSUx3mPngOvPZYQ3UFHiHV5bFa//v5G/cR0gBwhZm', 'https://res.cloudinary.com/dbhhpljbo/image/upload/v1755243635/356743267_641722777924328_3854581708681478680_n_rnpytv.jpg', 'ROLE_GIANG_VIEN'),
-    ('Trần Tuấn Khải', '1975-10-07', 'nam', '0123456789', 'khaitrantuan@giangvien.edu.vn', '$2a$10$Tl8uVg4Yq2h6zSUx3mPngOvPZYQ3UFHiHV5bFa//v5G/cR0gBwhZm', 'https://res.cloudinary.com/dbhhpljbo/image/upload/v1755243635/356743267_641722777924328_3854581708681478680_n_rnpytv.jpg', 'ROLE_GIANG_VIEN'),
-    ('Đỗ Kim Tuấn', '1975-10-07', 'nam', '0123456789', 'tuandokim@giangvien.edu.vn', '$2a$10$Tl8uVg4Yq2h6zSUx3mPngOvPZYQ3UFHiHV5bFa//v5G/cR0gBwhZm', 'https://res.cloudinary.com/dbhhpljbo/image/upload/v1755243635/356743267_641722777924328_3854581708681478680_n_rnpytv.jpg', 'ROLE_GIANG_VIEN'),
-    ('Trần Hà Thanh', '1975-10-07', 'nu', '0123456789', 'thanhtranha@giangvien.edu.vn', '$2a$10$Tl8uVg4Yq2h6zSUx3mPngOvPZYQ3UFHiHV5bFa//v5G/cR0gBwhZm', 'https://res.cloudinary.com/dbhhpljbo/image/upload/v1755243635/356743267_641722777924328_3854581708681478680_n_rnpytv.jpg', 'ROLE_GIANG_VIEN'),
-    ('Nguyễn Quốc Thiên', '1975-10-07', 'nam', '0123456789', 'thiennguyenquoc@giangvien.edu.vn', '$2a$10$Tl8uVg4Yq2h6zSUx3mPngOvPZYQ3UFHiHV5bFa//v5G/cR0gBwhZm', 'https://res.cloudinary.com/dbhhpljbo/image/upload/v1755243635/356743267_641722777924328_3854581708681478680_n_rnpytv.jpg', 'ROLE_GIANG_VIEN'),
-    ('Nguyễn Phương Trang', '1975-10-07', 'nu', '0123456789', 'trangnguyephuong@giangvien.edu.vn', '$2a$10$Tl8uVg4Yq2h6zSUx3mPngOvPZYQ3UFHiHV5bFa//v5G/cR0gBwhZm', 'https://res.cloudinary.com/dbhhpljbo/image/upload/v1755243635/356743267_641722777924328_3854581708681478680_n_rnpytv.jpg', 'ROLE_GIANG_VIEN'),
-    ('Ngô Tiến Đạt', '1975-10-07', 'nam', '0123456789', 'datngotien@giangvien.edu.vn', '$2a$10$Tl8uVg4Yq2h6zSUx3mPngOvPZYQ3UFHiHV5bFa//v5G/cR0gBwhZm', 'https://res.cloudinary.com/dbhhpljbo/image/upload/v1755243635/356743267_641722777924328_3854581708681478680_n_rnpytv.jpg', 'ROLE_GIANG_VIEN'),
-    ('Trương Trí Kiệt', '1975-10-07', 'nam', '0123456789', 'kiettruongtri@giangvien.edu.vn', '$2a$10$Tl8uVg4Yq2h6zSUx3mPngOvPZYQ3UFHiHV5bFa//v5G/cR0gBwhZm', 'https://res.cloudinary.com/dbhhpljbo/image/upload/v1755243635/356743267_641722777924328_3854581708681478680_n_rnpytv.jpg', 'ROLE_GIANG_VIEN'),
-    ('Ngô Ngọc Hậu', '1975-10-07', 'nam', '0123456789', 'haungongoc@giangvien.edu.vn', '$2a$10$Tl8uVg4Yq2h6zSUx3mPngOvPZYQ3UFHiHV5bFa//v5G/cR0gBwhZm', 'https://res.cloudinary.com/dbhhpljbo/image/upload/v1755243635/356743267_641722777924328_3854581708681478680_n_rnpytv.jpg', 'ROLE_GIANG_VIEN');
+INSERT INTO nguoi_dung (ho_ten, ngay_sinh, gioi_tinh, so_dien_thoai, email, cccd, mat_khau, avatar, vai_tro) VALUES
+    ('Nguyễn Văn Ón', '1975-10-07', 'nam', '0123456789', 'onnguyenvan@giangvien.edu.vn', '012345678912', '$2a$10$Tl8uVg4Yq2h6zSUx3mPngOvPZYQ3UFHiHV5bFa//v5G/cR0gBwhZm', 'https://res.cloudinary.com/dbhhpljbo/image/upload/v1755243635/356743267_641722777924328_3854581708681478680_n_rnpytv.jpg', 'ROLE_GIANG_VIEN'),
+    ('Trần Thị Tuyết', '1975-10-07', 'nu', '0123456789', 'tuyettranthi@giangvien.edu.vn', '012345678912', '$2a$10$Tl8uVg4Yq2h6zSUx3mPngOvPZYQ3UFHiHV5bFa//v5G/cR0gBwhZm', 'https://res.cloudinary.com/dbhhpljbo/image/upload/v1755243635/356743267_641722777924328_3854581708681478680_n_rnpytv.jpg', 'ROLE_GIANG_VIEN'),
+    ('Lê Minh Bảo', '1975-10-07', 'nam', '0123456789', 'baoleminh@giangvien.edu.vn', '012345678912', '$2a$10$Tl8uVg4Yq2h6zSUx3mPngOvPZYQ3UFHiHV5bFa//v5G/cR0gBwhZm', 'https://res.cloudinary.com/dbhhpljbo/image/upload/v1755243635/356743267_641722777924328_3854581708681478680_n_rnpytv.jpg', 'ROLE_GIANG_VIEN'),
+    ('Nguyễn Hữu Khuê', '1975-10-07', 'nam', '0123456789', 'khuenguyenhuu@giangvien.edu.vn', '012345678912', '$2a$10$Tl8uVg4Yq2h6zSUx3mPngOvPZYQ3UFHiHV5bFa//v5G/cR0gBwhZm', 'https://res.cloudinary.com/dbhhpljbo/image/upload/v1755243635/356743267_641722777924328_3854581708681478680_n_rnpytv.jpg', 'ROLE_GIANG_VIEN'),
+    ('Phạm Minh Trang', '1975-10-07', 'nu', '0123456789', 'trangphamminh@giangvien.edu.vn', '012345678912', '$2a$10$Tl8uVg4Yq2h6zSUx3mPngOvPZYQ3UFHiHV5bFa//v5G/cR0gBwhZm', 'https://res.cloudinary.com/dbhhpljbo/image/upload/v1755243635/356743267_641722777924328_3854581708681478680_n_rnpytv.jpg', 'ROLE_GIANG_VIEN'),
+    ('Đỗ Quang Hùng', '1975-10-07', 'nam', '0123456789', 'hungdoquang@giangvien.edu.vn', '012345678912', '$2a$10$Tl8uVg4Yq2h6zSUx3mPngOvPZYQ3UFHiHV5bFa//v5G/cR0gBwhZm', 'https://res.cloudinary.com/dbhhpljbo/image/upload/v1755243635/356743267_641722777924328_3854581708681478680_n_rnpytv.jpg', 'ROLE_GIANG_VIEN'),
+    ('Phùng Thị Anh', '1975-10-07', 'nu', '0123456789', 'anhphungthi@giangvien.edu.vn', '012345678912', '$2a$10$Tl8uVg4Yq2h6zSUx3mPngOvPZYQ3UFHiHV5bFa//v5G/cR0gBwhZm', 'https://res.cloudinary.com/dbhhpljbo/image/upload/v1755243635/356743267_641722777924328_3854581708681478680_n_rnpytv.jpg', 'ROLE_GIANG_VIEN'),
+    ('Võ Văn Kiệt', '1975-10-07', 'nam', '0123456789', 'kietvovan@giangvien.edu.vn', '012345678912', '$2a$10$Tl8uVg4Yq2h6zSUx3mPngOvPZYQ3UFHiHV5bFa//v5G/cR0gBwhZm', 'https://res.cloudinary.com/dbhhpljbo/image/upload/v1755243635/356743267_641722777924328_3854581708681478680_n_rnpytv.jpg', 'ROLE_GIANG_VIEN'),
+    ('Dương Minh Công', '1975-10-07', 'nam', '0123456789', 'congminhduong@giangvien.edu.vn', '012345678912', '$2a$10$Tl8uVg4Yq2h6zSUx3mPngOvPZYQ3UFHiHV5bFa//v5G/cR0gBwhZm', 'https://res.cloudinary.com/dbhhpljbo/image/upload/v1755243635/356743267_641722777924328_3854581708681478680_n_rnpytv.jpg', 'ROLE_GIANG_VIEN'),
+    ('Nguyễn Lộc Thành', '1975-10-07', 'nam', '0123456789', 'thanhnguenloc@giangvien.edu.vn', '012345678912', '$2a$10$Tl8uVg4Yq2h6zSUx3mPngOvPZYQ3UFHiHV5bFa//v5G/cR0gBwhZm', 'https://res.cloudinary.com/dbhhpljbo/image/upload/v1755243635/356743267_641722777924328_3854581708681478680_n_rnpytv.jpg', 'ROLE_GIANG_VIEN'),
+    ('Trần Tuấn Khải', '1975-10-07', 'nam', '0123456789', 'khaitrantuan@giangvien.edu.vn', '012345678912', '$2a$10$Tl8uVg4Yq2h6zSUx3mPngOvPZYQ3UFHiHV5bFa//v5G/cR0gBwhZm', 'https://res.cloudinary.com/dbhhpljbo/image/upload/v1755243635/356743267_641722777924328_3854581708681478680_n_rnpytv.jpg', 'ROLE_GIANG_VIEN'),
+    ('Đỗ Kim Tuấn', '1975-10-07', 'nam', '0123456789', 'tuandokim@giangvien.edu.vn', '012345678912', '$2a$10$Tl8uVg4Yq2h6zSUx3mPngOvPZYQ3UFHiHV5bFa//v5G/cR0gBwhZm', 'https://res.cloudinary.com/dbhhpljbo/image/upload/v1755243635/356743267_641722777924328_3854581708681478680_n_rnpytv.jpg', 'ROLE_GIANG_VIEN'),
+    ('Trần Hà Thanh', '1975-10-07', 'nu', '0123456789', 'thanhtranha@giangvien.edu.vn', '012345678912', '$2a$10$Tl8uVg4Yq2h6zSUx3mPngOvPZYQ3UFHiHV5bFa//v5G/cR0gBwhZm', 'https://res.cloudinary.com/dbhhpljbo/image/upload/v1755243635/356743267_641722777924328_3854581708681478680_n_rnpytv.jpg', 'ROLE_GIANG_VIEN'),
+    ('Nguyễn Quốc Thiên', '1975-10-07', 'nam', '0123456789', 'thiennguyenquoc@giangvien.edu.vn', '012345678912', '$2a$10$Tl8uVg4Yq2h6zSUx3mPngOvPZYQ3UFHiHV5bFa//v5G/cR0gBwhZm', 'https://res.cloudinary.com/dbhhpljbo/image/upload/v1755243635/356743267_641722777924328_3854581708681478680_n_rnpytv.jpg', 'ROLE_GIANG_VIEN'),
+    ('Nguyễn Phương Trang', '1975-10-07', 'nu', '0123456789', 'trangnguyephuong@giangvien.edu.vn', '012345678912', '$2a$10$Tl8uVg4Yq2h6zSUx3mPngOvPZYQ3UFHiHV5bFa//v5G/cR0gBwhZm', 'https://res.cloudinary.com/dbhhpljbo/image/upload/v1755243635/356743267_641722777924328_3854581708681478680_n_rnpytv.jpg', 'ROLE_GIANG_VIEN'),
+    ('Ngô Tiến Đạt', '1975-10-07', 'nam', '0123456789', 'datngotien@giangvien.edu.vn', '012345678912', '$2a$10$Tl8uVg4Yq2h6zSUx3mPngOvPZYQ3UFHiHV5bFa//v5G/cR0gBwhZm', 'https://res.cloudinary.com/dbhhpljbo/image/upload/v1755243635/356743267_641722777924328_3854581708681478680_n_rnpytv.jpg', 'ROLE_GIANG_VIEN'),
+    ('Trương Trí Kiệt', '1975-10-07', 'nam', '0123456789', 'kiettruongtri@giangvien.edu.vn', '012345678912', '$2a$10$Tl8uVg4Yq2h6zSUx3mPngOvPZYQ3UFHiHV5bFa//v5G/cR0gBwhZm', 'https://res.cloudinary.com/dbhhpljbo/image/upload/v1755243635/356743267_641722777924328_3854581708681478680_n_rnpytv.jpg', 'ROLE_GIANG_VIEN'),
+    ('Ngô Ngọc Hậu', '1975-10-07', 'nam', '0123456789', 'haungongoc@giangvien.edu.vn', '012345678912', '$2a$10$Tl8uVg4Yq2h6zSUx3mPngOvPZYQ3UFHiHV5bFa//v5G/cR0gBwhZm', 'https://res.cloudinary.com/dbhhpljbo/image/upload/v1755243635/356743267_641722777924328_3854581708681478680_n_rnpytv.jpg', 'ROLE_GIANG_VIEN');
 
 -- Giả sử id tự động tăng từ 1 đến 14 cho giảng viên
 
@@ -337,11 +339,11 @@ INSERT INTO giang_vien (id, hoc_vi, khoa_id) VALUES
 -- ==========================
 -- THÊM SINH VIÊN
 -- ==========================
-INSERT INTO nguoi_dung (ho_ten, ngay_sinh, gioi_tinh, so_dien_thoai, email, mat_khau, avatar, vai_tro) VALUES
-    ('Tô Quốc Bình', '2004-02-21', 'nam', '0762590966', 'binh@student.edu.vn', '$2a$10$Tl8uVg4Yq2h6zSUx3mPngOvPZYQ3UFHiHV5bFa//v5G/cR0gBwhZm', 'https://res.cloudinary.com/dbhhpljbo/image/upload/v1755243635/356743267_641722777924328_3854581708681478680_n_rnpytv.jpg', 'ROLE_SINH_VIEN'),
-    ('Trần Huỳnh Sang', '2004-03-24', 'nam', '0762514230', 'sang@student.edu.vn', '$2a$10$Tl8uVg4Yq2h6zSUx3mPngOvPZYQ3UFHiHV5bFa//v5G/cR0gBwhZm', 'https://res.cloudinary.com/dbhhpljbo/image/upload/v1755243635/356743267_641722777924328_3854581708681478680_n_rnpytv.jpg', 'ROLE_SINH_VIEN'),
-    ('Nguyễn Đăng Khôi', '2004-05-27', 'nam', '0903234139', 'khoi@student.edu.vn', '$2a$10$Tl8uVg4Yq2h6zSUx3mPngOvPZYQ3UFHiHV5bFa//v5G/cR0gBwhZm', 'https://res.cloudinary.com/dbhhpljbo/image/upload/v1755243635/356743267_641722777924328_3854581708681478680_n_rnpytv.jpg', 'ROLE_SINH_VIEN'),
-    ('Võ Quốc Bảo', '2006-05-15', 'nam', '0789764093', 'bao@student.edu.vn', '$2a$10$Tl8uVg4Yq2h6zSUx3mPngOvPZYQ3UFHiHV5bFa//v5G/cR0gBwhZm', 'https://res.cloudinary.com/dbhhpljbo/image/upload/v1755243635/356743267_641722777924328_3854581708681478680_n_rnpytv.jpg', 'ROLE_SINH_VIEN');
+INSERT INTO nguoi_dung (ho_ten, ngay_sinh, gioi_tinh, so_dien_thoai, email, cccd, mat_khau, avatar, vai_tro) VALUES
+    ('Tô Quốc Bình', '2004-02-21', 'nam', '0762590966', 'binh@student.edu.vn', '079204036719', '$2a$10$Tl8uVg4Yq2h6zSUx3mPngOvPZYQ3UFHiHV5bFa//v5G/cR0gBwhZm', 'https://res.cloudinary.com/dbhhpljbo/image/upload/v1755243635/356743267_641722777924328_3854581708681478680_n_rnpytv.jpg', 'ROLE_SINH_VIEN'),
+    ('Trần Huỳnh Sang', '2004-03-24', 'nam', '0762514230', 'sang@student.edu.vn', '012345678912', '$2a$10$Tl8uVg4Yq2h6zSUx3mPngOvPZYQ3UFHiHV5bFa//v5G/cR0gBwhZm', 'https://res.cloudinary.com/dbhhpljbo/image/upload/v1755243635/356743267_641722777924328_3854581708681478680_n_rnpytv.jpg', 'ROLE_SINH_VIEN'),
+    ('Nguyễn Đăng Khôi', '2004-05-27', 'nam', '0903234139', 'khoi@student.edu.vn', '012345678912', '$2a$10$Tl8uVg4Yq2h6zSUx3mPngOvPZYQ3UFHiHV5bFa//v5G/cR0gBwhZm', 'https://res.cloudinary.com/dbhhpljbo/image/upload/v1755243635/356743267_641722777924328_3854581708681478680_n_rnpytv.jpg', 'ROLE_SINH_VIEN'),
+    ('Võ Quốc Bảo', '2006-05-15', 'nam', '0789764093', 'bao@student.edu.vn', '012345678912', '$2a$10$Tl8uVg4Yq2h6zSUx3mPngOvPZYQ3UFHiHV5bFa//v5G/cR0gBwhZm', 'https://res.cloudinary.com/dbhhpljbo/image/upload/v1755243635/356743267_641722777924328_3854581708681478680_n_rnpytv.jpg', 'ROLE_SINH_VIEN');
 
 -- Giả sử id tiếp tục từ 15 đến 19
 
@@ -357,45 +359,45 @@ VALUES ('Admin Hệ Thống', 'admin@admin.vn', '$2a$10$YJWUKd2V8ZTn/uiiz6UQGOrE
 
     
 -- Thêm môn học
-INSERT INTO mon_hoc (ten_mon, tin_chi_ly_thuyet, tin_chi_thuc_hanh, phan_tram_giua_ky, phan_tram_cuoi_ky, diem_qua_mon, khoa_id)
+INSERT INTO mon_hoc (ten_mon, tin_chi_ly_thuyet, tin_chi_thuc_hanh, phan_tram_giua_ky, phan_tram_cuoi_ky, diem_qua_mon, de_cuong, khoa_id)
 VALUES
-('Nhập môn tin học', 2, 1, 40, 60, 4, 1),
-('Cơ sở lập trình', 3, 1, 40, 60, 4, 1),
-('Hệ điều hành và Kiến trúc máy tính', 3, 0, 30, 70, 4, 1),
-('Kỹ thuật lập trình', 3, 1, 40, 60, 4, 1),
-('Ứng dụng web', 2, 1, 30, 70, 4, 1),
-('Cấu trúc dữ liệu và thuật giải 1', 3, 1, 40, 60, 4, 1),
-('Cơ sở dữ liệu', 3, 1, 40, 60, 4, 1),
-('Toán rời rạc', 4, 0, 40, 60, 4, 1),
-('Cấu trúc dữ liệu và thuật giải 2', 2, 1, 40, 60, 4, 1),
-('Mạng máy tính', 3, 1, 40, 60, 4, 1),
-('Lập trình hướng đối tượng', 3, 1, 40, 60, 4, 1),
-('Kỹ năng nghề nghiệp', 3, 0, 40, 60, 4, 1),
-('Phân tích thiết kế hệ thống', 4, 0, 50, 50, 4, 1),
-('Mẫu thiết kế hướng đối tượng', 2, 1, 40, 60, 4, 1),
-('Trí tuệ nhân tạo', 2, 1, 50, 50, 4, 1),
-('Quản trị hệ cơ sở dữ liệu', 2, 1, 40, 60, 4, 1),
-('Công nghệ phần mềm', 2, 1, 40, 60, 4, 1),
-('Các công nghệ lập trình hiện đại', 2, 1, 40, 60, 4, 1),
-('Máy học', 2, 1, 40, 60, 4, 1),
-('Kiểm thử phần mềm', 2, 1, 40, 60, 4, 1),
-('Phát triển hệ thống web', 2, 1, 30, 70, 4, 1),
-('Thiết kế web', 2, 1, 40, 60, 4, 1),
-('Cấu trúc dữ liệu và thuật giải', 3, 1, 40, 60, 4, 1),
-('Công nghệ mã nguồn mở', 2, 1, 50, 50, 4, 1),
-('Lập trình giao diện', 2, 1, 50, 50, 4, 1),
-('Quản trị mạng', 2, 1, 40, 60, 4, 1),
-('An toàn hệ thống thông tin', 2, 1, 40, 60, 4, 1),
-('Hệ thống quản lý nguồn lực doanh nghiệp', 2, 1, 50, 50, 4, 1),
-('Hệ thống thông tin quản lý', 3, 0, 50, 50, 4, 1),
-('Lập trình cơ sở dữ liệu', 2, 1, 50, 50, 4, 1),
-('Phát triển hệ thống thông tin quản lý', 3, 0, 50, 50, 4, 1),
-('Đồ án ngành', 0, 4, 40, 60, 4, 1),
-('Thực tập tốt nghiệp', 0, 4, 30, 70, 4, 1),
-('Khóa luận tốt nghiệp', 0, 6, 0, 100, 4, 1),
-('Đồ án ngành Hệ thống thông tin quản lý', 0, 4, 40, 60, 4, 1),
-('Thực tập tốt nghiệp', 0, 4, 30, 70, 4, 1),
-('Khóa luận tốt nghiệp', 0, 6, 0, 100, 4, 1);
+('Nhập môn tin học', 2, 1, 40, 60, 4, "https://drive.google.com/file/d/198W-7oDbPwOyywOBJxV43h2r6x-t1FPX/view", 1),
+('Cơ sở lập trình', 3, 1, 40, 60, 4, "https://drive.google.com/file/d/1u16wa2QtA9t3uNE4sNmLwzc4xcC4AaPt/view", 1),
+('Hệ điều hành và Kiến trúc máy tính', 3, 0, 30, 70, 4, "https://drive.google.com/file/d/1Gu7Fu1TBvQCFOx4_jV7-Hw7vfyQmUX0_/view", 1),
+('Kỹ thuật lập trình', 3, 1, 40, 60, 4, "https://drive.google.com/file/d/10HvLCq1H_wIVUEeAVjlX8dBJVDeh5OR7/view", 1),
+('Ứng dụng web', 2, 1, 30, 70, 4, "https://drive.google.com/file/d/1u3wyjwELaaKjTZmEBq14ouZ3BowbHWTf/view", 1),
+('Cấu trúc dữ liệu và thuật giải 1', 3, 1, 40, 60, 4, "https://drive.google.com/file/d/1MZNVPUn9AT_tDAmkZavLflIFiqurj-K5/view", 1),
+('Cơ sở dữ liệu', 3, 1, 40, 60, 4, "https://drive.google.com/file/d/1ugGNJM5ortwEVVTnZKlLStxQQdzehLJT/view", 1),
+('Toán rời rạc', 4, 0, 40, 60, 4, "https://drive.google.com/file/d/1kh6LUdul3RO7tCxyTUrqFjBfvAA6nGb2/view", 1),
+('Cấu trúc dữ liệu và thuật giải 2', 2, 1, 40, 60, 4, "https://drive.google.com/file/d/1ELcy6tS4nGNauM4KK3IgIH-vm2yYiL2h/view", 1),
+('Mạng máy tính', 3, 1, 40, 60, 4, "https://drive.google.com/file/d/1HiBtOs0_28rhAy19hs3dIqOk1TLpQJKW/view", 1),
+('Lập trình hướng đối tượng', 3, 1, 40, 60, 4, "https://drive.google.com/file/d/1kM7_LaeLQOmm6fnhcy6w7GTbcTwKweZE/view", 1),
+('Kỹ năng nghề nghiệp', 3, 0, 40, 60, 4, "https://drive.google.com/file/d/18oELjie0gEm2NVbOFCSzHZq410Sh6QfG/view", 1),
+('Phân tích thiết kế hệ thống', 4, 0, 50, 50, 4, "https://drive.google.com/file/d/12O19tePNmdDFrmJw8fBvQJiWJ9jVfwz6/view", 1),
+('Mẫu thiết kế hướng đối tượng', 2, 1, 40, 60, 4, "https://drive.google.com/file/d/1BWqRmZyZLQpPJFe3agrXnOhJME_7yWNk/view", 1),
+('Trí tuệ nhân tạo', 2, 1, 50, 50, 4, "https://drive.google.com/file/d/119fJuQz0efJ8e420KqfELV4KXnZTrqzH/view", 1),
+('Quản trị hệ cơ sở dữ liệu', 2, 1, 40, 60, 4, "https://drive.google.com/file/d/1U_4mOWDXdZiGO0hJB_PDD-XCjZSd2vhC/view", 1),
+('Công nghệ phần mềm', 2, 1, 40, 60, 4, "https://drive.google.com/file/d/10r_eakrX0Ua1iPEA5v6gTbN2Tb6Fkxf9/view", 1),
+('Các công nghệ lập trình hiện đại', 2, 1, 40, 60, 4, "https://drive.google.com/file/d/1jISbit7fuegHcsYYUc8kP8N3sdbFCfs0/view", 1),
+('Máy học', 2, 1, 40, 60, 4, "https://drive.google.com/file/d/1nLQ5gDal-P1qQYkXp4QDlUrzWzbDhRlf/view", 1),
+('Kiểm thử phần mềm', 2, 1, 40, 60, 4, "https://drive.google.com/file/d/1W0Q0vSBdb6DYAbnPMpq6l-bMNi-h6PwO/view", 1),
+('Phát triển hệ thống web', 2, 1, 30, 70, 4, "https://drive.google.com/file/d/1wd9pYdZdvO9fXiI3Eis0iu5JpCrRmmbA/view", 1),
+('Thiết kế web', 2, 1, 40, 60, 4, "https://drive.google.com/file/d/1CdjdfVoqMAQtjxYQOLgZ38XAV6rGaE31/view", 1),
+('Cấu trúc dữ liệu và thuật giải', 3, 1, 40, 60, 4, "https://drive.google.com/file/d/1a06bnqxH7B1WbghJlPwv4ByN50kWXXvY/view", 1),
+('Công nghệ mã nguồn mở', 2, 1, 50, 50, 4, "https://drive.google.com/file/d/1Ae2rmjuu26eGNwx7bsh4-c2pMwcGFd7R/view", 1),
+('Lập trình giao diện', 2, 1, 50, 50, 4, "https://drive.google.com/file/d/11LFZ90i4ZnZkRAnjPb7JsOhYuouyRNW8/view", 1),
+('Quản trị mạng', 2, 1, 40, 60, 4, "https://drive.google.com/file/d/1P83GF327WR8xe0kBuF4fMPfrjmlJQ4Qb/view", 1),
+('An toàn hệ thống thông tin', 2, 1, 40, 60, 4, "https://drive.google.com/file/d/1EDeBU2FwN9Qut2wBsZc3Q8wL4_eb3eEg/view", 1),
+('Hệ thống quản lý nguồn lực doanh nghiệp', 2, 1, 50, 50, 4, "https://drive.google.com/file/d/1vjV3GcC4eoW_VoN0CvKRbuSrDuHWlbd4/view", 1),
+('Hệ thống thông tin quản lý', 3, 0, 50, 50, 4, "https://drive.google.com/file/d/1wfL9Kt7R1PSmO51L5pe9bgpkK_v5Msg-/view", 1),
+('Lập trình cơ sở dữ liệu', 2, 1, 50, 50, 4, "https://drive.google.com/file/d/1ykLOwQRy1hJ1TQtYFdulmb-K_uIHDyJS/view", 1),
+('Phát triển hệ thống thông tin quản lý', 3, 0, 50, 50, 4, "https://drive.google.com/file/d/14UbF2kI6-Gys-5FXEYNPxvwxy3s5VJ7V/view", 1),
+('Đồ án ngành', 0, 4, 40, 60, 4, "https://drive.google.com/file/d/1NXxGc6c2NQ0Fu7CFw94iiAbnVov_bqbx/view", 1),
+('Thực tập tốt nghiệp', 0, 4, 30, 70, 4, "https://drive.google.com/file/d/1tc_cVh5YPdez6gVUxu_56ZJA9vwYCTh0/view", 1),
+('Khóa luận tốt nghiệp', 0, 6, 0, 100, 4, "https://drive.google.com/file/d/1B0uVr9x9w3BAaE7I41rfSFUvzlk0l-DM/view", 1),
+('Đồ án ngành Hệ thống thông tin quản lý', 0, 4, 40, 60, 4, "https://drive.google.com/file/d/1oOuMvC4fWjUIflbMrGnBB3LYpvCMPYsy/view", 1),
+('Thực tập tốt nghiệp', 0, 4, 30, 70, 4, "https://drive.google.com/file/d/1E0Gp6-qEdRAvlfj9h1ko8ZswhtZmjrX3/view", 1),
+('Khóa luận tốt nghiệp', 0, 6, 0, 100, 4, "https://drive.google.com/file/d/1Up69mRDQRcGvdpuD-DEJU6KIkYyYDgll/view", 1);
 
 -- Thêm môn liên quan
 INSERT INTO mon_hoc_lien_quan (mon_hoc_id, lien_quan_id, nganh_id, loai)

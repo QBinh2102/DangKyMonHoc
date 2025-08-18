@@ -4,6 +4,7 @@ import Apis, { authApis, endpoints } from "@/configs/Apis";
 import { useEffect, useState } from "react";
 import "./decuong.css";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 const DeCuong = () => {
 
@@ -67,21 +68,26 @@ const DeCuong = () => {
                                 <ul>
                                     {groupedByKy[ky].map((mh) => (
                                         <li key={mh.monHoc.id}>
-                                            <button
-                                                type="button"
-                                                class="btn btn-outline-secondary"
-                                                onClick={() => router.push(`/sinhvien/decuong/${mh.monHoc.id}`)}
+                                            {mh.monHoc.deCuong !=="" ? (
+                                                <Link
+                                                className="decuong-link"
+                                                href={mh.monHoc.deCuong}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
                                             >
                                                 {mh.monHoc.tenMon}
-                                            </button>
+                                            </Link>
+                                            ):(
+                                                <p className="decuong-item">{mh.monHoc.tenMon}</p>
+                                            )}
+                                            
                                         </li>
                                     ))}
                                 </ul>
                             </div>
                         ))}
                 </div>
-            )
-            }
+            )}
         </div>
 
     );

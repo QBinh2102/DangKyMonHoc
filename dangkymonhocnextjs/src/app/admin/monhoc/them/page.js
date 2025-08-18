@@ -25,6 +25,10 @@ const ThemMonHoc = () => {
         type: "number",
         min: 0,
         max: 10,
+    }, {
+        label: "Đề cương môn học",
+        field: "deCuong",
+        type: "text",
     }];
 
     const loaiDiem = [{
