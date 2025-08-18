@@ -4,7 +4,10 @@ import cookie from 'react-cookies';
 const BASE_URL = "http://localhost:8080/api";
 
 export const endpoints = {
+    // Người dùng
     'current-user': '/secure/profile',
+    'profile-sinhvien': '/secure/sinhvien/me',
+    'change-password': '/secure/profile/changepassword',
     'dangNhap': '/login',
     // Học kỳ
     'hocKy': '/secure/admin/hocky',

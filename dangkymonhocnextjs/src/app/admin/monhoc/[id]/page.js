@@ -84,7 +84,10 @@ const SuaMonHoc = () => {
 
             // Lấy danh sách ngành
             let dsNganh = await Apis.get(`${endpoints['nganhMonHoc']}?monHocId=${res.data.id}`);
-            setSelectedNganhs(dsNganh.data.map(item => item.id.nganhId.toString()));
+            setSelectedNganhs(dsNganh.data.map(item => ({
+                nganhId: item.id.nganhId,
+                ky: item.ky
+            })));
 
             //Lấy các môn học liên quan
             let dsMonHocLienQuan = await Apis.get(`${endpoints['monHocLienQuan']}?monHocId=${res.data.id}`);
@@ -112,9 +115,26 @@ const SuaMonHoc = () => {
         });
     };
 
-    const loadMonHocTheoNganh = async (nganhId) => {
+    const handleCheckboxChange = (nganhId, checked) => {
+        if (checked) {
+            setSelectedNganhs([...selectedNganhs, { nganhId, ky: 1 }]); // mặc định kỳ 1
+        } else {
+            setSelectedNganhs(selectedNganhs.filter(item => item.nganhId !== nganhId));
+        }
+    };
+
+    // Hàm thay đổi kỳ
+    const handleKyChange = (nganhId, ky) => {
+        setSelectedNganhs(selectedNganhs.map(item =>
+            item.nganhId === nganhId ? { ...item, ky } : item
+        ));
+    };
+
+
+    const loadMonHocTheoNganh = async (nganhId, ky) => {
         try {
-            let res = await Apis.get(`${endpoints['nganhMonHoc']}?nganhId=${nganhId}`);
+
+            let res = await Apis.get(`${endpoints['nganhMonHoc']}?nganhId=${nganhId}&ky=${ky}`);
             console.log(res.data);
             const monKhongTrung = res.data.filter(mh => mh.monHoc.id !== parseInt(id));
             setListMonHoc(monKhongTrung);
@@ -125,10 +145,13 @@ const SuaMonHoc = () => {
     }
 
     const chooseNganh = async (e) => {
-        const nganhId = e.target.value;
+        const nganhId = parseInt(e.target.value);
 
+        const selected = selectedNganhs.find(n => n.nganhId === nganhId);
+        const ky = selected ? selected.ky : null;
+        console.log(nganhId, ky);
         setNewMonHocLienQuanPK({ ...newMonHocLienQuanPK, nganhId: nganhId });
-        { nganhId ? await loadMonHocTheoNganh(nganhId) : setListMonHoc([]) };
+        { nganhId && ky ? await loadMonHocTheoNganh(nganhId, ky) : setListMonHoc([]) };
     }
 
     const addMonHocLienQuan = async (e) => {
@@ -178,6 +201,7 @@ const SuaMonHoc = () => {
         }
     }
 
+
     const updateMonHoc = async (e) => {
         e.preventDefault();
         setMsg("");
@@ -189,9 +213,10 @@ const SuaMonHoc = () => {
             if (selectedNganhs.length > 0) {
                 const uploads = selectedNganhs.map(i => ({
                     id: {
-                        nganhId: parseInt(i),
+                        nganhId: parseInt(i.nganhId),
                         monHocId: id,
-                    }
+                    },
+                    ky: i.ky
                 }))
 
                 for (const upload of uploads) {
@@ -241,7 +266,7 @@ const SuaMonHoc = () => {
                                     id={i.field}
                                     type={i.type}
                                     className="form-control"
-                                    value={monHoc[i.field] || ""}
+                                    value={monHoc[i.field] === 0 ? 0 : monHoc[i.field] || ""}
                                     min={i.min !== undefined ? i.min : undefined}
                                     max={i.max !== undefined ? i.max : undefined}
                                     onChange={(e) => setMonHoc({ ...monHoc, [i.field]: e.target.value })}
@@ -276,32 +301,40 @@ const SuaMonHoc = () => {
                             />
                         </div>
 
-                        {listNganh.length > 0 && (
-                            <div className="mt-3 mb-3">
-                                <label className="form-label">Thuộc ngành</label>
-                                {listNganh.map(nganh => (
-                                    <div key={nganh.id} className="form-check">
+                        <div className="mt-3 mb-3">
+                            <label className="form-label">Thuộc ngành</label>
+                            {listNganh.map(nganh => {
+                                const isChecked = selectedNganhs.some(item => item.nganhId === nganh.id);
+                                const currentKy = selectedNganhs.find(item => item.nganhId === nganh.id)?.ky || 1;
+
+                                return (
+                                    <div key={nganh.id} className="form-check d-flex align-items-center gap-3">
                                         <input
                                             className="form-check-input"
                                             type="checkbox"
-                                            id={nganh.id}
-                                            value={nganh.id}
-                                            checked={selectedNganhs.includes(nganh.id.toString())}
-                                            onChange={(e) => {
-                                                if (e.target.checked) {
-                                                    setSelectedNganhs([...selectedNganhs, e.target.value]);
-                                                } else {
-                                                    setSelectedNganhs(selectedNganhs.filter(item => item !== e.target.value));
-                                                }
-                                            }}
+                                            id={`nganh-${nganh.id}`}
+                                            checked={isChecked}
+                                            onChange={(e) => handleCheckboxChange(nganh.id, e.target.checked)}
                                         />
                                         <label className="form-check-label" htmlFor={`nganh-${nganh.id}`}>
                                             {nganh.tenNganh}
                                         </label>
+
+                                        {isChecked && (
+                                            <select
+                                                className="form-select w-auto ms-2"
+                                                value={currentKy}
+                                                onChange={(e) => handleKyChange(nganh.id, parseInt(e.target.value))}
+                                            >
+                                                {[...Array(12)].map((_, i) => ( // ví dụ có 8 kỳ
+                                                    <option key={i + 1} value={i + 1}>Kỳ {i + 1}</option>
+                                                ))}
+                                            </select>
+                                        )}
                                     </div>
-                                ))}
-                            </div>
-                        )}
+                                );
+                            })}
+                        </div>
 
                         <div>
                             <h2>Các môn học liên quan</h2>
@@ -317,7 +350,7 @@ const SuaMonHoc = () => {
                                 >
                                     <option value="">-- Chọn ngành --</option>
                                     {listNganh
-                                        .filter(nganh => selectedNganhs.includes(nganh.id.toString()))
+                                        .filter(nganh => selectedNganhs.some(item => item.nganhId === nganh.id))
                                         .map(nganh => (
                                             <option key={nganh.id} value={nganh.id}>{nganh.tenNganh}</option>
                                         ))}

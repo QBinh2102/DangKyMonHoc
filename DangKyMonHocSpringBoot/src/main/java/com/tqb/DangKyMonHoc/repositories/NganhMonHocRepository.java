@@ -8,6 +8,8 @@ import com.tqb.DangKyMonHoc.pojo.NganhMonHoc;
 import com.tqb.DangKyMonHoc.pojo.NganhMonHocPK;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 /**
  *
@@ -19,5 +21,11 @@ public interface NganhMonHocRepository extends JpaRepository<NganhMonHoc, NganhM
     List<NganhMonHoc> findById_MonHocId(int monHocId);
     List<NganhMonHoc> findById_NganhIdAndId_MonHocId(int nganhId, int monHocId);
     List<NganhMonHoc> findAllByOrderById_NganhIdAscId_MonHocIdAsc();
+    @Query("""
+        SELECT n
+        FROM NganhMonHoc n
+        WHERE n.nganh.id = :nganhId AND n.ky < :ky
+    """)
+    List<NganhMonHoc> findById_NganhIdAndKy(@Param("nganhId") int nganhId, @Param("ky") int ky);
     
 }

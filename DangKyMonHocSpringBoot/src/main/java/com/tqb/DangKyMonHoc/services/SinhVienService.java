@@ -15,6 +15,7 @@ import java.util.Map;
 public interface SinhVienService {
     
     SinhVien findById(int id);
+    SinhVien findByEmail(String email);
     List<SinhVien> findSinhVien(Map<String,String> params);
     SinhVien addOrUpdate(SinhVien sinhVien);
     

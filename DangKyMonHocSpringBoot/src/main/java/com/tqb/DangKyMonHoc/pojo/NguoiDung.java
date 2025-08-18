@@ -16,7 +16,10 @@ import jakarta.persistence.NamedQueries;
 import jakarta.persistence.NamedQuery;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  *
@@ -28,8 +31,12 @@ import java.io.Serializable;
     @NamedQuery(name = "NguoiDung.findAll", query = "SELECT n FROM NguoiDung n"),
     @NamedQuery(name = "NguoiDung.findById", query = "SELECT n FROM NguoiDung n WHERE n.id = :id"),
     @NamedQuery(name = "NguoiDung.findByHoTen", query = "SELECT n FROM NguoiDung n WHERE n.hoTen = :hoTen"),
+    @NamedQuery(name = "NguoiDung.findByNgaySinh", query = "SELECT n FROM NguoiDung n WHERE n.ngaySinh = :ngaySinh"),
+    @NamedQuery(name = "NguoiDung.findByGioiTinh", query = "SELECT n FROM NguoiDung n WHERE n.gioiTinh = :gioiTinh"),
+    @NamedQuery(name = "NguoiDung.findBySoDienThoai", query = "SELECT n FROM NguoiDung n WHERE n.soDienThoai = :soDienThoai"),
     @NamedQuery(name = "NguoiDung.findByEmail", query = "SELECT n FROM NguoiDung n WHERE n.email = :email"),
     @NamedQuery(name = "NguoiDung.findByMatKhau", query = "SELECT n FROM NguoiDung n WHERE n.matKhau = :matKhau"),
+    @NamedQuery(name = "NguoiDung.findByAvatar", query = "SELECT n FROM NguoiDung n WHERE n.avatar = :avatar"),
     @NamedQuery(name = "NguoiDung.findByVaiTro", query = "SELECT n FROM NguoiDung n WHERE n.vaiTro = :vaiTro")})
 public class NguoiDung implements Serializable {
 
@@ -42,12 +49,21 @@ public class NguoiDung implements Serializable {
     @Basic(optional = false)
     @Column(name = "ho_ten")
     private String hoTen;
+    @Column(name = "ngay_sinh")
+    @Temporal(TemporalType.DATE)
+    private Date ngaySinh;
+    @Column(name = "gioi_tinh")
+    private String gioiTinh;
+    @Column(name = "so_dien_thoai")
+    private String soDienThoai;
     @Basic(optional = false)
     @Column(name = "email")
     private String email;
     @Basic(optional = false)
     @Column(name = "mat_khau")
     private String matKhau;
+    @Column(name = "avatar")
+    private String avatar;
     @Basic(optional = false)
     @Column(name = "vai_tro")
     private String vaiTro;
@@ -89,6 +105,30 @@ public class NguoiDung implements Serializable {
         this.hoTen = hoTen;
     }
 
+    public Date getNgaySinh() {
+        return ngaySinh;
+    }
+
+    public void setNgaySinh(Date ngaySinh) {
+        this.ngaySinh = ngaySinh;
+    }
+
+    public String getGioiTinh() {
+        return gioiTinh;
+    }
+
+    public void setGioiTinh(String gioiTinh) {
+        this.gioiTinh = gioiTinh;
+    }
+
+    public String getSoDienThoai() {
+        return soDienThoai;
+    }
+
+    public void setSoDienThoai(String soDienThoai) {
+        this.soDienThoai = soDienThoai;
+    }
+
     public String getEmail() {
         return email;
     }
@@ -103,6 +143,14 @@ public class NguoiDung implements Serializable {
 
     public void setMatKhau(String matKhau) {
         this.matKhau = matKhau;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
     }
 
     public String getVaiTro() {
@@ -153,5 +201,5 @@ public class NguoiDung implements Serializable {
     public String toString() {
         return "com.tqb.DangKyMonHoc.pojo.NguoiDung[ id=" + id + " ]";
     }
-    
+ 
 }

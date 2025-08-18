@@ -6,6 +6,7 @@ package com.tqb.DangKyMonHoc.controllers;
 
 import com.tqb.DangKyMonHoc.pojo.SinhVien;
 import com.tqb.DangKyMonHoc.services.SinhVienService;
+import java.security.Principal;
 import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,7 +45,7 @@ public class ApiSinhVienController {
     }
 
     @GetMapping("/secure/admin/sinhvien")
-    public ResponseEntity<List<SinhVien>> getSinhVien(@RequestParam Map<String,String> params) {
+    public ResponseEntity<List<SinhVien>> getSinhVien(@RequestParam Map<String, String> params) {
         return new ResponseEntity<>(this.sinhVienService.findSinhVien(params), HttpStatus.OK);
     }
 
@@ -75,6 +76,18 @@ public class ApiSinhVienController {
             sinhVien.setId(id);
             return new ResponseEntity<>(this.sinhVienService.addOrUpdate(sinhVien), HttpStatus.OK);
         }
+    }
+
+    @GetMapping("/secure/sinhvien/me")
+    public ResponseEntity<SinhVien> getCurrentSinhVien(Principal principal) {
+        // principal.getName() sẽ trả về username hoặc email đã đăng nhập
+        String email = principal.getName();
+
+        SinhVien sv = sinhVienService.findByEmail(email);
+        if (sv == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(sv, HttpStatus.OK);
     }
 
 }

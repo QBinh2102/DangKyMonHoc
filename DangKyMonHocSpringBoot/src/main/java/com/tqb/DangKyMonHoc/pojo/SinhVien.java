@@ -18,10 +18,7 @@ import jakarta.persistence.NamedQuery;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
 import java.io.Serializable;
-import java.util.Date;
 import java.util.Set;
 
 /**
@@ -33,7 +30,6 @@ import java.util.Set;
 @NamedQueries({
     @NamedQuery(name = "SinhVien.findAll", query = "SELECT s FROM SinhVien s"),
     @NamedQuery(name = "SinhVien.findById", query = "SELECT s FROM SinhVien s WHERE s.id = :id"),
-    @NamedQuery(name = "SinhVien.findByNgaySinh", query = "SELECT s FROM SinhVien s WHERE s.ngaySinh = :ngaySinh"),
     @NamedQuery(name = "SinhVien.findByKhoaHoc", query = "SELECT s FROM SinhVien s WHERE s.khoaHoc = :khoaHoc"),
     @NamedQuery(name = "SinhVien.findBySoTinChi", query = "SELECT s FROM SinhVien s WHERE s.soTinChi = :soTinChi")})
 public class SinhVien implements Serializable {
@@ -43,9 +39,6 @@ public class SinhVien implements Serializable {
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
-    @Column(name = "ngay_sinh")
-    @Temporal(TemporalType.DATE)
-    private Date ngaySinh;
     @Column(name = "khoa_hoc")
     private Integer khoaHoc;
     @Column(name = "so_tin_chi")
@@ -86,14 +79,6 @@ public class SinhVien implements Serializable {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public Date getNgaySinh() {
-        return ngaySinh;
-    }
-
-    public void setNgaySinh(Date ngaySinh) {
-        this.ngaySinh = ngaySinh;
     }
 
     public Integer getKhoaHoc() {

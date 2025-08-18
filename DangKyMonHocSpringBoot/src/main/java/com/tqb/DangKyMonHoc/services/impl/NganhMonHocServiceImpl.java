@@ -14,7 +14,6 @@ import com.tqb.DangKyMonHoc.repositories.NganhRepository;
 import com.tqb.DangKyMonHoc.services.NganhMonHocService;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -38,10 +37,14 @@ public class NganhMonHocServiceImpl implements NganhMonHocService {
     public List<NganhMonHoc> findNganhMonHoc(Map<String, String> params) {
         String nganhId = params.get("nganhId");
         String monHocId = params.get("monHocId");
+        String ky = params.get("ky");
         boolean hasNganhId = nganhId != null && !nganhId.isEmpty();
         boolean hasMonHocId = monHocId != null && !monHocId.isEmpty();
+        boolean hasKy = ky != null && !ky.isEmpty();
         if (hasNganhId && hasMonHocId) {
             return this.nganhMonHocRepo.findById_NganhIdAndId_MonHocId(Integer.parseInt(nganhId), Integer.parseInt(monHocId));
+        } else if (hasNganhId && hasKy) {
+            return this.nganhMonHocRepo.findById_NganhIdAndKy(Integer.parseInt(nganhId), Integer.parseInt(ky));
         } else if (hasNganhId) {
             return this.nganhMonHocRepo.findById_NganhId(Integer.parseInt(nganhId));
         } else if (hasMonHocId) {

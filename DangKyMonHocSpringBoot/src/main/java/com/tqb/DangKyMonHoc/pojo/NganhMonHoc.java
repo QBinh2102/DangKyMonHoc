@@ -4,6 +4,7 @@
  */
 package com.tqb.DangKyMonHoc.pojo;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
@@ -32,13 +33,17 @@ public class NganhMonHoc {
     @JoinColumn(name = "mon_hoc_id")
     private MonHoc monHoc;
 
+    @Column(name = "ky", nullable = false)
+    private int ky;
+    
     // Constructors
     public NganhMonHoc() {}
 
-    public NganhMonHoc(Nganh nganh, MonHoc monHoc) {
+    public NganhMonHoc(Nganh nganh, MonHoc monHoc, int ky) {
         this.id = new NganhMonHocPK(nganh.getId(), monHoc.getId());
         this.nganh = nganh;
         this.monHoc = monHoc;
+        this.ky = ky;
     }
 
     // Getters & Setters
@@ -50,5 +55,8 @@ public class NganhMonHoc {
 
     public MonHoc getMonHoc() { return monHoc; }
     public void setMonHoc(MonHoc monHoc) { this.monHoc = monHoc; }
+    
+    public int getKy() { return ky; }
+    public void setKy(int ky) { this.ky = ky; }
 }
 

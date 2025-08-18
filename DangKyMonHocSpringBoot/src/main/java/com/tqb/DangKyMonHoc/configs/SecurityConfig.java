@@ -4,6 +4,8 @@
  */
 package com.tqb.DangKyMonHoc.configs;
 
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
 import com.tqb.DangKyMonHoc.filters.JwtFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -24,6 +26,18 @@ public class SecurityConfig {
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+    
+    @Bean
+    public Cloudinary cloudinary() {
+        Cloudinary cloudinary
+                = new Cloudinary(ObjectUtils.asMap(
+                        "cloud_name", "dbhhpljbo",
+                        "api_key", "769838993333676",
+                        "api_secret", "sKhPxCraBaikLWgXkceg2nwZox8",
+                        "secure", true));
+        
+        return cloudinary;
     }
     
     @Bean

@@ -10,6 +10,14 @@ const ThemGiangVien = () => {
         field: "hoTen",
         type: "text",
     }, {
+        label: "Ngày Sinh",
+        field: "ngaySinh",
+        type: "date",
+    }, {
+        label: "Số Điện Thoại",
+        field: "soDienThoai",
+        type: "tel",
+    }, {
         label: "Email",
         field: "email",
         type: "email",
@@ -43,6 +51,7 @@ const ThemGiangVien = () => {
         setLoading(true);
 
         try {
+            console.log(newGiangVien);
             await authApis().post(endpoints['themHoacLayGiangVien'], newGiangVien);
             setNewGiangVien({
                 hocVi: "",
@@ -78,6 +87,21 @@ const ThemGiangVien = () => {
 
             <div>
                 <form onSubmit={addGiangVien} className="w-50 mx-auto">
+                    <div className="mb-3 mt-3">
+                        <label htmlFor="gioiTinh" className="form-label">Giới tính</label>
+                        <select
+                            id="gioiTinh"
+                            className="form-select"
+                            value={newGiangVien.nguoiDung.gioiTinh || ""}
+                            onChange={e => setNewGiangVien({ ...newGiangVien, nguoiDung: { ...newGiangVien.nguoiDung, gioiTinh: e.target.value } })}
+                            required
+                        >
+                            <option value="">-- Chọn giới tính --</option>
+                            <option value="nam">Nam</option>
+                            <option value="nữ">Nữ</option>
+                        </select>
+                    </div>
+
                     {info.map(i => (
                         <div className="mt-3 mb-3" key={i.field}>
                             <label htmlFor={i.field} className="form-label">{i.label}</label>
@@ -125,7 +149,45 @@ const ThemGiangVien = () => {
                         </select>
                     </div>
 
-                    <div className="text-center">
+                    <div className="mt-3 mb-3">
+                        <label htmlFor="avatar" className="form-label">Ảnh đại diện</label>
+                        <input
+                            id="avatar"
+                            type="file"
+                            accept="image/*"
+                            className="form-control"
+                            onChange={e => {
+                                const file = e.target.files[0];
+                                if (file) {
+                                    const reader = new FileReader();
+                                    reader.onloadend = () => {
+                                        setNewGiangVien({
+                                            ...newGiangVien,
+                                            nguoiDung: {
+                                                ...newGiangVien.nguoiDung,
+                                                avatar: reader.result // base64 string
+                                            }
+                                        });
+                                    };
+                                    reader.readAsDataURL(file); // convert file -> base64
+                                }
+                            }}
+                        />
+                    </div>
+
+                    {/* Xem trước ảnh */}
+                    {newGiangVien.nguoiDung.avatar && (
+                        <div className="mt-3 text-center">
+                            <img
+                                src={newGiangVien.nguoiDung.avatar}
+                                alt="Ảnh đại diện"
+                                style={{ maxWidth: "150px"}}
+                            />
+                        </div>
+                    )}
+
+
+                    <div className="text-center mt-3 mb-3">
                         <button type="submit" className="btn btn-primary" disabled={loading}>
                             {loading ?
                                 <>

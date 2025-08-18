@@ -15,5 +15,6 @@ public interface NguoiDungService extends UserDetailsService{
     
     NguoiDung login(String email, String matKhau);
     NguoiDung findByEmail(String email);
+    boolean changePassword(int nguoiDungId, String oldPassword, String newPassword);
     
 }

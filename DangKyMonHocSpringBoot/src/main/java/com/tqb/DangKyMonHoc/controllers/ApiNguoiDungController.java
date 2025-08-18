@@ -57,4 +57,23 @@ public class ApiNguoiDungController {
         return new ResponseEntity<>(this.nguoiDungService.findByEmail(principal.getName()), HttpStatus.OK);
     }
     
+    @PostMapping("/secure/profile/changepassword")
+    public ResponseEntity<?> changePassword(Principal principal, @RequestBody Map<String, String> payload) {
+        String email = principal.getName();
+        NguoiDung nd = nguoiDungService.findByEmail(email);
+
+        if (nd == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Không tìm thấy người dùng");
+        }
+
+        String oldPassword = payload.get("oldPassword");
+        String newPassword = payload.get("newPassword");
+
+        boolean success = nguoiDungService.changePassword(nd.getId(), oldPassword, newPassword);
+        if (!success) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Mật khẩu cũ không đúng");
+        }
+        return ResponseEntity.ok("Đổi mật khẩu thành công");
+    }
+    
 }

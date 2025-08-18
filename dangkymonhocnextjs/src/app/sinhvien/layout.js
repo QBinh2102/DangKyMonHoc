@@ -8,7 +8,7 @@ export default function SinhVienLayout({ children }) {
 
     const menuItems = [
         { label: "Thông tin", href: "/sinhvien" },
-        { label: "Đề cương môn học", href: "/sinhvien" },
+        { label: "Đề cương môn học", href: "/sinhvien/decuong" },
         { label: "Xem điểm", href: "/sinhvien" },
         { label: "Thời khóa biểu", href: "/sinhvien" },
         { label: "Đăng ký môn học", href: "/sinhvien" },

@@ -4,13 +4,19 @@
  */
 package com.tqb.DangKyMonHoc.services.impl;
 
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
 import com.tqb.DangKyMonHoc.pojo.GiangVien;
 import com.tqb.DangKyMonHoc.pojo.NguoiDung;
 import com.tqb.DangKyMonHoc.repositories.GiangVienRepository;
 import com.tqb.DangKyMonHoc.repositories.NguoiDungRepository;
 import com.tqb.DangKyMonHoc.services.GiangVienService;
+import java.io.IOException;
+import java.util.Base64;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -30,6 +36,9 @@ public class GiangVienServiceImpl implements GiangVienService {
 
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
+
+    @Autowired
+    private Cloudinary cloudinary;
 
     @Override
     public GiangVien findById(int id) {
@@ -61,8 +70,7 @@ public class GiangVienServiceImpl implements GiangVienService {
             if (nguoiDung.getId() != null) {
                 NguoiDung existing = nguoiDungRepo.findById(nguoiDung.getId()).orElse(null);
                 if (existing != null) {
-                    existing.setHoTen(nguoiDung.getHoTen());
-                    existing.setEmail(nguoiDung.getEmail());
+                    existing.setSoDienThoai(nguoiDung.getSoDienThoai());
 
                     if (nguoiDung.getMatKhau() != null && !nguoiDung.getMatKhau().isEmpty()) {
                         existing.setMatKhau(this.passwordEncoder.encode(nguoiDung.getMatKhau()));
@@ -71,6 +79,18 @@ public class GiangVienServiceImpl implements GiangVienService {
                     giangVien.setNguoiDung(existing);
                 }
             } else {
+                if (nguoiDung.getAvatar()!= null && !nguoiDung.getAvatar().isEmpty()) {
+                    try {
+                        String file = nguoiDung.getAvatar().split(",")[1]; // bỏ "data:image/png;base64,"
+                        byte[] imageBytes = Base64.getDecoder().decode(file);
+
+                        Map res = cloudinary.uploader().upload(imageBytes,
+                                ObjectUtils.asMap("resource_type", "auto"));
+                        nguoiDung.setAvatar(res.get("secure_url").toString());
+                    } catch (IOException ex) {
+                        Logger.getLogger(SinhVienServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
                 nguoiDung.setMatKhau(this.passwordEncoder.encode("123456"));
                 giangVien.setNguoiDung(nguoiDung);
             }

@@ -56,4 +56,23 @@ public class NguoiDungServiceImpl implements NguoiDungService{
         return this.nguoiDungRepo.findByEmail(email);
     }
     
+    @Override
+    public boolean changePassword(int nguoiDungId, String oldPassword, String newPassword) {
+        NguoiDung nguoiDung = nguoiDungRepo.findById(nguoiDungId).orElse(null);
+        if (nguoiDung == null) {
+            return false; // Không tìm thấy user
+        }
+
+        // Kiểm tra mật khẩu cũ có khớp không
+        if (!passwordEncoder.matches(oldPassword, nguoiDung.getMatKhau())) {
+            return false; // Sai mật khẩu cũ
+        }
+
+        // Đổi mật khẩu mới
+        nguoiDung.setMatKhau(passwordEncoder.encode(newPassword));
+        nguoiDungRepo.save(nguoiDung);
+
+        return true;
+    }
+    
 }

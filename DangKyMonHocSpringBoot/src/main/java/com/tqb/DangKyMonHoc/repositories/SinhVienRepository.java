@@ -15,6 +15,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface SinhVienRepository extends JpaRepository<SinhVien, Integer>{
     
     SinhVien findById(int id);
+    SinhVien findByNguoiDung_Email(String email);
     List<SinhVien> findByNguoiDung_HoTenContainingIgnoreCaseOrderByIdAsc(String hoTen);
     List<SinhVien> findAllByOrderByIdAsc();
     

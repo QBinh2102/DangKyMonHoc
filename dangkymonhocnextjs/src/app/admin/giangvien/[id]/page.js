@@ -10,14 +10,32 @@ const SuaGiangVien = () => {
         label: "Họ tên",
         field: "hoTen",
         type: "text",
+        disabled: true,
+    }, {
+        label: "Ngày sinh",
+        field: "ngaySinh",
+        type: "text",
+        disabled: true,
+    }, {
+        label: "Giới tính",
+        field: "gioiTinh",
+        type: "text",
+        disabled: true,
+    }, {
+        label: "Số điện thoại",
+        field: "soDienThoai",
+        type: "tel",
+        disabled: false,
     }, {
         label: "Email",
         field: "email",
         type: "email",
+        disabled: true,
     }, {
         label: "Mật khẩu",
         field: "matKhau",
         type: "password",
+        disabled: false,
     }]
     const { id } = useParams();
     const [giangVien, setGiangVien] = useState({
@@ -45,6 +63,14 @@ const SuaGiangVien = () => {
     useEffect(() => {
         loadGiangVien();
     }, [id]);
+
+    const getGioiTinh = (gt) => {
+        if (gt === "nam") {
+            return "Nam";
+        } else {
+            return "Nữ";
+        }
+    }
 
     const updateGiangVien = async (e) => {
         e.preventDefault();
@@ -94,6 +120,16 @@ const SuaGiangVien = () => {
             ) : (
                 <div>
                     <form onSubmit={updateGiangVien} className="w-50 mx-auto">
+                        {giangVien.nguoiDung.avatar && (
+                            <div className="mt-3 text-center">
+                                <img
+                                    src={giangVien.nguoiDung.avatar}
+                                    alt="Ảnh đại diện"
+                                    style={{ maxWidth: "150px" }}
+                                />
+                            </div>
+                        )}
+
                         {info.map(i => (
                             <div className="mb-3 mt-3" key={i.field}>
                                 <label htmlFor={i.field} className="form-label">{i.label}</label>
@@ -101,8 +137,16 @@ const SuaGiangVien = () => {
                                     id={i.field}
                                     type={i.type}
                                     className="form-control"
-                                    value={i.field === "matKhau" ? newPassword : (giangVien.nguoiDung[i.field] || "")}
+                                    value={
+                                        i.field === "matKhau"
+                                            ? newPassword
+                                            : i.field === "gioiTinh"
+                                                ? getGioiTinh(giangVien.nguoiDung[i.field])
+                                                : giangVien.nguoiDung[i.field] || ""
+                                    }
+
                                     placeholder={i.field === "matKhau" ? "Chỉ nhập nếu muốn đổi mật khẩu" : (giangVien.nguoiDung[i.field])}
+                                    disabled={i.disabled}
                                     onChange={(e) => {
                                         i.field === "matKhau" ?
                                             setNewPassword(e.target.value) :
@@ -139,7 +183,7 @@ const SuaGiangVien = () => {
                             />
                         </div>
 
-                        <div className="text-center">
+                        <div className="text-center mt-3 mb-3">
                             <button type="submit" className="text-center btn btn-primary" disabled={updateLoading}>
                                 {updateLoading ?
                                     <>

@@ -6,32 +6,42 @@ import { useEffect, useState } from "react";
 
 const SuaSinhVien = () => {
 
-    const infoNguoiDung = [{
+    const info = [{
         label: "Họ tên",
         field: "hoTen",
         type: "text",
+        disabled: true,
+    }, {
+        label: "Ngày sinh",
+        field: "ngaySinh",
+        type: "text",
+        disabled: true,
+    }, {
+        label: "Giới tính",
+        field: "gioiTinh",
+        type: "text",
+        disabled: true,
+    }, {
+        label: "Số điện thoại",
+        field: "soDienThoai",
+        type: "tel",
+        disabled: false,
     }, {
         label: "Email",
         field: "email",
         type: "email",
+        disabled: true,
     }, {
         label: "Mật khẩu",
         field: "matKhau",
         type: "password",
-    }]
-    const infoSinhVien = [{
-        label: "Ngày sinh",
-        field: "ngaySinh",
-        type: "text",
-    }, {
-        label: "Khóa học",
-        field: "khoaHoc",
-        type: "text",
+        disabled: false,
     }, {
         label: "Số tín chỉ",
         field: "soTinChi",
         type: "text",
-    }]
+        disabled: true,
+    }];
     const { id } = useParams();
     const [sinhVien, setSinhVien] = useState({
         nguoiDung: {},
@@ -57,6 +67,14 @@ const SuaSinhVien = () => {
     useEffect(() => {
         loadSinhVien();
     }, [id]);
+
+    const getGioiTinh = (gt) => {
+        if (gt === "nam") {
+            return "Nam";
+        } else {
+            return "Nữ";
+        }
+    }
 
     const updateSinhVien = async (e) => {
         e.preventDefault();
@@ -107,35 +125,41 @@ const SuaSinhVien = () => {
             ) : (
                 <div>
                     <form onSubmit={updateSinhVien} className="w-50 mx-auto">
-                        {infoNguoiDung.map(i => (
-                            <div className="mt-3 mb-3" key={i.field}>
+                        {sinhVien.nguoiDung.avatar && (
+                            <div className="mt-3 text-center">
+                                <img
+                                    src={sinhVien.nguoiDung.avatar}
+                                    alt="Ảnh đại diện"
+                                    style={{ maxWidth: "150px" }}
+                                />
+                            </div>
+                        )}
+
+                        {info.map(i => (
+                            <div className="mb-3 mt-3" key={i.field}>
                                 <label htmlFor={i.field} className="form-label">{i.label}</label>
                                 <input
                                     id={i.field}
                                     type={i.type}
                                     className="form-control"
-                                    value={i.field === "matKhau" ? newPassword : (sinhVien.nguoiDung[i.field] || "")}
+                                    value={
+                                        i.field === "matKhau"
+                                            ? newPassword
+                                            : i.field === "gioiTinh"
+                                                ? getGioiTinh(sinhVien.nguoiDung[i.field])
+                                                : i.field === "soTinChi"
+                                                ? sinhVien[i.field]
+                                                : sinhVien.nguoiDung[i.field] || ""
+                                    }
+
                                     placeholder={i.field === "matKhau" ? "Chỉ nhập nếu muốn đổi mật khẩu" : (sinhVien.nguoiDung[i.field])}
+                                    disabled={i.disabled}
                                     onChange={(e) => {
                                         i.field === "matKhau" ?
                                             setNewPassword(e.target.value) :
                                             setSinhVien({ ...sinhVien, nguoiDung: { ...sinhVien.nguoiDung, [i.field]: e.target.value } })
                                     }}
                                     required={i.field !== "matKhau"}
-                                />
-                            </div>
-                        ))}
-
-                        {infoSinhVien.map(i => (
-                            <div className="mt-3 mb-3" key={i.field}>
-                                <label htmlFor={i.field} className="form-label">{i.label}</label>
-                                <input
-                                    id={i.field}
-                                    type={i.type}
-                                    className="form-control"
-                                    value={sinhVien[i.field] || ""}
-                                    placeholder={sinhVien[i.field]}
-                                    disabled
                                 />
                             </div>
                         ))}
@@ -160,7 +184,7 @@ const SuaSinhVien = () => {
                             />
                         </div>
 
-                        <div className="text-center">
+                        <div className="text-center mt-3 mb-3">
                             <button type="submit" className="text-center btn btn-primary" disabled={updateLoading}>
                                 {updateLoading ?
                                     <>

@@ -1,21 +1,35 @@
-.thong-tin-container {
-    border: 2px solid #ccc;
-    padding: 16px;
-    margin-top: 10px;
-    margin-bottom: 10px;
-    border-radius: 8px;
-    max-width: 500px;
-    background: #fafafa;
+.profile-container {
+    display: flex;
+    gap: 20px;
+    max-width: 900px;
+    margin: auto;
+    align-items: flex-start;
 }
 
-.thong-tin-container h2 {
-    margin-top: 20px;
-    font-size: 18px;
-    color: #333;
-    border-bottom: 1px solid #ddd;
-    padding-bottom: 4px;
+.avatar-img {
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 2px solid #ccc;
+}
+
+.tool-section {
+    flex: 1;
+}
+
+.info-section {
+    flex: 2;
+}
+
+.thong-tin-container {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 20px;
+    background: white;
 }
 
 .info-row {
-    margin: 6px 0;
+    margin: 5px 0;
 }
