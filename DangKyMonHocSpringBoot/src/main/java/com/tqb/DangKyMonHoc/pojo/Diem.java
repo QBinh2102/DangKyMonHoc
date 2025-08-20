@@ -47,6 +47,9 @@ public class Diem implements Serializable {
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "diem")
     private BigDecimal diem;
+    @JoinColumn(name = "giang_vien_id", referencedColumnName = "id")
+    @ManyToOne(optional = false)
+    private GiangVien giangVienId;
     @JoinColumn(name = "hoc_ky_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private HocKy hocKyId;
@@ -100,6 +103,14 @@ public class Diem implements Serializable {
 
     public void setDiem(BigDecimal diem) {
         this.diem = diem;
+    }
+
+    public GiangVien getGiangVienId() {
+        return giangVienId;
+    }
+
+    public void setGiangVienId(GiangVien giangVienId) {
+        this.giangVienId = giangVienId;
     }
 
     public HocKy getHocKyId() {

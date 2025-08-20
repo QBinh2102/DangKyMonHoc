@@ -13,8 +13,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.NamedQueries;
 import jakarta.persistence.NamedQuery;
@@ -44,12 +42,6 @@ public class Nganh implements Serializable {
     @Basic(optional = false)
     @Column(name = "ten_nganh")
     private String tenNganh;
-    @JoinTable(name = "nganh_mon_hoc", joinColumns = {
-        @JoinColumn(name = "nganh_id", referencedColumnName = "id")}, inverseJoinColumns = {
-        @JoinColumn(name = "mon_hoc_id", referencedColumnName = "id")})
-    @ManyToMany
-    @JsonIgnore
-    private Set<MonHoc> monHocSet;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "nganh")
     @JsonIgnore
     private Set<MonHocLienQuan> monHocLienQuanSet;
@@ -92,14 +84,6 @@ public class Nganh implements Serializable {
 
     public void setTenNganh(String tenNganh) {
         this.tenNganh = tenNganh;
-    }
-
-    public Set<MonHoc> getMonHocSet() {
-        return monHocSet;
-    }
-
-    public void setMonHocSet(Set<MonHoc> monHocSet) {
-        this.monHocSet = monHocSet;
     }
 
     public Set<MonHocLienQuan> getMonHocLienQuanSet() {

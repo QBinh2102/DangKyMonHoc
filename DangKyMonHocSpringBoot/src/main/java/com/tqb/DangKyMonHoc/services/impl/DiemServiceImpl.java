@@ -5,6 +5,7 @@
 package com.tqb.DangKyMonHoc.services.impl;
 
 import com.tqb.DangKyMonHoc.pojo.Diem;
+import com.tqb.DangKyMonHoc.pojo.DiemSinhVienDTO;
 import com.tqb.DangKyMonHoc.repositories.DiemRepository;
 import com.tqb.DangKyMonHoc.services.DiemService;
 import java.util.List;
@@ -48,6 +49,11 @@ public class DiemServiceImpl implements DiemService {
         } else {
             return this.diemRepo.findAllByOrderByIdAsc();
         }
+    }
+
+    @Override
+    public List<DiemSinhVienDTO> findDiemBySinhVienId(int sinhVienId) {
+        return this.diemRepo.findDiemBySinhVienId(sinhVienId);
     }
 
     @Override

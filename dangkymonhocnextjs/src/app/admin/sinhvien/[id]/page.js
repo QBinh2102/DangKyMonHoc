@@ -32,6 +32,11 @@ const SuaSinhVien = () => {
         type: "email",
         disabled: true,
     }, {
+        label: "Căn cước công dân",
+        field: "cccd",
+        type: "text",
+        disabled: true,
+    }, {
         label: "Mật khẩu",
         field: "matKhau",
         type: "password",

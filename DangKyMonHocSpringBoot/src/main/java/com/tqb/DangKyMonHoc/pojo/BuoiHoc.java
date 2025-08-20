@@ -45,7 +45,7 @@ public class BuoiHoc implements Serializable {
     @Column(name = "loai")
     private String loai;
     @JoinColumn(name = "giang_vien_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
+    @ManyToOne
     private GiangVien giangVienId;
     @JoinColumn(name = "hoc_ky_id", referencedColumnName = "id")
     @ManyToOne(optional = false)

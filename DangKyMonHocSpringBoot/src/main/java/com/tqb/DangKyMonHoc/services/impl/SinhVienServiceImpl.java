@@ -93,7 +93,7 @@ public class SinhVienServiceImpl implements SinhVienService {
                         Logger.getLogger(SinhVienServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }
-                nguoiDung.setMatKhau(this.passwordEncoder.encode("123456"));
+                nguoiDung.setMatKhau(this.passwordEncoder.encode(nguoiDung.getCccd()));
                 sinhVien.setNguoiDung(nguoiDung);
             }
         }

@@ -55,7 +55,10 @@ const DeCuong = () => {
 
     return (
         <div>
-            <h1 className="text-center">Đề cương môn học</h1>
+            <h1 className="text-center mt-3 mb-3">
+                Đề cương môn học
+            </h1>
+
             {loading ? (
                 <p>Đang tải dữ liệu...</p>
             ) : (
@@ -68,19 +71,19 @@ const DeCuong = () => {
                                 <ul>
                                     {groupedByKy[ky].map((mh) => (
                                         <li key={mh.monHoc.id}>
-                                            {mh.monHoc.deCuong !=="" ? (
+                                            {mh.monHoc.deCuong !== "" ? (
                                                 <Link
-                                                className="decuong-link"
-                                                href={mh.monHoc.deCuong}
-                                                target="_blank"
-                                                rel="noopener noreferrer"
-                                            >
-                                                {mh.monHoc.tenMon}
-                                            </Link>
-                                            ):(
+                                                    className="decuong-link"
+                                                    href={mh.monHoc.deCuong}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                >
+                                                    {mh.monHoc.tenMon}
+                                                </Link>
+                                            ) : (
                                                 <p className="decuong-item">{mh.monHoc.tenMon}</p>
                                             )}
-                                            
+
                                         </li>
                                     ))}
                                 </ul>

@@ -35,6 +35,7 @@ import java.util.Date;
     @NamedQuery(name = "NguoiDung.findByGioiTinh", query = "SELECT n FROM NguoiDung n WHERE n.gioiTinh = :gioiTinh"),
     @NamedQuery(name = "NguoiDung.findBySoDienThoai", query = "SELECT n FROM NguoiDung n WHERE n.soDienThoai = :soDienThoai"),
     @NamedQuery(name = "NguoiDung.findByEmail", query = "SELECT n FROM NguoiDung n WHERE n.email = :email"),
+    @NamedQuery(name = "NguoiDung.findByCccd", query = "SELECT n FROM NguoiDung n WHERE n.cccd = :cccd"),
     @NamedQuery(name = "NguoiDung.findByMatKhau", query = "SELECT n FROM NguoiDung n WHERE n.matKhau = :matKhau"),
     @NamedQuery(name = "NguoiDung.findByAvatar", query = "SELECT n FROM NguoiDung n WHERE n.avatar = :avatar"),
     @NamedQuery(name = "NguoiDung.findByVaiTro", query = "SELECT n FROM NguoiDung n WHERE n.vaiTro = :vaiTro")})
@@ -59,6 +60,8 @@ public class NguoiDung implements Serializable {
     @Basic(optional = false)
     @Column(name = "email")
     private String email;
+    @Column(name = "cccd")
+    private String cccd;
     @Basic(optional = false)
     @Column(name = "mat_khau")
     private String matKhau;
@@ -135,6 +138,14 @@ public class NguoiDung implements Serializable {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getCccd() {
+        return cccd;
+    }
+
+    public void setCccd(String cccd) {
+        this.cccd = cccd;
     }
 
     public String getMatKhau() {

@@ -21,6 +21,10 @@ const ThemGiangVien = () => {
         label: "Email",
         field: "email",
         type: "email",
+    }, {
+        label: "Căn cước công dân",
+        field: "cccd",
+        type: "text",
     }];
     const hocViOptions = ["Thạc sĩ", "Tiến sĩ", "Phó giáo sư", "Giáo sư"];
     const [newGiangVien, setNewGiangVien] = useState({

@@ -21,6 +21,10 @@ const ThemSinhVien = () => {
         label: "Email",
         field: "email",
         type: "email",
+    }, {
+        label: "Căn cước công dân",
+        field: "cccd",
+        type: "text",
     }];
     const [newSinhVien, setNewSinhVien] = useState({
         nguoiDung: {},

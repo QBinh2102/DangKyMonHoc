@@ -6,6 +6,7 @@ package com.tqb.DangKyMonHoc.services;
 
 import com.tqb.DangKyMonHoc.pojo.HocKy;
 import java.util.List;
+import org.springframework.data.repository.query.Param;
 
 /**
  *
@@ -16,6 +17,7 @@ public interface HocKyService {
     HocKy findById(int id);
     HocKy findTopByOrderByIdDesc();
     List<HocKy> findAllByOrderByIdAsc();
+    List<HocKy> findHocKyBySinhVienId(@Param("sinhVienId") int sinhVienId);
     HocKy add(HocKy hocKy);
     
 }

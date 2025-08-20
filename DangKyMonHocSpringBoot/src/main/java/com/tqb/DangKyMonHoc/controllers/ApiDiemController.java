@@ -5,7 +5,12 @@
 package com.tqb.DangKyMonHoc.controllers;
 
 import com.tqb.DangKyMonHoc.pojo.Diem;
+import com.tqb.DangKyMonHoc.pojo.DiemSinhVienDTO;
+import com.tqb.DangKyMonHoc.pojo.NguoiDung;
 import com.tqb.DangKyMonHoc.services.DiemService;
+import com.tqb.DangKyMonHoc.services.NguoiDungService;
+import java.security.Principal;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +24,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -33,6 +39,9 @@ public class ApiDiemController {
     @Autowired
     private DiemService diemService;
 
+    @Autowired
+    private NguoiDungService nguoiDungService;
+    
     @GetMapping("/diem/{diemId}")
     public ResponseEntity<Diem> getDiemById(@PathVariable(value = "diemId") int id) {
         return new ResponseEntity<>(this.diemService.findById(id), HttpStatus.OK);
@@ -42,8 +51,20 @@ public class ApiDiemController {
     public ResponseEntity<List<Diem>> getDiem(@RequestParam Map<String, String> params) {
         return new ResponseEntity<>(this.diemService.findDiem(params), HttpStatus.OK);
     }
+    
+    @GetMapping("/secure/me/diem")
+    @ResponseBody
+    public ResponseEntity<List<DiemSinhVienDTO>> getDiemSinhVien(Principal principal) {
+        String email = principal.getName();
+        NguoiDung nd = this.nguoiDungService.findByEmail(email);
+        if(nd!=null){
+            return new ResponseEntity<>(this.diemService.findDiemBySinhVienId(nd.getId()), HttpStatus.OK);
+        }else{
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
 
-    @PostMapping("//diem")
+    @PostMapping("/diem")
     public ResponseEntity<?> create(@RequestBody Diem diem) {
         if (diem.getId() != null) {
             return ResponseEntity

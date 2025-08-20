@@ -40,9 +40,12 @@ public class GiangVien implements Serializable {
     private Integer id;
     @Column(name = "hoc_vi")
     private String hocVi;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "giangVienId")
+    @OneToMany(mappedBy = "giangVienId")
     @JsonIgnore
     private Set<BuoiHoc> buoiHocSet;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "giangVienId")
+    @JsonIgnore
+    private Set<Diem> diemSet;
     @JoinColumn(name = "khoa_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Khoa khoaId;
@@ -80,6 +83,14 @@ public class GiangVien implements Serializable {
 
     public void setBuoiHocSet(Set<BuoiHoc> buoiHocSet) {
         this.buoiHocSet = buoiHocSet;
+    }
+
+    public Set<Diem> getDiemSet() {
+        return diemSet;
+    }
+
+    public void setDiemSet(Set<Diem> diemSet) {
+        this.diemSet = diemSet;
     }
 
     public Khoa getKhoaId() {

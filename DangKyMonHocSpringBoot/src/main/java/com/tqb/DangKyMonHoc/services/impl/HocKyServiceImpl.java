@@ -35,10 +35,15 @@ public class HocKyServiceImpl implements HocKyService{
     public List<HocKy> findAllByOrderByIdAsc() {
         return this.hocKyRepo.findAllByOrderByIdAsc();
     }
+    
+    @Override
+    public List<HocKy> findHocKyBySinhVienId(int sinhVienId) {
+        return this.hocKyRepo.findHocKyBySinhVienId(sinhVienId);
+    }
 
     @Override
     public HocKy add(HocKy hocKy) {
         return this.hocKyRepo.save(hocKy);
     }
-    
+
 }

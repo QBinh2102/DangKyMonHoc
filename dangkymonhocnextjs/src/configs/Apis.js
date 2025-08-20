@@ -11,7 +11,7 @@ export const endpoints = {
     'dangNhap': '/login',
     // Học kỳ
     'hocKy': '/secure/admin/hocky',
-    'hocKyMoiNhat': '/secure/admin/hocky/latest',
+    'hocKyBySinhVien': '/secure/me/hocky',
     'hocKyId': (hocKyId) => `/secure/admin/hocky/${hocKyId}`,
     // Tiết học
     'tietHoc': '/tiethoc',
@@ -70,6 +70,8 @@ export const endpoints = {
     'suaHoacXoaQuyDinhId': (quyDinhId) => `/secure/admin/quydinh/${quyDinhId}`,
     // Thống kê
     'thongKe': '/secure/admin/thongke',
+    // Điểm
+    'diemSinhVien': '/secure/me/diem',
 }
 
 export const authApis = () => {

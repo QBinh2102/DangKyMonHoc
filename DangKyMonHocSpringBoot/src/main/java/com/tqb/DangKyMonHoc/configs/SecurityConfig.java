@@ -48,7 +48,7 @@ public class SecurityConfig {
             .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // Không dùng session
             .authorizeHttpRequests(requests -> requests
                 .requestMatchers("/api/secure/admin/**").hasRole("ADMIN")
-                .requestMatchers("/api/secure/me/**").hasRole("USER")
+                .requestMatchers("/api/secure/me/**").hasRole("SINH_VIEN")
                 .requestMatchers("/api/secure/**").authenticated()
                 .requestMatchers("/api/login", "/api/register").permitAll()
                 .requestMatchers("/api/**").permitAll()

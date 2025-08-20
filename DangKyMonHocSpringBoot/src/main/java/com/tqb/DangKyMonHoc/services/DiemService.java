@@ -5,8 +5,10 @@
 package com.tqb.DangKyMonHoc.services;
 
 import com.tqb.DangKyMonHoc.pojo.Diem;
+import com.tqb.DangKyMonHoc.pojo.DiemSinhVienDTO;
 import java.util.List;
 import java.util.Map;
+import org.springframework.data.repository.query.Param;
 
 /**
  *
@@ -16,6 +18,7 @@ public interface DiemService {
     
     Diem findById(int id);
     List<Diem> findDiem(Map<String,String> params);
+    List<DiemSinhVienDTO> findDiemBySinhVienId(@Param("sinhVienId") int sinhVienId);
     Diem addOrUpdate(Diem diem);
     
 }

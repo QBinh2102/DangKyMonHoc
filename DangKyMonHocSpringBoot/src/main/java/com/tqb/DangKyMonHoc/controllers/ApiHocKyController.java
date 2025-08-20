@@ -5,7 +5,10 @@
 package com.tqb.DangKyMonHoc.controllers;
 
 import com.tqb.DangKyMonHoc.pojo.HocKy;
+import com.tqb.DangKyMonHoc.pojo.NguoiDung;
 import com.tqb.DangKyMonHoc.services.HocKyService;
+import com.tqb.DangKyMonHoc.services.NguoiDungService;
+import java.security.Principal;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -29,20 +32,24 @@ public class ApiHocKyController {
 
     @Autowired
     private HocKyService hocKyService;
+    
+    @Autowired
+    private NguoiDungService nguoiDungService;
 
     @GetMapping("/secure/admin/hocky")
     public ResponseEntity<List<HocKy>> getAllHocKy() {
         return new ResponseEntity<>(this.hocKyService.findAllByOrderByIdAsc(), HttpStatus.OK);
     }
-
-    @GetMapping("/secure/admin/hocky/latest")
-    public ResponseEntity<HocKy> getHocKyMoiNhat() {
-        return new ResponseEntity<>(this.hocKyService.findTopByOrderByIdDesc(), HttpStatus.OK);
-    }
-
+    
     @GetMapping("/secure/admin/hocky/{hocKyId}")
     public ResponseEntity<HocKy> getHocKyById(@PathVariable(value = "hocKyId") int id) {
         return new ResponseEntity<>(this.hocKyService.findById(id), HttpStatus.OK);
+    }
+    
+    @GetMapping("/secure/me/hocky")
+    public ResponseEntity<List<HocKy>> getHocKyBySinhVienId(Principal principal){
+        NguoiDung nd = this.nguoiDungService.findByEmail(principal.getName());
+        return new ResponseEntity<>(this.hocKyService.findHocKyBySinhVienId(nd.getId()), HttpStatus.OK);
     }
 
     @PostMapping("/secure/admin/hocky")
