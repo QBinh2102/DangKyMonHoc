@@ -7,6 +7,7 @@ package com.tqb.DangKyMonHoc.services.impl;
 import com.tqb.DangKyMonHoc.pojo.ThoiKhoaBieu;
 import com.tqb.DangKyMonHoc.repositories.ThoiKhoaBieuRepository;
 import com.tqb.DangKyMonHoc.services.ThoiKhoaBieuService;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,6 +50,11 @@ public class ThoiKhoaBieuServiceImpl implements ThoiKhoaBieuService{
     public ThoiKhoaBieu delete(ThoiKhoaBieu thoiKhoaBieu) {
         this.thoiKhoaBieuRepo.delete(thoiKhoaBieu);
         return thoiKhoaBieu;
+    }
+
+    @Override
+    public List<ThoiKhoaBieu> findBySinhVienAndHocKy(int sinhVienId, int hocKyId, Date ngayBatDau, Date ngayKetThuc) {
+        return this.thoiKhoaBieuRepo.findBySinhVienAndHocKy(sinhVienId, hocKyId, ngayBatDau, ngayKetThuc);
     }
     
 }

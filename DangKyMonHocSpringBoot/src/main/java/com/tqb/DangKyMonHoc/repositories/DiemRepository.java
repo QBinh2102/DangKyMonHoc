@@ -5,7 +5,7 @@
 package com.tqb.DangKyMonHoc.repositories;
 
 import com.tqb.DangKyMonHoc.pojo.Diem;
-import com.tqb.DangKyMonHoc.pojo.DiemSinhVienDTO;
+import com.tqb.DangKyMonHoc.dto.DiemSinhVienDTO;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -25,7 +25,7 @@ public interface DiemRepository extends JpaRepository<Diem, Integer>{
     List<Diem> findAllByOrderByIdAsc();
     
     @Query("""
-           SELECT new com.tqb.DangKyMonHoc.pojo.DiemSinhVienDTO(
+           SELECT new com.tqb.DangKyMonHoc.dto.DiemSinhVienDTO(
                 hk.ky,
                 hk.namHoc,
                 mh.tenMon,
@@ -61,5 +61,8 @@ public interface DiemRepository extends JpaRepository<Diem, Integer>{
            ORDER BY hk.namHoc, hk.ky, mh.id
            """)
     List<DiemSinhVienDTO> findDiemBySinhVienId(@Param("sinhVienId") int sinhVienId);
+    
+    @Query(value = "CALL sp_tongket_hocky(:sinhVienId)", nativeQuery = true)
+    List<Object[]> callTongKetHocKy(@Param("sinhVienId") int sinhVienId);
     
 }

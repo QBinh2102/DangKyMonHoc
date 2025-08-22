@@ -16,7 +16,10 @@ import jakarta.persistence.NamedQueries;
 import jakarta.persistence.NamedQuery;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 import java.io.Serializable;
+import java.util.Date;
 import java.util.Set;
 
 /**
@@ -29,7 +32,9 @@ import java.util.Set;
     @NamedQuery(name = "HocKy.findAll", query = "SELECT h FROM HocKy h"),
     @NamedQuery(name = "HocKy.findById", query = "SELECT h FROM HocKy h WHERE h.id = :id"),
     @NamedQuery(name = "HocKy.findByKy", query = "SELECT h FROM HocKy h WHERE h.ky = :ky"),
-    @NamedQuery(name = "HocKy.findByNamHoc", query = "SELECT h FROM HocKy h WHERE h.namHoc = :namHoc")})
+    @NamedQuery(name = "HocKy.findByNamHoc", query = "SELECT h FROM HocKy h WHERE h.namHoc = :namHoc"),
+    @NamedQuery(name = "HocKy.findByNgayBatDau", query = "SELECT h FROM HocKy h WHERE h.ngayBatDau = :ngayBatDau"),
+    @NamedQuery(name = "HocKy.findByNgayKetThuc", query = "SELECT h FROM HocKy h WHERE h.ngayKetThuc = :ngayKetThuc")})
 public class HocKy implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -44,6 +49,14 @@ public class HocKy implements Serializable {
     @Basic(optional = false)
     @Column(name = "nam_hoc")
     private String namHoc;
+    @Basic(optional = false)
+    @Column(name = "ngay_bat_dau")
+    @Temporal(TemporalType.DATE)
+    private Date ngayBatDau;
+    @Basic(optional = false)
+    @Column(name = "ngay_ket_thuc")
+    @Temporal(TemporalType.DATE)
+    private Date ngayKetThuc;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "hocKyId")
     @JsonIgnore
     private Set<BuoiHoc> buoiHocSet;
@@ -64,10 +77,12 @@ public class HocKy implements Serializable {
         this.id = id;
     }
 
-    public HocKy(Integer id, String ky, String namHoc) {
+    public HocKy(Integer id, String ky, String namHoc, Date ngayBatDau, Date ngayKetThuc) {
         this.id = id;
         this.ky = ky;
         this.namHoc = namHoc;
+        this.ngayBatDau = ngayBatDau;
+        this.ngayKetThuc = ngayKetThuc;
     }
 
     public Integer getId() {
@@ -92,6 +107,22 @@ public class HocKy implements Serializable {
 
     public void setNamHoc(String namHoc) {
         this.namHoc = namHoc;
+    }
+
+    public Date getNgayBatDau() {
+        return ngayBatDau;
+    }
+
+    public void setNgayBatDau(Date ngayBatDau) {
+        this.ngayBatDau = ngayBatDau;
+    }
+
+    public Date getNgayKetThuc() {
+        return ngayKetThuc;
+    }
+
+    public void setNgayKetThuc(Date ngayKetThuc) {
+        this.ngayKetThuc = ngayKetThuc;
     }
 
     public Set<BuoiHoc> getBuoiHocSet() {

@@ -5,7 +5,7 @@
 package com.tqb.DangKyMonHoc.services.impl;
 
 import com.tqb.DangKyMonHoc.pojo.Diem;
-import com.tqb.DangKyMonHoc.pojo.DiemSinhVienDTO;
+import com.tqb.DangKyMonHoc.dto.DiemSinhVienDTO;
 import com.tqb.DangKyMonHoc.repositories.DiemRepository;
 import com.tqb.DangKyMonHoc.services.DiemService;
 import java.util.List;

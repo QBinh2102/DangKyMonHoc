@@ -4,7 +4,7 @@
  */
 package com.tqb.DangKyMonHoc.services.impl;
 
-import com.tqb.DangKyMonHoc.pojo.ThongKeDTO;
+import com.tqb.DangKyMonHoc.dto.ThongKeDTO;
 import com.tqb.DangKyMonHoc.repositories.DangKyRepository;
 import com.tqb.DangKyMonHoc.services.ThongKeService;
 import org.springframework.beans.factory.annotation.Autowired;

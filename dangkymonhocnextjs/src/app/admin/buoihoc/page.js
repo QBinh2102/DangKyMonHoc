@@ -61,7 +61,7 @@ const BuoiHoc = () => {
                                     <td>{bh.id}</td>
                                     <td>{bh.monHocId.tenMon}</td>
                                     <td>{bh.lopId.maLop}</td>
-                                    <td>{bh.giangVienId.nguoiDung.hoTen}</td>
+                                    <td>{bh.giangVienId?.nguoiDung.hoTen}</td>
                                     <td>{bh.hocKyId.ky} - {bh.hocKyId.namHoc}</td>
                                     <td>{bh.siSo}</td>
                                     <td>

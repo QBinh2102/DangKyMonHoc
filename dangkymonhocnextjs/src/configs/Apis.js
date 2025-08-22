@@ -72,6 +72,10 @@ export const endpoints = {
     'thongKe': '/secure/admin/thongke',
     // Điểm
     'diemSinhVien': '/secure/me/diem',
+    // Tổng kết
+    'tongKetSinhVien': '/secure/me/tongket',
+    // Thời khóa biểu
+    'thoiKhoaBieuSinhVien': '/secure/me/thoikhoabieu',
 }
 
 export const authApis = () => {

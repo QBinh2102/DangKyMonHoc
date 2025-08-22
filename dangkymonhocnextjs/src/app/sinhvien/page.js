@@ -37,6 +37,10 @@ const SinhVien = () => {
         }
     }
 
+    const formatDate = (date) => {
+        return new Date(date).toLocaleDateString("vi-VN");
+    }
+
     const loadSinhVien = async () => {
         setLoading(true);
         try {
@@ -143,7 +147,8 @@ const SinhVien = () => {
                             <h2>Thông tin sinh viên</h2>
                             {infoNguoiDung.map(nd => (
                                 <div key={nd.field} className="info-row">
-                                    <strong>{nd.label}</strong>: {nd.field === "gioiTinh" ? getGioiTinh(sinhVien.nguoiDung?.[nd.field]) : sinhVien.nguoiDung?.[nd.field]}
+                                    <strong>{nd.label}</strong>: {nd.field === "gioiTinh" ? getGioiTinh(sinhVien.nguoiDung?.[nd.field]) :
+                                        nd.field === "ngaySinh" ? formatDate(sinhVien.nguoiDung?.[nd.field]) : sinhVien.nguoiDung?.[nd.field]}
                                 </div>
                             ))}
                         </div>

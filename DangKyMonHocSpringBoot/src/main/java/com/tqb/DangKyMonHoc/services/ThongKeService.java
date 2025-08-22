@@ -4,7 +4,7 @@
  */
 package com.tqb.DangKyMonHoc.services;
 
-import com.tqb.DangKyMonHoc.pojo.ThongKeDTO;
+import com.tqb.DangKyMonHoc.dto.ThongKeDTO;
 
 /**
  *

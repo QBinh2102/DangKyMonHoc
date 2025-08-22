@@ -4,8 +4,8 @@
  */
 package com.tqb.DangKyMonHoc.repositories;
 
+import com.tqb.DangKyMonHoc.dto.ThongKeDTO;
 import com.tqb.DangKyMonHoc.pojo.DangKy;
-import com.tqb.DangKyMonHoc.pojo.ThongKeDTO;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -23,7 +23,7 @@ public interface DangKyRepository extends JpaRepository<DangKy, Integer>{
     List<DangKy> findAllByOrderByIdAsc();
     
     @Query("""
-        SELECT new com.tqb.DangKyMonHoc.pojo.ThongKeDTO(
+        SELECT new com.tqb.DangKyMonHoc.dto.ThongKeDTO(
                 CAST(COALESCE(SUM(CASE WHEN dk.trangThai = 'HOAN_THANH' THEN 1 ELSE 0 END), 0) AS long),
                 CAST(COALESCE(SUM(CASE WHEN dk.trangThai = 'TRUOT' THEN 1 ELSE 0 END), 0) AS long)
             )

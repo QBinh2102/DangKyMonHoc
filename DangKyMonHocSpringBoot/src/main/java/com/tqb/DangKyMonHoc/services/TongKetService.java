@@ -4,21 +4,14 @@
  */
 package com.tqb.DangKyMonHoc.services;
 
-import com.tqb.DangKyMonHoc.pojo.Diem;
-import com.tqb.DangKyMonHoc.dto.DiemSinhVienDTO;
+import com.tqb.DangKyMonHoc.dto.TongKetHocKyDTO;
 import java.util.List;
-import java.util.Map;
 import org.springframework.data.repository.query.Param;
 
 /**
  *
  * @author toquocbinh2102
  */
-public interface DiemService {
-    
-    Diem findById(int id);
-    List<Diem> findDiem(Map<String,String> params);
-    List<DiemSinhVienDTO> findDiemBySinhVienId(@Param("sinhVienId") int sinhVienId);
-    Diem addOrUpdate(Diem diem);
-    
+public interface TongKetService {
+    List<TongKetHocKyDTO> getTongKetHocKy(@Param("sinhVienId") int sinhVienId);
 }

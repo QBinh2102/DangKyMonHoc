@@ -4,7 +4,7 @@
  */
 package com.tqb.DangKyMonHoc.controllers;
 
-import com.tqb.DangKyMonHoc.pojo.ThongKeDTO;
+import com.tqb.DangKyMonHoc.dto.ThongKeDTO;
 import com.tqb.DangKyMonHoc.services.ThongKeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;

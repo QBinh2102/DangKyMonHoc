@@ -6,6 +6,8 @@ import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import "./admin.css";
 import Apis, { authApis, endpoints } from "@/configs/Apis";
+import ChartDataLabels from "chartjs-plugin-datalabels";
+Chart.register(ChartDataLabels);
 
 const Admin = () => {
 
@@ -92,7 +94,22 @@ const Admin = () => {
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
+                    plugins: {
+                        datalabels: {
+                            formatter: (value, context) => {
+                                const dataArr = context.chart.data.datasets[0].data;
+                                const total = dataArr.reduce((acc, curr) => acc + curr, 0);
+                                const percentage = ((value / total) * 100).toFixed(1);
+                                return percentage + '%';
+                            },
+                            color: '#fff',
+                            font: {
+                                weight: 'bold',
+                            },
+                        },
+                    },
                 },
+                plugins: [ChartDataLabels],
             });
         }
     }, [showThongKe, data]);

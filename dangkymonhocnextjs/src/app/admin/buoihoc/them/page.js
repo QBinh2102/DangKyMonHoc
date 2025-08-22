@@ -30,11 +30,9 @@ const ThemBuoiHoc = () => {
     const [newLichHoc, setNewLichHoc] = useState({
         lyThuyet: {
             tietHocId: "",
-            phong: "",
         },
         thucHanh: {
             tietHocId: "",
-            phong: "",
         }
     });
     const [listPhongHoc, setListPhongHoc] = useState({ phongLyThuyet: [], phongThucHanh: [] });
@@ -56,7 +54,6 @@ const ThemBuoiHoc = () => {
         try {
             let res = await Apis.get(endpoints['khoa']);
             setListKhoa(res.data);
-            console.info(res.data);
         } catch (ex) {
             console.error(ex);
         }
@@ -71,7 +68,6 @@ const ThemBuoiHoc = () => {
         try {
             let res = await Apis.get(`${endpoints['nganh']}?khoaId=${khoaId}`);
             setListNganh(res.data);
-            console.info(res.data);
         } catch (ex) {
             console.error(ex);
         }
@@ -81,7 +77,6 @@ const ThemBuoiHoc = () => {
         try {
             let res = await authApis().get(`${endpoints['themHoacLayGiangVien']}?khoaId=${khoaId}`);
             setListGiangVien(res.data);
-            console.info(res.data);
         } catch (ex) {
             console.error(res.data);
         }
@@ -96,7 +91,6 @@ const ThemBuoiHoc = () => {
         try {
             let res = await Apis.get(`${endpoints['nganhMonHoc']}?nganhId=${nganhId}`);
             setListMonHoc(res.data);
-            console.info(res.data);
         } catch (ex) {
             console.error(ex);
         }

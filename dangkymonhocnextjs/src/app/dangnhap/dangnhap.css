@@ -1,0 +1,76 @@
+/* Căn giữa cho form */
+.login-form-container {
+  background-color: #fff;
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+/* Thêm hiệu ứng cho input */
+.login-input {
+  border-radius: 5px;
+  padding: 10px 15px;
+  font-size: 1rem;
+  border: 1px solid #ddd;
+  transition: all 0.3s ease;
+}
+
+/* Hiệu ứng khi focus vào input */
+.login-input:focus {
+  border-color: #2575fc;
+  box-shadow: 0px 0px 8px rgba(37, 117, 252, 0.6);
+  outline: none;
+}
+
+/* Hiệu ứng cho nút đăng nhập */
+.login-btn {
+  width: 100%;
+  padding: 12px;
+  font-size: 1.1rem;
+  border-radius: 5px;
+  transition: all 0.3s ease;
+}
+
+.login-btn:hover {
+  background-color: #2575fc;
+  border-color: #2575fc;
+}
+
+/* Cải thiện alert */
+.alert-warning {
+  background-color: #fff3cd;
+  color: #856404;
+  border-radius: 5px;
+  padding: 10px;
+}
+
+.spinner-border {
+  width: 2rem;
+  height: 2rem;
+  border-width: 0.3rem;
+  border-color: #2575fc;
+}
+
+.captcha-box {
+  display: inline-block;
+  padding: 10px 15px;
+  font-size: 16px;
+  font-weight: bold;
+  letter-spacing: 5px;
+  background: linear-gradient(135deg, #f0f0f0, #dcdcdc);
+  border: 2px solid #ccc;
+  border-radius: 6px;
+  color: #333;
+  user-select: none;
+  font-family: 'Courier New', Courier, monospace;
+  text-align: center;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.captcha-box:hover {
+  transform: rotate(-2deg) scale(1.05);
+}

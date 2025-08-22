@@ -3,20 +3,43 @@
 import { authApis, endpoints } from "@/configs/Apis";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
+import "./diem.css"
 import { useEffect, useRef, useState } from "react";
 
 const Diem = () => {
 
+    const [sinhVien, setSinhVien] = useState({});
     const [listDiem, setListDiem] = useState([]);
+    const [listTongKet, setListTongKet] = useState([]);
     const [loading, setLoading] = useState(false);
     const exportRef = useRef(null);
 
     const loadDiem = async () => {
-        setLoading(true);
         try {
             let res = await authApis().get(endpoints['diemSinhVien']);
             setListDiem(res.data);
-            console.info(res.data);
+        } catch (ex) {
+            console.error(ex);
+        }
+    }
+
+    const loadTongKet = async () => {
+        try {
+            let res = await authApis().get(endpoints['tongKetSinhVien']);
+            setListTongKet(res.data);
+            console.log(res.data);
+        } catch (ex) {
+            console.error(ex);
+        }
+    }
+
+    const loadSinhVien = async () => {
+        setLoading(true);
+        try {
+            let res = await authApis().get(endpoints['profile-sinhvien']);
+            setSinhVien(res.data);
+            loadDiem();
+            loadTongKet();
         } catch (ex) {
             console.error(ex);
         } finally {
@@ -24,15 +47,15 @@ const Diem = () => {
         }
     }
 
+
+
     useEffect(() => {
-        loadDiem();
+        loadSinhVien();
     }, []);
 
     const groupByHocKyAndMonHoc = (dsDiem) => {
         return dsDiem.reduce((acc, item) => {
-            const hocKy = item.hocKy;
-            const namHoc = item.namHoc;
-            const hocKyKey = `${hocKy} - năm ${namHoc}`;
+            const hocKyKey = `${item.hocKy}_${item.namHoc}`;
             const tenMon = item.tenMonHoc;
             const soTinChi = (item.tinChiLyThuyet + item.tinChiThucHanh);
             if (!acc[hocKyKey]) {
@@ -68,19 +91,32 @@ const Diem = () => {
     const exportPDF = async () => {
         if (!exportRef.current) return;
 
-        // Chụp màn hình phần cần export
         const canvas = await html2canvas(exportRef.current, { scale: 2 });
-        const imgData = canvas.toDataURL('image/png');
+        const imgData = canvas.toDataURL("image/png");
 
-        const pdf = new jsPDF('p', 'mm', 'a4');
+        const pdf = new jsPDF("p", "mm", "a4");
         const pageWidth = pdf.internal.pageSize.getWidth();
+        const pageHeight = pdf.internal.pageSize.getHeight();
 
-        // Tính kích thước ảnh cho vừa trang
         const imgWidth = pageWidth - 20; // chừa lề
         const imgHeight = (canvas.height * imgWidth) / canvas.width;
 
-        pdf.addImage(imgData, 'PNG', 10, 10, imgWidth, imgHeight);
-        pdf.save(``);
+        let heightLeft = imgHeight;
+        let position = 10;
+
+        // Trang đầu tiên
+        pdf.addImage(imgData, "PNG", 10, position, imgWidth, imgHeight);
+        heightLeft -= pageHeight - 20;
+
+        // Các trang tiếp theo
+        while (heightLeft > 0) {
+            position = heightLeft - imgHeight;
+            pdf.addPage();
+            pdf.addImage(imgData, "PNG", 10, position, imgWidth, imgHeight);
+            heightLeft -= pageHeight - 20;
+        }
+
+        pdf.save("bangdiem.pdf");
     };
 
     return (
@@ -98,13 +134,24 @@ const Diem = () => {
                         </button>
                     </div>
                     <div ref={exportRef}>
+                        <div className="text-center mb-3" style={{ fontSize: "30px" }}>
+                            <div><strong>Họ Tên: </strong> {sinhVien?.nguoiDung?.hoTen}</div>
+                            <div><strong>Ngành: </strong> {sinhVien?.nganhId?.tenNganh}</div>
+                        </div>
+
                         {Object.keys(grouped).map((hocKyKey) => {
                             const monHocs = grouped[hocKyKey];
+                            const [hocKyId, namHoc] = hocKyKey.split("_");
+
+                            const tongKet = listTongKet.find(
+                                tk => tk.ky === hocKyId && tk.namHoc === namHoc
+                            );
                             return (
-                                <div key={hocKyKey}>
-                                    <h2 className="mb-2">{hocKyKey}</h2>
+                                <div className="mb-3" key={hocKyKey}>
+                                    <h2 className="title-hocky my-0">{hocKyId} - Năm học {namHoc}</h2>
+
                                     <table
-                                        className="table table-bordered text-center"
+                                        className="table table-bordered text-center mb-0"
                                         style={{ border: "1px solid black" }}
                                     >
                                         <thead>
@@ -134,6 +181,15 @@ const Diem = () => {
                                             })}
                                         </tbody>
                                     </table>
+
+                                    {tongKet && (
+                                        <div className="info-hocsinh p-2 border rounded bg-light d-flex mt-0">
+                                            <div className="me-3"><strong>Số tín chỉ đạt (HK):</strong> {tongKet.tinChiDatHk}</div>
+                                            <div className="me-3"><strong>Tổng số tín chỉ tích lũy:</strong> {tongKet.tinChiTichLuy}</div>
+                                            <div className="me-3"><strong>Điểm TB học kỳ:</strong> {tongKet.diemTbHk}</div>
+                                            <div className="me-3"><strong>Điểm TB tích lũy:</strong> {tongKet.diemTbTichLuy}</div>
+                                        </div>
+                                    )}
                                 </div>
                             );
                         })}

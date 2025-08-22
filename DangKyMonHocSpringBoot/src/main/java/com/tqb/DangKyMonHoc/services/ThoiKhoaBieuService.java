@@ -5,8 +5,10 @@
 package com.tqb.DangKyMonHoc.services;
 
 import com.tqb.DangKyMonHoc.pojo.ThoiKhoaBieu;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import org.springframework.data.repository.query.Param;
 
 /**
  *
@@ -18,5 +20,11 @@ public interface ThoiKhoaBieuService {
     List<ThoiKhoaBieu> findThoiKhoaBieu(Map<String,String> params);
     ThoiKhoaBieu add(ThoiKhoaBieu thoiKhoaBieu);
     ThoiKhoaBieu delete(ThoiKhoaBieu thoiKhoaBieu);
+    List<ThoiKhoaBieu> findBySinhVienAndHocKy(
+            @Param("sinhVienId") int sinhVienId,
+            @Param("hocKyId") int hocKyId,
+            @Param("ngayBatDau") Date ngayBatDau,
+            @Param("ngayKetThuc") Date ngayKetThuc
+    );
     
 }

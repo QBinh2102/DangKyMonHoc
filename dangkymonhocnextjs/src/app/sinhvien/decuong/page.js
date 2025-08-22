@@ -11,7 +11,6 @@ const DeCuong = () => {
     const [sinhVien, setSinhVien] = useState({});
     const [listMonHoc, setListMonHoc] = useState([]);
     const [loading, setLoading] = useState(false);
-    const router = useRouter();
 
     const loadMonHocTheoNganh = async (nganhId) => {
         setListMonHoc([]);

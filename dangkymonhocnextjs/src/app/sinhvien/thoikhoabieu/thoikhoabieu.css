@@ -3,7 +3,7 @@
 }
 
 .custom-select {
-  width: 240px;
+  width: 320px;
   padding: 8px 12px;
   border: 2px solid #ccc;
   border-radius: 8px;
@@ -22,4 +22,75 @@
 .custom-select:focus {
   border-color: #007bff;
   box-shadow: 0 0 5px rgba(0, 123, 255, 0.4);
+}
+
+.title {
+  text-align: center;
+  margin: 20px 0;
+}
+
+.tkb-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.tkb-select {
+  padding: 6px 12px;
+  font-size: 16px;
+}
+
+.timetable {
+  display: grid;
+  grid-template-columns: 100px repeat(7, 1fr);
+  border: 1px solid #ccc;
+}
+
+.header-cell {
+  background: #005a9e;
+  color: white;
+  padding: 8px;
+  text-align: center;
+  border: 1px solid #ccc;
+  font-weight: bold;
+}
+
+.time-cell {
+  padding: 8px;
+  border: 1px solid #ccc;
+  text-align: center;
+  background: #f0f0f0;
+  height: 100px;
+}
+
+.cell {
+  border: 1px solid #ccc;
+  min-height: 60px;
+  padding: 4px;
+  height: 100px;
+  overflow: hidden;
+}
+
+.cell strong {
+  font-weight: 600;
+}
+
+.cell .subject-title {
+  font-weight: 700;
+  font-size: 15px;
+}
+
+.subject {
+  color: #333;
+  font-size: 14px;
+  padding: 4px;
+  border-radius: 4px;
+}
+
+.subject.blue {
+  background: #cce5ff;
+}
+
+.subject.red {
+  background: #f8d7da;
 }

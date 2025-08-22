@@ -4,11 +4,16 @@
  */
 package com.tqb.DangKyMonHoc.controllers;
 
+import com.tqb.DangKyMonHoc.pojo.NguoiDung;
 import com.tqb.DangKyMonHoc.pojo.ThoiKhoaBieu;
+import com.tqb.DangKyMonHoc.services.NguoiDungService;
 import com.tqb.DangKyMonHoc.services.ThoiKhoaBieuService;
+import java.security.Principal;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -32,6 +37,9 @@ public class ApiThoiKhoaBieuController {
 
     @Autowired
     private ThoiKhoaBieuService thoiKhoaBieuService;
+    
+    @Autowired
+    private NguoiDungService nguoiDungService;
 
     @GetMapping("/thoikhoabieu/{thoiKhoaBieuId}")
     public ResponseEntity<ThoiKhoaBieu> getThoiKhoaBieuById(@PathVariable(value = "thoiKhoaBieuId") int id) {
@@ -46,6 +54,21 @@ public class ApiThoiKhoaBieuController {
     @GetMapping("/secure/thoikhoabieu")
     public ResponseEntity<List<ThoiKhoaBieu>> getThoiKhoaBieu(@RequestParam Map<String, String> params) {
         return new ResponseEntity<>(this.thoiKhoaBieuService.findThoiKhoaBieu(params), HttpStatus.OK);
+    }
+    
+    @GetMapping("/secure/me/thoikhoabieu")
+    public ResponseEntity<List<ThoiKhoaBieu>> getThoiKhoaBieuSinhVien(
+            Principal principal, 
+            @RequestParam int hocKyId,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date ngayBatDau,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date ngayKetThuc){
+        
+        NguoiDung nd = this.nguoiDungService.findByEmail(principal.getName());
+        if(nd!=null){
+            return new ResponseEntity<>(this.thoiKhoaBieuService.findBySinhVienAndHocKy(nd.getId(), hocKyId, ngayBatDau, ngayKetThuc), HttpStatus.OK);
+        }else{
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     @PostMapping("/thoikhoabieu")
