@@ -11,6 +11,7 @@ export const endpoints = {
     'dangNhap': '/login',
     // Học kỳ
     'hocKy': '/secure/admin/hocky',
+    'hocKyMoiNhat': '/secure/hocky/latest',
     'hocKyBySinhVien': '/secure/me/hocky',
     'hocKyId': (hocKyId) => `/secure/admin/hocky/${hocKyId}`,
     // Tiết học
@@ -76,6 +77,11 @@ export const endpoints = {
     'tongKetSinhVien': '/secure/me/tongket',
     // Thời khóa biểu
     'thoiKhoaBieuSinhVien': '/secure/me/thoikhoabieu',
+    // Đăng ký
+    'layBuoiHoc': '/secure/buoihoc',
+    'danhSachDangKy': '/secure/me/dangky',
+    'dangKy': '/secure/me/dangky',
+    'xoaDangKy': (dangKyId) => `/secure/me/dangky/${dangKyId}`,
 }
 
 export const authApis = () => {

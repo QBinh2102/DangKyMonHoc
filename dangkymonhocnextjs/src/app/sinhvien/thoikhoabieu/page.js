@@ -65,6 +65,7 @@ const ThoiKhoaBieu = () => {
                 }
             });
             setListThoiKhoaBieu(res.data);
+            console.log(res.data);
         } catch (ex) {
             console.error(ex);
         }
@@ -95,7 +96,7 @@ const ThoiKhoaBieu = () => {
 
         let index = 1;
         while (currentStart.isBefore(endDate) || currentStart.isSame(endDate)) {
-            let currentEnd = currentStart.endOf("week");
+            let currentEnd = currentStart.add(6, "day");
             if (currentEnd.isAfter(endDate))
                 currentEnd = endDate;
 
@@ -118,10 +119,16 @@ const ThoiKhoaBieu = () => {
                 today.isBefore(dayjs(w.ngayKetThuc).add(1, "day"))
         );
 
+        let defaultWeek;
         if (currentWeek) {
-            setSelectedTuan(currentWeek.id);
+            defaultWeek = currentWeek.id;
+        } else if (weeksArr.length > 0) {
+            defaultWeek = weeksArr[0].id;
         }
-    }
+
+        setSelectedTuan(defaultWeek);
+    };
+
 
     const chooseTuanTruoc = () => {
         if (selectedTuan !== 1) {

@@ -8,7 +8,9 @@ import com.tqb.DangKyMonHoc.pojo.BuoiHoc;
 import com.tqb.DangKyMonHoc.pojo.LichHoc;
 import com.tqb.DangKyMonHoc.pojo.MonHoc;
 import com.tqb.DangKyMonHoc.pojo.QuyDinh;
+import com.tqb.DangKyMonHoc.repositories.BuoiHocRepository;
 import com.tqb.DangKyMonHoc.repositories.LichHocRepository;
+import com.tqb.DangKyMonHoc.repositories.QuyDinhRepository;
 import com.tqb.DangKyMonHoc.services.BuoiHocService;
 import com.tqb.DangKyMonHoc.services.LichHocService;
 import com.tqb.DangKyMonHoc.services.QuyDinhService;
@@ -25,21 +27,21 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class LichHocServiceImpl implements LichHocService {
-    
+
     @Autowired
     private LichHocRepository lichHocRepo;
-    
+
     @Autowired
-    private QuyDinhService quyDinhService;
-    
+    private QuyDinhRepository quyDinhRepo;
+
     @Autowired
-    private BuoiHocService buoiHocService;
-    
+    private BuoiHocRepository buoiHocRepo;
+
     @Override
     public LichHoc findById(int id) {
         return this.lichHocRepo.findById(id);
     }
-    
+
     @Override
     public List<LichHoc> findLichHoc(Map<String, String> params) {
         String buoiHocId = params.get("buoiHocId");
@@ -50,12 +52,13 @@ public class LichHocServiceImpl implements LichHocService {
             return this.lichHocRepo.findAllByOrderByIdAsc();
         }
     }
-    
+
     @Override
     public LichHoc addOrUpdate(LichHoc lichHoc) {
         if (lichHoc.getId() == null) {
             Date ngayBatDau = lichHoc.getNgayBatDau();
-            BuoiHoc buoiHoc = this.buoiHocService.findById(lichHoc.getBuoiHocId().getId());
+            BuoiHoc buoiHoc = this.buoiHocRepo.findById(lichHoc.getBuoiHocId().getId())
+                    .orElseThrow(() -> new RuntimeException("BuoiHoc không tồn tại!"));
             MonHoc monHoc = buoiHoc.getMonHocId();
 
             // Set ngày kết thúc
@@ -63,12 +66,12 @@ public class LichHocServiceImpl implements LichHocService {
             Calendar cal = Calendar.getInstance();
             cal.setTime(ngayBatDau);
             if (lichHoc.getLoai().equals("LyThuyet")) {
-                QuyDinh soBuoiTinChiLT = this.quyDinhService.findByTen("Số buổi 1 tín chỉ lý thuyết");
+                QuyDinh soBuoiTinChiLT = this.quyDinhRepo.findByTen("Số buổi 1 tín chỉ lý thuyết");
                 if (soBuoiTinChiLT != null) {
                     soBuoi = soBuoiTinChiLT.getGiaTri() * monHoc.getTinChiLyThuyet();
                 }
             } else {
-                QuyDinh soBuoiTinChiTH = this.quyDinhService.findByTen("Số buổi 1 tín chỉ thực hành");
+                QuyDinh soBuoiTinChiTH = this.quyDinhRepo.findByTen("Số buổi 1 tín chỉ thực hành");
                 if (soBuoiTinChiTH != null) {
                     soBuoi = soBuoiTinChiTH.getGiaTri() * monHoc.getTinChiThucHanh();
                 }
@@ -76,7 +79,7 @@ public class LichHocServiceImpl implements LichHocService {
             cal.add(Calendar.WEEK_OF_YEAR, soBuoi - 1);
             Date ngayKetThuc = cal.getTime();
             lichHoc.setNgayKetThuc(ngayKetThuc);
-            
+
             boolean isTrungLichHoc = this.lichHocRepo.existsLichHocTrung(lichHoc.getPhongHocId().getId(), lichHoc.getTietHocId().getGioBatDau(), ngayBatDau, ngayKetThuc);
             if (isTrungLichHoc) {
                 throw new IllegalArgumentException("Trùng lịch học: phòng và giờ này đã được sử dụng trong thời gian đó.");
@@ -89,7 +92,6 @@ public class LichHocServiceImpl implements LichHocService {
 //                LocalTime gioKetThuc = gioBatDau.plusHours(soGioHoc);
 //                lichHoc.setGioKetThuc(gioKetThuc);
 //            }
-
             // Set thứ
             Calendar calThu = Calendar.getInstance();
             calThu.setTime(ngayBatDau);
@@ -103,10 +105,10 @@ public class LichHocServiceImpl implements LichHocService {
                 "Thứ 6",
                 "Thứ 7"
             };
-            
+
             lichHoc.setThu(tenThu[thu]);
         }
         return this.lichHocRepo.save(lichHoc);
     }
-    
+
 }

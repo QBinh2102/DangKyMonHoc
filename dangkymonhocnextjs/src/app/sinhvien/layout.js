@@ -11,8 +11,8 @@ export default function SinhVienLayout({ children }) {
         { label: "Đề cương môn học", href: "/sinhvien/decuong" },
         { label: "Xem điểm", href: "/sinhvien/diem" },
         { label: "Thời khóa biểu", href: "/sinhvien/thoikhoabieu" },
-        { label: "Đăng ký môn học", href: "/sinhvien" },
-        { label: "Xem học phí", href: "/sinhvien" },
+        { label: "Đăng ký môn học", href: "/sinhvien/dangkymonhoc" },
+        { label: "Xem học phí", href: "/sinhvien/hocphi" },
     ]
 
     const dangXuat = () => {

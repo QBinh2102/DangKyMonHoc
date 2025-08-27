@@ -71,7 +71,7 @@ public class ApiThoiKhoaBieuController {
         }
     }
 
-    @PostMapping("/thoikhoabieu")
+    @PostMapping("/secure/me/thoikhoabieu")
     public ResponseEntity<?> create(@RequestBody ThoiKhoaBieu thoiKhoaBieu) {
         if (thoiKhoaBieu.getId() != null) {
             return ResponseEntity
@@ -89,14 +89,10 @@ public class ApiThoiKhoaBieuController {
         }
     }
 
-    @DeleteMapping("/thoikhoabieu/{thoiKhoaBieuId}")
-    public ResponseEntity<ThoiKhoaBieu> update(@PathVariable(value = "thoiKhoaBieuId") int id) {
-        ThoiKhoaBieu existing = this.thoiKhoaBieuService.findById(id);
-        if (existing == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        } else {
-            return new ResponseEntity<>(this.thoiKhoaBieuService.delete(existing), HttpStatus.OK);
-        }
+    @DeleteMapping("/secure/me/thoikhoabieu")
+    public ResponseEntity<Void> delete(@RequestParam(value="dangKyId") int dangKyId) {
+        this.thoiKhoaBieuService.deleteByDangKyId(dangKyId);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
 }

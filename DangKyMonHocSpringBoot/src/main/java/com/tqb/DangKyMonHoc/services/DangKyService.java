@@ -16,7 +16,7 @@ public interface DangKyService {
     
     DangKy findById(int id);
     List<DangKy> findDangKy(Map<String,String> params);
-    DangKy addOrUpdate(DangKy dangKy);
+    DangKy add(DangKy dangKy);
     DangKy delete(DangKy dangKy);
     
 }

@@ -4,10 +4,13 @@
  */
 package com.tqb.DangKyMonHoc.services.impl;
 
+import com.tqb.DangKyMonHoc.dto.BuoiHocDTO;
 import com.tqb.DangKyMonHoc.pojo.BuoiHoc;
+import com.tqb.DangKyMonHoc.pojo.LichHoc;
 import com.tqb.DangKyMonHoc.repositories.BuoiHocRepository;
+import com.tqb.DangKyMonHoc.repositories.HocKyRepository;
+import com.tqb.DangKyMonHoc.repositories.LichHocRepository;
 import com.tqb.DangKyMonHoc.services.BuoiHocService;
-import com.tqb.DangKyMonHoc.services.HocKyService;
 import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,9 +25,12 @@ public class BuoiHocServiceImpl implements BuoiHocService {
 
     @Autowired
     private BuoiHocRepository buoiHocRepo;
+
+    @Autowired
+    private HocKyRepository hocKyRepo;
     
     @Autowired
-    private HocKyService hocKyService;
+    private LichHocRepository lichHocRepo;
 
     @Override
     public BuoiHoc findById(int id) {
@@ -35,12 +41,15 @@ public class BuoiHocServiceImpl implements BuoiHocService {
     public List<BuoiHoc> findBuoiHoc(Map<String, String> params) {
         String monHocId = params.get("monHocId");
         String hocKyId = params.get("hocKyId");
+        String lopId = params.get("lopId");
         boolean hasMonHocId = monHocId != null && !monHocId.isEmpty();
         boolean hasHocKyId = hocKyId != null && !hocKyId.isEmpty();
-        if (hasMonHocId && hasHocKyId) {
-            return this.buoiHocRepo.findByMonHocId_IdAndHocKyId_IdOrderByIdAsc(Integer.parseInt(monHocId), Integer.parseInt(hocKyId));
+        boolean hasLopId = lopId != null && !lopId.isEmpty();
+
+        if (hasLopId) {
+            return this.buoiHocRepo.findByHocKyId_IdAndLopId_IdOrderByIdAsc(Integer.parseInt(hocKyId), Integer.parseInt(lopId));
         } else if (hasMonHocId) {
-            return this.buoiHocRepo.findByMonHocId_IdOrderByIdAsc(Integer.parseInt(monHocId));
+            return this.buoiHocRepo.findByMonHocId_IdAndHocKyId_IdOrderByIdAsc(Integer.parseInt(monHocId), Integer.parseInt(hocKyId));
         } else if (hasHocKyId) {
             return this.buoiHocRepo.findByHocKyId_IdOrderByIdAsc(Integer.parseInt(hocKyId));
         } else {
@@ -50,10 +59,38 @@ public class BuoiHocServiceImpl implements BuoiHocService {
 
     @Override
     public BuoiHoc addOrUpdate(BuoiHoc buoiHoc) {
-        if(buoiHoc.getId()==null){
-            buoiHoc.setHocKyId(this.hocKyService.findTopByOrderByIdDesc());
+        if (buoiHoc.getId() == null) {
+            buoiHoc.setHocKyId(this.hocKyRepo.findTopByOrderByIdDesc());
         }
         return this.buoiHocRepo.save(buoiHoc);
     }
 
+    @Override
+    public List<BuoiHocDTO> findDanhSachBuoiHocDangKy(Map<String, String> params) {
+        String lopId = params.get("lopId");
+        String monHocId = params.get("monHocId");
+
+        boolean hasMonHocId = monHocId != null && !monHocId.trim().isEmpty();
+        boolean hasLopId = lopId != null && !lopId.trim().isEmpty();
+
+        int hocKyLatest = this.hocKyRepo.findTopByOrderByIdDesc().getId();
+
+        if (hasMonHocId) {
+            List<BuoiHocDTO> list = this.buoiHocRepo.findBuoiHocTheoHocKyVaMonHoc(hocKyLatest, Integer.parseInt(monHocId));
+            for (BuoiHocDTO dto : list) {
+                List<LichHoc> lichHoc = this.lichHocRepo.findByBuoiHocId_IdOrderByIdAsc(dto.getBuoiHocId());
+                dto.setListLichHoc(lichHoc);
+            }
+            return list;
+        } else if (hasLopId) {
+            List<BuoiHocDTO> list = this.buoiHocRepo.findBuoiHocTheoHocKyVaNganh(hocKyLatest, Integer.parseInt(lopId));
+            for (BuoiHocDTO dto : list) {
+                List<LichHoc> lichHoc = this.lichHocRepo.findByBuoiHocId_IdOrderByIdAsc(dto.getBuoiHocId());
+                dto.setListLichHoc(lichHoc);
+            }
+            return list;
+        } else {
+            throw new IllegalArgumentException("Thiếu tham số 'nganhId' hoặc 'monHocId'");
+        }
+    }
 }

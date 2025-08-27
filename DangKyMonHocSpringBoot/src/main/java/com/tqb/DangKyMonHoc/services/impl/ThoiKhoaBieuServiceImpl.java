@@ -4,7 +4,9 @@
  */
 package com.tqb.DangKyMonHoc.services.impl;
 
+import com.tqb.DangKyMonHoc.pojo.HocKy;
 import com.tqb.DangKyMonHoc.pojo.ThoiKhoaBieu;
+import com.tqb.DangKyMonHoc.repositories.HocKyRepository;
 import com.tqb.DangKyMonHoc.repositories.ThoiKhoaBieuRepository;
 import com.tqb.DangKyMonHoc.services.ThoiKhoaBieuService;
 import java.util.Date;
@@ -22,6 +24,9 @@ public class ThoiKhoaBieuServiceImpl implements ThoiKhoaBieuService{
     
     @Autowired
     private ThoiKhoaBieuRepository thoiKhoaBieuRepo;
+    
+    @Autowired
+    private HocKyRepository hocKyRepo;
 
     @Override
     public ThoiKhoaBieu findById(int id) {
@@ -43,6 +48,8 @@ public class ThoiKhoaBieuServiceImpl implements ThoiKhoaBieuService{
 
     @Override
     public ThoiKhoaBieu add(ThoiKhoaBieu thoiKhoaBieu) {
+        HocKy hocKy = this.hocKyRepo.findTopByOrderByIdDesc();
+        thoiKhoaBieu.setHocKyId(hocKy);
         return this.thoiKhoaBieuRepo.save(thoiKhoaBieu);
     }
 
@@ -55,6 +62,11 @@ public class ThoiKhoaBieuServiceImpl implements ThoiKhoaBieuService{
     @Override
     public List<ThoiKhoaBieu> findBySinhVienAndHocKy(int sinhVienId, int hocKyId, Date ngayBatDau, Date ngayKetThuc) {
         return this.thoiKhoaBieuRepo.findBySinhVienAndHocKy(sinhVienId, hocKyId, ngayBatDau, ngayKetThuc);
+    }
+
+    @Override
+    public void deleteByDangKyId(int dangKyId) {
+        this.thoiKhoaBieuRepo.deleteByDangKyId(dangKyId);
     }
     
 }

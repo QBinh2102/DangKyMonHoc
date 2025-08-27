@@ -18,6 +18,7 @@ public interface MonHocLienQuanRepository extends JpaRepository<MonHocLienQuan, 
     List<MonHocLienQuan> findByMonHocLienQuanPK_MonHocId(int monHocId);
     List<MonHocLienQuan> findAllByOrderByMonHocLienQuanPK_MonHocIdAsc();
     List<MonHocLienQuan> findByMonHocLienQuanPK_MonHocIdAndMonHocLienQuanPK_Loai(int monHocId, String loai);
+    List<MonHocLienQuan> findByMonHocLienQuanPK_MonHocIdAndMonHocLienQuanPK_NganhId(int monHocId, int nganhId);
     List<MonHocLienQuan> findByMonHocLienQuanPK_Loai(String loai);
     
 }

@@ -56,12 +56,17 @@
 
 .captcha-box {
   display: inline-block;
-  padding: 10px 15px;
-  font-size: 16px;
+  padding: 10px 20px;
+  font-size: 22px;
   font-weight: bold;
-  letter-spacing: 5px;
-  background: linear-gradient(135deg, #f0f0f0, #dcdcdc);
-  border: 2px solid #ccc;
+  letter-spacing: 6px;
+  background: repeating-linear-gradient(
+      45deg,
+      #f0f0f0,
+      #dcdcdc 10px,
+      #f0f0f0 20px
+  );
+  border: 2px dashed #aaa;
   border-radius: 6px;
   color: #333;
   user-select: none;
@@ -69,8 +74,14 @@
   text-align: center;
   cursor: pointer;
   transition: transform 0.2s ease;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.2), -1px -1px 2px rgba(0,0,0,0.2);
+  transform: rotate(-5deg);
+  background-image: 
+    linear-gradient(135deg, rgba(255,255,255,0.3) 25%, transparent 25%, transparent 50%, rgba(255,255,255,0.3) 50%, rgba(255,255,255,0.3) 75%, transparent 75%, transparent);
+  background-size: 20px 20px;
 }
 
 .captcha-box:hover {
-  transform: rotate(-2deg) scale(1.05);
+  transform: rotate(3deg) scale(1.1);
 }
+

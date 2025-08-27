@@ -60,14 +60,14 @@
   border: 1px solid #ccc;
   text-align: center;
   background: #f0f0f0;
-  height: 100px;
+  height: 130px;
 }
 
 .cell {
   border: 1px solid #ccc;
   min-height: 60px;
   padding: 4px;
-  height: 100px;
+  height: 130px;
   overflow: hidden;
 }
 

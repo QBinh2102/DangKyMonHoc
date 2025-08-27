@@ -8,23 +8,23 @@ import com.tqb.DangKyMonHoc.pojo.ThoiKhoaBieu;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import org.springframework.data.repository.query.Param;
 
 /**
  *
  * @author toquocbinh2102
  */
 public interface ThoiKhoaBieuService {
-    
+
     ThoiKhoaBieu findById(int id);
-    List<ThoiKhoaBieu> findThoiKhoaBieu(Map<String,String> params);
+
+    List<ThoiKhoaBieu> findThoiKhoaBieu(Map<String, String> params);
+
     ThoiKhoaBieu add(ThoiKhoaBieu thoiKhoaBieu);
+
     ThoiKhoaBieu delete(ThoiKhoaBieu thoiKhoaBieu);
-    List<ThoiKhoaBieu> findBySinhVienAndHocKy(
-            @Param("sinhVienId") int sinhVienId,
-            @Param("hocKyId") int hocKyId,
-            @Param("ngayBatDau") Date ngayBatDau,
-            @Param("ngayKetThuc") Date ngayKetThuc
-    );
     
+    void deleteByDangKyId(int dangKyId);
+
+    List<ThoiKhoaBieu> findBySinhVienAndHocKy(int sinhVienId, int hocKyId, Date ngayBatDau, Date ngayKetThuc);
+
 }

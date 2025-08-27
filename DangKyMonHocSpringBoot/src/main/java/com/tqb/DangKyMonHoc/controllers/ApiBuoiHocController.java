@@ -4,6 +4,7 @@
  */
 package com.tqb.DangKyMonHoc.controllers;
 
+import com.tqb.DangKyMonHoc.dto.BuoiHocDTO;
 import com.tqb.DangKyMonHoc.pojo.BuoiHoc;
 import com.tqb.DangKyMonHoc.services.BuoiHocService;
 import java.util.List;
@@ -46,6 +47,11 @@ public class ApiBuoiHocController {
     @GetMapping("/secure/admin/buoihoc")
     public ResponseEntity<List<BuoiHoc>> getBuoiHoc(@RequestParam Map<String, String> params) {
         return new ResponseEntity<>(this.buoiHocService.findBuoiHoc(params), HttpStatus.OK);
+    }
+    
+    @GetMapping("/secure/buoihoc")
+    public ResponseEntity<List<BuoiHocDTO>> getBuoiHocDangKy(@RequestParam Map<String, String> params) {
+        return new ResponseEntity<>(this.buoiHocService.findDanhSachBuoiHocDangKy(params), HttpStatus.OK);
     }
 
     @PostMapping("/secure/admin/buoihoc")

@@ -6,12 +6,11 @@ package com.tqb.DangKyMonHoc.services;
 
 import com.tqb.DangKyMonHoc.dto.TongKetHocKyDTO;
 import java.util.List;
-import org.springframework.data.repository.query.Param;
 
 /**
  *
  * @author toquocbinh2102
  */
 public interface TongKetService {
-    List<TongKetHocKyDTO> getTongKetHocKy(@Param("sinhVienId") int sinhVienId);
+    List<TongKetHocKyDTO> getTongKetHocKy(int sinhVienId);
 }

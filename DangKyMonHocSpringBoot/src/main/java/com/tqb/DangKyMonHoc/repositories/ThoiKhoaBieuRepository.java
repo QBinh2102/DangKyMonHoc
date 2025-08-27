@@ -8,19 +8,23 @@ import com.tqb.DangKyMonHoc.pojo.ThoiKhoaBieu;
 import java.util.Date;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
  * @author toquocbinh2102
  */
-public interface ThoiKhoaBieuRepository extends JpaRepository<ThoiKhoaBieu, Integer>{
-    
+public interface ThoiKhoaBieuRepository extends JpaRepository<ThoiKhoaBieu, Integer> {
+
     ThoiKhoaBieu findById(int id);
+
     List<ThoiKhoaBieu> findBySinhVienId_IdAndHocKyId_IdOrderByIdAsc(int sinhVienId, int hocKyId);
+
     List<ThoiKhoaBieu> findAllByOrderByIdAsc();
-    
+
     @Query("""
            SELECT tkb
            FROM ThoiKhoaBieu tkb
@@ -35,5 +39,22 @@ public interface ThoiKhoaBieuRepository extends JpaRepository<ThoiKhoaBieu, Inte
             @Param("ngayBatDau") Date ngayBatDau,
             @Param("ngayKetThuc") Date ngayKetThuc
     );
-    
+
+    @Transactional
+    @Modifying
+    @Query("""
+            DELETE FROM ThoiKhoaBieu tkb
+            WHERE tkb.sinhVienId.id = (
+                SELECT dk.sinhVienId.id FROM DangKy dk WHERE dk.id = :dangKyId
+            )
+            AND tkb.lichHocId.id IN (
+                SELECT lh.id
+                FROM LichHoc lh
+                JOIN lh.buoiHocId bh
+                JOIN DangKy dk ON dk.buoiHocId = bh
+                WHERE dk.id = :dangKyId
+            )
+           """)
+    void deleteByDangKyId(@Param("dangKyId") int dangKyId);
+
 }

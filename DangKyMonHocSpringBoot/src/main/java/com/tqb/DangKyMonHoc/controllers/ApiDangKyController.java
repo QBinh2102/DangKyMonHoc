@@ -5,7 +5,10 @@
 package com.tqb.DangKyMonHoc.controllers;
 
 import com.tqb.DangKyMonHoc.pojo.DangKy;
+import com.tqb.DangKyMonHoc.pojo.NguoiDung;
 import com.tqb.DangKyMonHoc.services.DangKyService;
+import com.tqb.DangKyMonHoc.services.NguoiDungService;
+import java.security.Principal;
 import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +37,9 @@ public class ApiDangKyController {
     @Autowired
     private DangKyService dangKyService;
 
+    @Autowired
+    private NguoiDungService nguoiDungService;
+
     @GetMapping("/dangky/{dangKyId}")
     public ResponseEntity<DangKy> getDangKyById(@PathVariable(value = "dangKyId") int id) {
         DangKy existing = this.dangKyService.findById(id);
@@ -44,12 +50,14 @@ public class ApiDangKyController {
         }
     }
 
-    @GetMapping("/dangky")
-    public ResponseEntity<List<DangKy>> getDangKy(@RequestParam Map<String, String> params) {
+    @GetMapping("/secure/me/dangky")
+    public ResponseEntity<List<DangKy>> getDangKy(Principal principal, @RequestParam Map<String, String> params) {
+        NguoiDung nd = this.nguoiDungService.findByEmail(principal.getName());
+        params.put("sinhVienId", nd.getId().toString());
         return new ResponseEntity<>(this.dangKyService.findDangKy(params), HttpStatus.OK);
     }
 
-    @PostMapping("/dangky")
+    @PostMapping("/secure/me/dangky")
     public ResponseEntity<?> create(@RequestBody DangKy dangKy) {
         if (dangKy.getId() != null) {
             return ResponseEntity
@@ -58,8 +66,12 @@ public class ApiDangKyController {
         }
 
         try {
-            DangKy newDangKy = this.dangKyService.addOrUpdate(dangKy);
+            DangKy newDangKy = this.dangKyService.add(dangKy);
             return new ResponseEntity<>(newDangKy, HttpStatus.CREATED);
+        } catch (RuntimeException e) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(e.getMessage());
         } catch (Exception e) {
             return ResponseEntity
                     .status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -67,25 +79,14 @@ public class ApiDangKyController {
         }
     }
 
-    @PutMapping("/dangky/{dangKyId}")
-    public ResponseEntity<DangKy> update(@PathVariable(value = "dangKyId") int id, @RequestBody DangKy dangKy) {
+    @DeleteMapping("/secure/me/dangky/{dangKyId}")
+    public ResponseEntity<DangKy> delete(@PathVariable(value = "dangKyId") int id) {
         DangKy existing = this.dangKyService.findById(id);
         if (existing == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } else {
-            dangKy.setId(id);
-            return new ResponseEntity<>(this.dangKyService.addOrUpdate(dangKy), HttpStatus.OK);
-        }
-    }
-
-    @DeleteMapping("/dangky/{dangKyId}")
-    public ResponseEntity<DangKy> delete(@PathVariable(value="dangKyId") int id){
-        DangKy existing = this.dangKyService.findById(id);
-        if(existing==null){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }else{
             return new ResponseEntity<>(this.dangKyService.delete(existing), HttpStatus.OK);
         }
     }
-    
+
 }

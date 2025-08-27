@@ -41,6 +41,11 @@ public class ApiHocKyController {
         return new ResponseEntity<>(this.hocKyService.findAllByOrderByIdAsc(), HttpStatus.OK);
     }
     
+    @GetMapping("/secure/hocky/latest")
+    public ResponseEntity<HocKy> getHocKyMoiNhat(){
+        return new ResponseEntity<>(this.hocKyService.findTopByOrderByIdDesc(), HttpStatus.OK);
+    }
+    
     @GetMapping("/secure/admin/hocky/{hocKyId}")
     public ResponseEntity<HocKy> getHocKyById(@PathVariable(value = "hocKyId") int id) {
         return new ResponseEntity<>(this.hocKyService.findById(id), HttpStatus.OK);

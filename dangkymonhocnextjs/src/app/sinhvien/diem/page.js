@@ -18,6 +18,7 @@ const Diem = () => {
         try {
             let res = await authApis().get(endpoints['diemSinhVien']);
             setListDiem(res.data);
+            console.log(res.data);
         } catch (ex) {
             console.error(ex);
         }
@@ -27,7 +28,7 @@ const Diem = () => {
         try {
             let res = await authApis().get(endpoints['tongKetSinhVien']);
             setListTongKet(res.data);
-            console.log(res.data);
+            
         } catch (ex) {
             console.error(ex);
         }
@@ -80,9 +81,9 @@ const Diem = () => {
 
     const getKetQua = (trangThai) => {
         if (trangThai === "HOAN_THANH") {
-            return "✓";
+            return "✔️";
         } else if (trangThai === "TRUOT") {
-            return "ｘ";
+            return "✖️";
         } else {
             return "";
         }
@@ -156,26 +157,26 @@ const Diem = () => {
                                     >
                                         <thead>
                                             <tr>
-                                                <th>Môn học</th>
-                                                <th>Nhóm</th>
-                                                <th>Số tín chỉ</th>
-                                                <th>Giữa kỳ</th>
-                                                <th>Cuối kỳ</th>
-                                                <th>Tổng kết</th>
-                                                <th>Kết quả</th>
+                                                <th style={{ width: "40%" }}>Môn học</th>
+                                                <th style={{ width: "10%" }}>Nhóm</th>
+                                                <th style={{ width: "10%" }}>Số tín chỉ</th>
+                                                <th style={{ width: "10%" }}>Giữa kỳ</th>
+                                                <th style={{ width: "10%" }}>Cuối kỳ</th>
+                                                <th style={{ width: "10%" }}>Tổng kết</th>
+                                                <th style={{ width: "10%" }}>Kết quả</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             {Object.keys(monHocs).sort().map((tenMon) => {
                                                 return monHocs[tenMon].map((i, idx) => (
                                                     <tr key={idx}>
-                                                        <td style={{ width: "30%" }}>{tenMon}</td>
-                                                        <td style={{ width: "10%" }}>{i.maLop}</td>
-                                                        <td style={{ width: "10%" }}>{i.soTinChi}</td>
-                                                        <td style={{ width: "10%" }}>{i.diem_gk !== null ? i.diem_gk : "-"}</td>
-                                                        <td style={{ width: "10%" }}>{i.diem_ck !== null ? i.diem_ck : "-"}</td>
-                                                        <td style={{ width: "10%" }}>{i.diem_tk !== null ? i.diem_tk : "-"}</td>
-                                                        <td style={{ width: "10%" }}>{getKetQua(i.trangThai)}</td>
+                                                        <td>{tenMon}</td>
+                                                        <td>{i.maLop}</td>
+                                                        <td>{i.soTinChi}</td>
+                                                        <td>{i.diem_gk !== null ? i.diem_gk : "-"}</td>
+                                                        <td>{i.diem_ck !== null ? i.diem_ck : "-"}</td>
+                                                        <td>{i.diem_tk !== null ? i.diem_tk : "-"}</td>
+                                                        <td>{getKetQua(i.trangThai)}</td>
                                                     </tr>
                                                 ));
                                             })}
@@ -184,10 +185,10 @@ const Diem = () => {
 
                                     {tongKet && (
                                         <div className="info-hocsinh p-2 border rounded bg-light d-flex mt-0">
-                                            <div className="me-3"><strong>Số tín chỉ đạt (HK):</strong> {tongKet.tinChiDatHk}</div>
-                                            <div className="me-3"><strong>Tổng số tín chỉ tích lũy:</strong> {tongKet.tinChiTichLuy}</div>
-                                            <div className="me-3"><strong>Điểm TB học kỳ:</strong> {tongKet.diemTbHk}</div>
-                                            <div className="me-3"><strong>Điểm TB tích lũy:</strong> {tongKet.diemTbTichLuy}</div>
+                                            <div className="me-5"><strong>Số tín chỉ đạt (HK):</strong> {tongKet.tinChiDatHk}</div>
+                                            <div className="me-5"><strong>Tổng số tín chỉ tích lũy:</strong> {tongKet.tinChiTichLuy}</div>
+                                            <div className="me-5"><strong>Điểm trung bình học kỳ:</strong> {tongKet.diemTbHk}</div>
+                                            <div className="me-5"><strong>Điểm trung bình tích lũy:</strong> {tongKet.diemTbTichLuy}</div>
                                         </div>
                                     )}
                                 </div>
