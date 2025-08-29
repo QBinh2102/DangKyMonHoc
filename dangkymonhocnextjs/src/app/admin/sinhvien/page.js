@@ -7,25 +7,32 @@ import { useEffect, useState } from "react";
 const SinhVien = () => {
 
     const [listSinhVien, setListSinhVien] = useState([]);
+    const [kw, setKw] = useState("");
     const [loading, setLoading] = useState(false);
     const router = useRouter();
 
-    useEffect(() => {
-        const loadSinhVien = async () => {
-            setLoading(true);
-            try {
-                let res = await authApis().get(endpoints['themHoacLaySinhVien']);
-                setListSinhVien(res.data);
-                console.info(res.data);
-            } catch (ex) {
-                console.error(ex);
-            } finally {
-                setLoading(false);
-            }
-        }
+    const loadSinhVien = async () => {
+        setLoading(true);
+        try {
+            let url = endpoints['themHoacLaySinhVien'];
 
+            const params = new URLSearchParams();
+            if (kw.trim() !== "") params.append("hoTen", kw);
+
+            if (params.toString() !== "") url += `?${params.toString()}`;
+
+            let res = await authApis().get(url);
+            setListSinhVien(res.data);
+        } catch (ex) {
+            console.error(ex);
+        } finally {
+            setLoading(false);
+        }
+    }
+
+    useEffect(() => {
         loadSinhVien();
-    }, []);
+    }, [kw]);
 
     return (
         <div>
@@ -34,7 +41,19 @@ const SinhVien = () => {
             </div>
 
             <div className="d-flex justify-content-end mb-3">
-                <button className="btn btn-success" onClick={() => router.push('/admin/sinhvien/them')}>
+                <input
+                    type="text"
+                    className="form-control"
+                    style={{ width: "250px" }}
+                    placeholder="Tìm sinh viên..."
+                    value={kw}
+                    onChange={(e) => setKw(e.target.value)}
+                />
+
+                <button
+                    className="btn btn-success ms-2"
+                    onClick={() => router.push('/admin/sinhvien/them')}
+                >
                     Thêm
                 </button>
             </div>
@@ -78,6 +97,10 @@ const SinhVien = () => {
                             ))}
                         </tbody>
                     </table>
+
+                    {listSinhVien.length === 0 && (
+                        <p className="text-center mt-3 text-muted">Không tìm thấy sinh viên nào</p>
+                    )}
                 </div>
             )}
         </div>

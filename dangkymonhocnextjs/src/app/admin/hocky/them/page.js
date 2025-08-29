@@ -1,0 +1,89 @@
+'use client'
+
+import { authApis, endpoints } from "@/configs/Apis";
+import { useState } from "react";
+
+const ThemHocKy = () => {
+
+    const info = [{
+        label: "Học Kỳ",
+        field: "ky",
+        type: "text",
+    }, {
+        label: "Năm Học",
+        field: "namHoc",
+        type: "text",
+    }, {
+        label: "Ngày Bắt Đầu",
+        field: "ngayBatDau",
+        type: "date",
+    }]
+    const [newHocKy, setNewHocKy] = useState({});
+    const [loading, setLoading] = useState(false);
+    const [msg, setMsg] = useState("");
+
+    const addHocKy = async (e) => {
+        e.preventDefault();
+        setLoading(true);
+        try {
+            console.log(newHocKy);
+            await authApis().post(endpoints['hocKy'], newHocKy);
+            setNewHocKy({});
+            setMsg("Thêm thành công!");
+        } catch (ex) {
+            console.error(ex);
+            setMsg("Thêm thất bại!");
+        } finally {
+            setLoading(false);
+        }
+    }
+
+    return (
+        <div>
+            <div className="text-center mt-5 mb-5">
+                <h1>THÊM HỌC KỲ</h1>
+            </div>
+
+            {msg && (
+                msg.includes("thành công") ? (
+                    <div className="alert alert-success text-center" role="alert">
+                        {msg}
+                    </div>
+                ) : (
+                    <div className="alert alert-warning text-center" role="alert">
+                        {msg}
+                    </div>
+                )
+            )}
+
+            <div>
+                <form onSubmit={addHocKy} className="w-50 mx-auto">
+                    {info.map(i => (
+                        <div className="mb-3 mt-3" key={i.field}>
+                            <label htmlFor={i.field} className="form-label">{i.label}</label>
+                            <input
+                                id={i.field}
+                                className="form-control"
+                                type={i.type}
+                                value={newHocKy[i.field] || ''}
+                                onChange={e => setNewHocKy({ ...newHocKy, [i.field]: e.target.value })}
+                                placeholder={i.label}
+                                required
+                            />
+                        </div>
+                    ))}
+                    <div className="text-center">
+                        <button type="submit" className="text-center btn btn-primary" disabled={loading}>
+                            {loading ?
+                                <>
+                                    <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                                    Đang thêm...
+                                </> : "Thêm"}
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    );
+}
+export default ThemHocKy;

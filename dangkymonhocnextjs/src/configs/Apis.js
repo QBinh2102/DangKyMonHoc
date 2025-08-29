@@ -84,7 +84,7 @@ export const endpoints = {
     'xoaDangKy': (dangKyId) => `/secure/me/dangky/${dangKyId}`,
     // Học phí
     'hocPhi': '/secure/admin/hocphi',
-    'hocPhiId': (hocPhiId) => `/secure/admin/hocphi/${hocPhiId}`,
+    'layHoacSuaHocPhiId': (hocPhiId) => `/secure/admin/hocphi/${hocPhiId}`,
     'hocPhiMoiNhat': '/secure/me/hocphi/latest',
     'hocPhiSinhVien': '/secure/me/hocphi',
     // Chi tiểt học phí

@@ -18,14 +18,14 @@ import org.springframework.stereotype.Service;
  * @author toquocbinh2102
  */
 @Service
-public class HocPhiServiceImpl implements HocPhiService{
+public class HocPhiServiceImpl implements HocPhiService {
 
     @Autowired
     private HocPhiRepository hocPhiRepo;
-    
+
     @Autowired
     private HocKyRepository hocKyRepo;
-    
+
     @Override
     public HocPhi findById(int id) {
         return this.hocPhiRepo.findById(id);
@@ -34,17 +34,38 @@ public class HocPhiServiceImpl implements HocPhiService{
     @Override
     public List<HocPhi> findHocPhi(Map<String, String> params) {
         String sinhVienId = params.get("sinhVienId");
-        boolean hasSinhVienId = sinhVienId!=null && !sinhVienId.isEmpty();
-        if(hasSinhVienId){
+        String hoTenSV = params.get("hoTen");
+        String hocKyId = params.get("hocKyId");
+        String trangThai = params.get("trangThai");
+        boolean hasSinhVienId = sinhVienId != null && !sinhVienId.isEmpty();
+        boolean hasHoTenSV = hoTenSV != null && !hoTenSV.isEmpty();
+        boolean hasHocKyId = hocKyId != null && !hocKyId.isEmpty();
+        boolean hasTrangThai = trangThai != null && !trangThai.isEmpty();
+
+        if (hasHoTenSV && hasHocKyId && hasTrangThai) {
+            return this.hocPhiRepo.findBySinhVienId_NguoiDung_HoTenContainingIgnoreCaseAndHocKyId_IdAndTrangThaiOrderByIdDesc(hoTenSV, Integer.parseInt(hocKyId), trangThai);
+        } else if (hasHoTenSV && hasHocKyId) {
+            return this.hocPhiRepo.findBySinhVienId_NguoiDung_HoTenContainingIgnoreCaseAndHocKyId_IdOrderByIdDesc(hoTenSV, Integer.parseInt(hocKyId));
+        } else if (hasHoTenSV && hasTrangThai) {
+            return this.hocPhiRepo.findBySinhVienId_NguoiDung_HoTenContainingIgnoreCaseAndTrangThaiOrderByIdDesc(hoTenSV, trangThai);
+        } else if (hasTrangThai && hasHocKyId) {
+            return this.hocPhiRepo.findByHocKyId_IdAndTrangThaiOrderByIdDesc(Integer.parseInt(hocKyId), trangThai);
+        } else if (hasHoTenSV) {
+            return this.hocPhiRepo.findBySinhVienId_NguoiDung_HoTenContainingIgnoreCaseOrderByIdDesc(hoTenSV);
+        } else if (hasTrangThai) {
+            return this.hocPhiRepo.findByTrangThaiOrderByIdDesc(trangThai);
+        } else if (hasHocKyId) {
+            return this.hocPhiRepo.findByHocKyId_IdOrderByIdDesc(Integer.parseInt(hocKyId));
+        } else if (hasSinhVienId) {
             return this.hocPhiRepo.findBySinhVienId_IdOrderByIdAsc(Integer.parseInt(sinhVienId));
-        }else{
+        } else {
             return this.hocPhiRepo.findAllByOrderByIdDesc();
         }
     }
 
     @Override
-    public HocPhi add(HocPhi hocPhi) {
-        if(hocPhi.getId()==null){
+    public HocPhi addOrUpdate(HocPhi hocPhi) {
+        if (hocPhi.getId() == null) {
             hocPhi.setTrangThai("CHUA_THANH_TOAN");
             hocPhi.setHocKyId(this.hocKyRepo.findTopByOrderByIdDesc());
         }
@@ -55,5 +76,5 @@ public class HocPhiServiceImpl implements HocPhiService{
     public HocPhi findHocPhiMoiNhatTheoSinhVien(int sinhVienId) {
         return this.hocPhiRepo.findBySinhVienId_IdAndHocKyId_Id(sinhVienId, this.hocKyRepo.findTopByOrderByIdDesc().getId());
     }
-    
+
 }

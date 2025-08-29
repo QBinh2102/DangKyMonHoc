@@ -17,8 +17,8 @@ import org.springframework.stereotype.Service;
  * @author toquocbinh2102
  */
 @Service
-public class PhongHocServiceImpl implements PhongHocService{
-    
+public class PhongHocServiceImpl implements PhongHocService {
+
     @Autowired
     private PhongHocRepository phongHocRepo;
 
@@ -30,10 +30,17 @@ public class PhongHocServiceImpl implements PhongHocService{
     @Override
     public List<PhongHoc> findPhongHoc(Map<String, String> params) {
         String loai = params.get("loai");
-        boolean hasLoai = loai!=null && !loai.isEmpty();
-        if(hasLoai){
+        String tenPhong = params.get("tenPhong");
+        boolean hasLoai = loai != null && !loai.isEmpty();
+        boolean hasTenPhong = tenPhong != null && !tenPhong.isEmpty();
+
+        if (hasTenPhong && hasLoai) {
+            return this.phongHocRepo.findByTenPhongContainingIgnoreCaseAndLoaiOrderByIdAsc(tenPhong, loai);
+        } else if (hasLoai) {
             return this.phongHocRepo.findByLoaiOrderByIdAsc(loai);
-        }else{
+        } else if (hasTenPhong) {
+            return this.phongHocRepo.findByTenPhongContainingIgnoreCaseOrderByIdAsc(tenPhong);
+        } else {
             return this.phongHocRepo.findAllByOrderByIdAsc();
         }
     }
@@ -42,5 +49,5 @@ public class PhongHocServiceImpl implements PhongHocService{
     public PhongHoc addOrUpdate(PhongHoc phongHoc) {
         return this.phongHocRepo.save(phongHoc);
     }
-    
+
 }

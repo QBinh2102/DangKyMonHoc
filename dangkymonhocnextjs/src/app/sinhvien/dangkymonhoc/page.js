@@ -13,6 +13,7 @@ const DangKyMonHoc = () => {
     const [listMonHoc, setListMonHoc] = useState([]);
     const [listDangKy, setListDangKy] = useState([]);
     const [selectedMonHoc, setSelectedMonHoc] = useState("");
+    const [selectedTenMon, setSelectedTenMon] = useState("");
 
     const loai = [
         { label: "Môn học mở theo lớp sinh viên", field: "lopId" },
@@ -128,14 +129,13 @@ const DangKyMonHoc = () => {
             }
 
             let hocPhi = await authApis().get(endpoints['hocPhiMoiNhat']);
-            console.log(hocPhi.data);
-            await authApis().post(endpoints['chiTietHocPhi'], {}, {
+            await authApis().post(endpoints['chiTietHocPhiSinhVien'], {}, {
                 params: {
                     hocPhiId: hocPhi.data.id,
                     buoiHocId: buoiHocId
                 }
             });
-            
+
             loadDangKy();
             loadBuoiHoc();
         } catch (ex) {
@@ -150,10 +150,10 @@ const DangKyMonHoc = () => {
 
     const deleteDangKy = async (dangKyId, buoiHocId) => {
         try {
-            await authApis().delete(`${endpoints['chiTietHocPhi']}?buoiHocId=${buoiHocId}`);
+            await authApis().delete(`${endpoints['chiTietHocPhiSinhVien']}?buoiHocId=${buoiHocId}`);
             await authApis().delete(`${endpoints['thoiKhoaBieuSinhVien']}?dangKyId=${dangKyId}`);
             await authApis().delete(endpoints['xoaDangKy'](dangKyId));
-            
+
             await loadDangKy();
             await loadBuoiHoc();
         } catch (ex) {
@@ -195,18 +195,28 @@ const DangKyMonHoc = () => {
 
                 {selectedLoai === "monHoc" &&
                     <div className="select-container">
-                        <select
+                        <input
+                            list="monHoc-list"
                             className="custom-select"
-                            value={selectedMonHoc}
-                            onChange={(e) => setSelectedMonHoc(e.target.value)}
-                        >
-                            <option value="">-- Chọn môn học --</option>
+                            value={selectedTenMon}
+                            onChange={(e) => {
+                                const value = e.target.value;
+                                setSelectedTenMon(value);
+
+                                const monHoc = listMonHoc.find(mh => mh.tenMon === value);
+                                if (monHoc) {
+                                    setSelectedMonHoc(monHoc.id); 
+                                } else {
+                                    setSelectedMonHoc("");
+                                }
+                            }}
+                            placeholder="-- Tên môn học --"
+                        />
+                        <datalist id="monHoc-list">
                             {listMonHoc.map((mh) => (
-                                <option key={mh.id} value={mh.id}>
-                                    {mh.tenMon}
-                                </option>
+                                <option key={mh.id} value={mh.tenMon} />
                             ))}
-                        </select>
+                        </datalist>
                     </div>
                 }
             </div>
@@ -295,7 +305,7 @@ const DangKyMonHoc = () => {
                                 <td className="format-properties">{dk.buoiHocId?.lopId?.maLop}</td>
                                 <td className="format-properties">{formatNgayDangKy(dk.ngayDangKy)}</td>
                                 <td className="format-properties">
-                                    <button className="btn" onClick={() => deleteDangKy(dk.id)}>❌</button>
+                                    <button className="btn" onClick={() => deleteDangKy(dk.id, dk.buoiHocId?.id)}>❌</button>
                                 </td>
                             </tr>
                         ))}

@@ -7,15 +7,22 @@ import { useEffect, useState } from "react";
 const Lop = () => {
 
     const [listLop, setListLop] = useState([]);
+    const [kw, setKw] = useState("");
     const [loading, setLoading] = useState(false);
     const router = useRouter();
 
     const loadLop = async () => {
         setLoading(true);
         try {
-            let res = await Apis.get(endpoints['lop']);
+            let url = endpoints['lop'];
+
+            const params = new URLSearchParams();
+            if (kw.trim() !== "") params.append("maLop", kw);
+
+            if (params.toString() !== "") url += `?${params.toString()}`;
+
+            let res = await Apis.get(url);
             setListLop(res.data);
-            console.info(res.data);
         } catch (ex) {
             console.error(ex);
         } finally {
@@ -25,7 +32,7 @@ const Lop = () => {
 
     useEffect(() => {
         loadLop();
-    }, []);
+    }, [kw]);
 
     return (
         <div>
@@ -34,11 +41,22 @@ const Lop = () => {
             </div>
 
             <div className="d-flex justify-content-end mb-3">
-                <button className="btn btn-success" onClick={() => router.push('/admin/lop/them')}>
+                <input
+                    type="text"
+                    className="form-control"
+                    style={{ width: "250px" }}
+                    placeholder="Tìm lớp..."
+                    value={kw}
+                    onChange={(e) => setKw(e.target.value)}
+                />
+
+                <button
+                    className="btn btn-success ms-2"
+                    onClick={() => router.push('/admin/lop/them')}>
                     Thêm
                 </button>
             </div>
-            
+
             {loading ? (
                 <div className="text-center">
                     <p>Đang tải dữ liệu...</p>
@@ -58,7 +76,7 @@ const Lop = () => {
                         <tbody>
                             {listLop.map((lop, idx) => (
                                 <tr key={lop.id}>
-                                    <td>{idx+1}</td>
+                                    <td>{idx + 1}</td>
                                     <td>{lop.maLop}</td>
                                     <td>{lop.siSo}</td>
                                     <td>{lop.nganhId.tenNganh}</td>
@@ -72,6 +90,10 @@ const Lop = () => {
                             ))}
                         </tbody>
                     </table>
+
+                    {listLop.length === 0 && (
+                        <p className="text-center mt-3 text-muted">Không tìm thấy lớp nào</p>
+                    )}
                 </div>
             )}
         </div>

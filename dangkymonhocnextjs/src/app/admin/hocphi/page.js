@@ -7,24 +7,48 @@ import { useEffect, useState } from "react";
 const HocPhi = () => {
 
     const [listHocPhi, setListHocPhi] = useState([]);
+    const [kw, setKw] = useState("");
+    const [selectedHocKy, setSelectedHocKy] = useState("");
+    const [selectedTrangThai, setSelectedTrangThai] = useState("CHUA_THANH_TOAN");
     const [loading, setLoading] = useState(false);
     const router = useRouter();
 
     const loadHocPhi = async () => {
         setLoading(true);
-        try{
-            let res = await authApis().get(endpoints['hocPhi']);
+        try {
+            let url = endpoints['hocPhi'];
+
+            const params = new URLSearchParams();
+            if (kw.trim() !== "") params.append("hoTen", kw);
+            if (selectedHocKy !== "") params.append("hocKyId", selectedHocKy);
+            if (selectedTrangThai !== "") params.append("trangThai", selectedTrangThai);
+
+            if (params.toString() !== "") url += `?${params.toString()}`;
+
+            let res = await authApis().get(url);
             setListHocPhi(res.data);
-        }catch(ex){
+        } catch (ex) {
             console.error(ex);
-        }finally{
+        } finally {
             setLoading(false);
         }
     }
 
     useEffect(() => {
         loadHocPhi();
-    }, []);
+    }, [kw, selectedHocKy, selectedTrangThai]);
+
+    const hocKyOptions = Array.from(
+        new Map(
+            listHocPhi.map(hp => [
+                hp.hocKyId.id,
+                {
+                    id: hp.hocKyId.id,
+                    label: `${hp.hocKyId.ky}-${hp.hocKyId.namHoc}`
+                }
+            ])
+        ).values()
+    );
 
     const formatTien = (soTien) => {
         if (!soTien) return "0 đ";
@@ -46,6 +70,37 @@ const HocPhi = () => {
         <div>
             <div className="text-center mt-5 mb-5">
                 <h1>QUẢN LÝ HỌC PHÍ</h1>
+            </div>
+
+            <div className="d-flex justify-content-end mb-3">
+                <input
+                    type="text"
+                    className="form-control"
+                    style={{ width: "250px" }}
+                    placeholder="Tìm theo tên sinh viên..."
+                    value={kw}
+                    onChange={(e) => setKw(e.target.value)}
+                />
+
+                <select
+                    className="form-select w-auto ms-2"
+                    value={selectedHocKy}
+                    onChange={(e) => setSelectedHocKy(e.target.value)}
+                >
+                    <option value="">Tất cả học kỳ</option>
+                    {hocKyOptions.map((hk) => (
+                        <option key={hk.id} value={hk.id}>{hk.label}</option>
+                    ))}
+                </select>
+
+                <select
+                    className="form-select w-auto ms-2"
+                    value={selectedTrangThai}
+                    onChange={(e) => setSelectedTrangThai(e.target.value)}
+                >
+                    <option value="CHUA_THANH_TOAN">Chưa thanh toán</option>
+                    <option value="DA_THANH_TOAN">Đã thanh toán</option>
+                </select>
             </div>
 
             {loading ? (
@@ -83,6 +138,10 @@ const HocPhi = () => {
                             ))}
                         </tbody>
                     </table>
+
+                    {listHocPhi.length === 0 && (
+                        <p className="text-center mt-3 text-muted">Không tìm thấy học phí nào</p>
+                    )}
                 </div>
             )}
         </div>

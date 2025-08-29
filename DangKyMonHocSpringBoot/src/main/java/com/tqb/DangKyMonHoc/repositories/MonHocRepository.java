@@ -20,6 +20,7 @@ public interface MonHocRepository extends JpaRepository<MonHoc, Integer>{
     MonHoc findByTenMon(String tenMon);
     List<MonHoc> findAllByOrderByIdAsc();
     List<MonHoc> findByTenMonContainingIgnoreCaseOrderByIdAsc(String tenMon);
+    List<MonHoc> findByTenMonContainingIgnoreCaseAndKhoaId_IdOrderByIdAsc(String tenMon, int khoaId);
     @Query("""
            SELECT DISTINCT mh
            FROM DangKy dk

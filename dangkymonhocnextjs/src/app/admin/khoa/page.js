@@ -7,25 +7,32 @@ import { useEffect, useState } from "react";
 const Khoa = () => {
 
     const [listKhoa, setListKhoa] = useState([]);
+    const [kw, setKw] = useState("");
     const [loading, setLoading] = useState(false);
     const router = useRouter();
 
-    useEffect(() => {
-        const loadKhoa = async () => {
-            setLoading(true);
-            try {
-                let res = await Apis.get(endpoints['khoa']);
-                setListKhoa(res.data);
-                console.info(res.data);
-            } catch (ex) {
-                console.error(ex);
-            } finally {
-                setLoading(false);
-            }
-        }
+    const loadKhoa = async () => {
+        setLoading(true);
+        try {
+            let url = endpoints['khoa'];
 
+            const params = new URLSearchParams();
+            if (kw.trim() !== "") params.append("tenKhoa", kw);
+
+            if (params.toString() !== "") url += `?${params.toString()}`;
+
+            let res = await Apis.get(url);
+            setListKhoa(res.data);
+        } catch (ex) {
+            console.error(ex);
+        } finally {
+            setLoading(false);
+        }
+    }
+
+    useEffect(() => {
         loadKhoa();
-    }, []);
+    }, [kw]);
 
     return (
         <div>
@@ -33,7 +40,19 @@ const Khoa = () => {
                 <h1>QUẢN LÝ KHOA</h1>
             </div>
             <div className="d-flex justify-content-end mb-3">
-                <button className="btn btn-success" onClick={() => router.push('/admin/khoa/them')}>
+                <input
+                    type="text"
+                    className="form-control"
+                    style={{ width: "250px" }}
+                    placeholder="Tìm khoa..."
+                    value={kw}
+                    onChange={(e) => setKw(e.target.value)}
+                />
+
+                <button
+                    className="btn btn-success ms-2"
+                    onClick={() => router.push('/admin/khoa/them')}
+                >
                     Thêm
                 </button>
             </div>
@@ -55,7 +74,7 @@ const Khoa = () => {
                             <tbody>
                                 {listKhoa.map((khoa, idx) => (
                                     <tr key={khoa.id}>
-                                        <td>{idx+1}</td>
+                                        <td>{idx + 1}</td>
                                         <td>{khoa.tenKhoa}</td>
                                         <td>
                                             <button className="btn btn-warning" onClick={() => router.push(`/admin/khoa/${khoa.id}`)}>
@@ -67,6 +86,10 @@ const Khoa = () => {
                                 ))}
                             </tbody>
                         </table>
+
+                        {listKhoa.length === 0 && (
+                            <p className="text-center mt-3 text-muted">Không tìm thấy khoa nào</p>
+                        )}
                     </div>
                 )}
             </div>

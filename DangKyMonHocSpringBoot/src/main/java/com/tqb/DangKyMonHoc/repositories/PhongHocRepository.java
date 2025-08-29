@@ -16,5 +16,7 @@ public interface PhongHocRepository extends JpaRepository<PhongHoc, Integer>{
     
     PhongHoc findById (int id);
     List<PhongHoc> findByLoaiOrderByIdAsc(String loai);
+    List<PhongHoc> findByTenPhongContainingIgnoreCaseOrderByIdAsc(String tenPhong);
+    List<PhongHoc> findByTenPhongContainingIgnoreCaseAndLoaiOrderByIdAsc(String tenPhong, String loai);
     List<PhongHoc> findAllByOrderByIdAsc();
 }

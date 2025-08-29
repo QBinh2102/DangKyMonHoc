@@ -18,7 +18,6 @@ const DeCuong = () => {
         try {
             let res = await Apis.get(`${endpoints['nganhMonHoc']}?nganhId=${nganhId}`);
             setListMonHoc(res.data);
-            console.log(res.data);
         } catch (ex) {
             console.error(ex);
         } finally {
@@ -31,7 +30,6 @@ const DeCuong = () => {
         try {
             let res = await authApis().get(endpoints['profile-sinhvien']);
             setSinhVien(res.data);
-            console.log(res.data);
             await loadMonHocTheoNganh(res.data.nganhId.id);
         } catch (ex) {
             console.error(ex);

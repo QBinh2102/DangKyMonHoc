@@ -15,7 +15,7 @@ const ChiTietHocPhi = () => {
 
     const loadHocPhi = async () => {
         try {
-            let res = await authApis().get(endpoints['hocPhiId'](id));
+            let res = await authApis().get(endpoints['layHoacSuaHocPhiId'](id));
             setHocPhi(res.data);
         } catch (ex) {
             console.error(ex);
@@ -33,7 +33,23 @@ const ChiTietHocPhi = () => {
 
     useEffect(() => {
         loadChiTietHocPhi();
+        loadHocPhi();
     }, [id]);
+
+    const updateHocPhi = async (e) => {
+        e.preventDefault();
+        setUpdateLoading(true);
+        try {
+            await authApis().put(endpoints['layHoacSuaHocPhiId'](id), hocPhi);
+            setMsg("Cập nhật thành công!");
+            await loadHocPhi();
+        } catch (ex) {
+            setMsg("Cập nhật thất bại!");
+            console.error(ex);
+        } finally {
+            setUpdateLoading(false);
+        }
+    }
 
     const tongTien = listChiTietHocPhi.reduce((sum, ct) => sum + (ct.chiPhi || 0), 0);
 
@@ -61,7 +77,7 @@ const ChiTietHocPhi = () => {
                 )
             )}
 
-            <form  className="w-50 mx-auto">
+            <form onSubmit={updateHocPhi} className="w-50 mx-auto">
                 <div className="mt-3 mb-3">
                     <label htmlFor="sinhVienId" className="form-label">Sinh viên</label>
                     <input
@@ -79,7 +95,11 @@ const ChiTietHocPhi = () => {
                         id="hocKyId"
                         type="text"
                         className="form-control"
-                        value={hocPhi.hocKyId?.ky - hocPhi.hocKyId?.namHoc || ""}
+                        value={
+                            hocPhi.hocKyId
+                                ? `${hocPhi.hocKyId.ky} - Năm học ${hocPhi.hocKyId.namHoc}`
+                                : ""
+                        }
                         disabled
                     />
                 </div>
@@ -90,9 +110,11 @@ const ChiTietHocPhi = () => {
                         id="trangThai"
                         className="form-select"
                         value={hocPhi.trangThai || ""}
+                        onChange={(e) => setHocPhi({ ...hocPhi, trangThai: e.target.value })}
+                        disabled={hocPhi.trangThai === "DA_THANH_TOAN"}
                     >
                         <option value="CHUA_THANH_TOAN">Chưa thanh toán</option>
-                        <option value="DA_THANH_TOAn">Đã thanh toán</option>
+                        <option value="DA_THANH_TOAN">Đã thanh toán</option>
                     </select>
                 </div>
 

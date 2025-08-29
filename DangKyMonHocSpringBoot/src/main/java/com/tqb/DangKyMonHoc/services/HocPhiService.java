@@ -17,6 +17,6 @@ public interface HocPhiService {
     HocPhi findById(int id);
     HocPhi findHocPhiMoiNhatTheoSinhVien(int sinhVienId);
     List<HocPhi> findHocPhi(Map<String,String> params);
-    HocPhi add(HocPhi hocPhi);
+    HocPhi addOrUpdate(HocPhi hocPhi);
     
 }

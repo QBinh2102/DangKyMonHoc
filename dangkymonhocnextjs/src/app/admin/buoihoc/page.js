@@ -7,25 +7,46 @@ import { useEffect, useState } from "react";
 const BuoiHoc = () => {
 
     const [listBuoiHoc, setListBuoiHoc] = useState([]);
+    const [selectedMaLop, setSelectedMaLop] = useState("");
+    const [selectedHocKy, setSelectedHocKy] = useState("");
     const [loading, setLoading] = useState(false);
     const router = useRouter();
 
-    useEffect(() => {
-        const loadBuoiHoc = async () => {
-            setLoading(true);
-            try{
-                let res = await authApis().get(endpoints['themHoacLayBuoiHoc']);
-                setListBuoiHoc(res.data);
-                console.info(res.data);
-            }catch(ex){
-                console.error(ex);
-            }finally{
-                setLoading(false);
-            }
-        }
+    const loadBuoiHoc = async () => {
+        setLoading(true);
+        try {
+            let url = endpoints['themHoacLayBuoiHoc'];
 
+            const params = new URLSearchParams();
+            if (selectedMaLop.trim() !== "") params.append("maLop", selectedMaLop);
+            if (selectedHocKy !== "") params.append("hocKyId", selectedHocKy);
+
+            if (params.toString() !== "") url += `?${params.toString()}`;
+
+            let res = await authApis().get(url);
+            setListBuoiHoc(res.data);
+        } catch (ex) {
+            console.error(ex);
+        } finally {
+            setLoading(false);
+        }
+    }
+
+    useEffect(() => {
         loadBuoiHoc();
-    },[]);
+    }, [selectedMaLop, selectedHocKy]);
+
+    const hocKyOptions = Array.from(
+        new Map(
+            listBuoiHoc.map(bh => [
+                bh.hocKyId.id,
+                {
+                    id: bh.hocKyId.id,
+                    label: `${bh.hocKyId.ky}-${bh.hocKyId.namHoc}`
+                }
+            ])
+        ).values()
+    );
 
     return (
         <div>
@@ -34,14 +55,39 @@ const BuoiHoc = () => {
             </div>
 
             <div className="d-flex justify-content-end mb-3">
-                <button className="btn btn-success" onClick={() => router.push('/admin/buoihoc/them')}>Thêm</button>
+                <input
+                    type="text"
+                    className="form-control ms-2"
+                    style={{ width: "250px" }}
+                    placeholder="Tìm theo mã lớp..."
+                    value={selectedMaLop}
+                    onChange={(e) => setSelectedMaLop(e.target.value)}
+                />
+
+                <select
+                    className="form-select w-auto ms-2"
+                    value={selectedHocKy}
+                    onChange={(e) => setSelectedHocKy(e.target.value)}
+                >
+                    <option value="">Tất cả học kỳ</option>
+                    {hocKyOptions.map((hk) => (
+                        <option key={hk.id} value={hk.id}>{hk.label}</option>
+                    ))}
+                </select>
+
+                <button
+                    className="btn btn-success ms-2"
+                    onClick={() => router.push('/admin/buoihoc/them')}
+                >
+                    Thêm
+                </button>
             </div>
 
             {loading ? (
                 <div className="text-center">
                     <p>Đang tải dữ liệu...</p>
                 </div>
-            ):(
+            ) : (
                 <div>
                     <table className="table text-center">
                         <thead>
@@ -58,7 +104,7 @@ const BuoiHoc = () => {
                         <tbody>
                             {listBuoiHoc.map((bh, idx) => (
                                 <tr key={bh.id}>
-                                    <td>{idx+1}</td>
+                                    <td>{idx + 1}</td>
                                     <td>{bh.monHocId.tenMon}</td>
                                     <td>{bh.lopId.maLop}</td>
                                     <td>{bh.giangVienId?.nguoiDung.hoTen}</td>
@@ -74,6 +120,10 @@ const BuoiHoc = () => {
                             ))}
                         </tbody>
                     </table>
+
+                    {listBuoiHoc.length === 0 && (
+                        <p className="text-center mt-3 text-muted">Không tìm thấy buổi học nào</p>
+                    )}
                 </div>
             )}
         </div>

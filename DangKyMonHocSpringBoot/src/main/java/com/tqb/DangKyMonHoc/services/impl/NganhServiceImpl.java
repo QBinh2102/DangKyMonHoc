@@ -33,7 +33,10 @@ public class NganhServiceImpl implements NganhService {
         String khoaId = params.get("khoaId");
         boolean hasTenNganh = tenNganh != null && !tenNganh.isEmpty();
         boolean hasKhoaId = khoaId != null && !khoaId.isEmpty();
-        if (hasTenNganh) {
+
+        if (hasTenNganh && hasKhoaId) {
+            return this.nganhRepo.findByTenNganhContainingIgnoreCaseAndKhoaId_IdOrderByIdAsc(tenNganh, Integer.parseInt(khoaId));
+        } else if (hasTenNganh) {
             return this.nganhRepo.findByTenNganhContainingIgnoreCaseOrderByIdAsc(tenNganh);
         } else if (hasKhoaId) {
             return this.nganhRepo.findByKhoaId_IdOrderByIdAsc(Integer.parseInt(khoaId));

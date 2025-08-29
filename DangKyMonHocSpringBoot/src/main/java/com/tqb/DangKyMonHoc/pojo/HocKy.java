@@ -4,6 +4,7 @@
  */
 package com.tqb.DangKyMonHoc.pojo;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Basic;
 import jakarta.persistence.CascadeType;
@@ -19,6 +20,7 @@ import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.Set;
 
@@ -50,13 +52,12 @@ public class HocKy implements Serializable {
     @Column(name = "nam_hoc")
     private String namHoc;
     @Basic(optional = false)
+    @JsonFormat(pattern = "yyyy-MM-dd")
     @Column(name = "ngay_bat_dau")
-    @Temporal(TemporalType.DATE)
-    private Date ngayBatDau;
-    @Basic(optional = false)
+    private LocalDate ngayBatDau;
+    @JsonFormat(pattern = "yyyy-MM-dd")
     @Column(name = "ngay_ket_thuc")
-    @Temporal(TemporalType.DATE)
-    private Date ngayKetThuc;
+    private LocalDate ngayKetThuc;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "hocKyId")
     @JsonIgnore
     private Set<BuoiHoc> buoiHocSet;
@@ -80,7 +81,7 @@ public class HocKy implements Serializable {
         this.id = id;
     }
 
-    public HocKy(Integer id, String ky, String namHoc, Date ngayBatDau, Date ngayKetThuc) {
+    public HocKy(Integer id, String ky, String namHoc, LocalDate ngayBatDau, LocalDate ngayKetThuc) {
         this.id = id;
         this.ky = ky;
         this.namHoc = namHoc;
@@ -112,19 +113,19 @@ public class HocKy implements Serializable {
         this.namHoc = namHoc;
     }
 
-    public Date getNgayBatDau() {
+    public LocalDate getNgayBatDau() {
         return ngayBatDau;
     }
 
-    public void setNgayBatDau(Date ngayBatDau) {
+    public void setNgayBatDau(LocalDate ngayBatDau) {
         this.ngayBatDau = ngayBatDau;
     }
 
-    public Date getNgayKetThuc() {
+    public LocalDate getNgayKetThuc() {
         return ngayKetThuc;
     }
 
-    public void setNgayKetThuc(Date ngayKetThuc) {
+    public void setNgayKetThuc(LocalDate ngayKetThuc) {
         this.ngayKetThuc = ngayKetThuc;
     }
 

@@ -35,7 +35,10 @@ public class MonHocServiceImpl implements MonHocService {
         boolean hasTenMon = tenMon != null && !tenMon.isEmpty();
         boolean hasHocKyId = hocKyId != null && !hocKyId.isEmpty();
         boolean hasKhoaId = khoaId != null && !khoaId.isEmpty();
-        if (hasTenMon) {
+
+        if (hasTenMon && hasKhoaId) {
+            return this.monHocRepo.findByTenMonContainingIgnoreCaseAndKhoaId_IdOrderByIdAsc(tenMon, Integer.parseInt(khoaId));
+        } else if (hasTenMon) {
             return this.monHocRepo.findByTenMonContainingIgnoreCaseOrderByIdAsc(tenMon);
         } else if (hasHocKyId && hasKhoaId) {
             return this.monHocRepo.findMonHocByHocKyAndKhoaFromDangKy(Integer.parseInt(hocKyId), Integer.parseInt(khoaId));

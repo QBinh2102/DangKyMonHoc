@@ -6,7 +6,6 @@ package com.tqb.DangKyMonHoc.services.impl;
 
 import com.tqb.DangKyMonHoc.pojo.Lop;
 import com.tqb.DangKyMonHoc.repositories.LopRepository;
-import com.tqb.DangKyMonHoc.services.HocKyService;
 import com.tqb.DangKyMonHoc.services.LopService;
 import java.time.LocalDate;
 import java.util.List;
@@ -32,8 +31,12 @@ public class LopServiceImpl implements LopService {
     @Override
     public List<Lop> findLop(Map<String, String> params) {
         String nganhId = params.get("nganhId");
+        String maLop = params.get("maLop");
         boolean hasNganhId = nganhId != null && !nganhId.isEmpty();
-        if (hasNganhId) {
+        boolean hasMaLop = maLop != null && !maLop.isEmpty();
+        if (hasMaLop) {
+            return this.lopRepo.findByMaLopContainingIgnoreCaseOrderByIdAsc(maLop);
+        } else if (hasNganhId) {
             return this.lopRepo.findLopChuaDay(Integer.parseInt(nganhId), LocalDate.now().getYear());
         } else {
             return this.lopRepo.findAllByOrderByIdDesc();

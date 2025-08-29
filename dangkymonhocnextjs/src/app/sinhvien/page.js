@@ -46,7 +46,6 @@ const SinhVien = () => {
         try {
             let res = await authApis().get(endpoints['profile-sinhvien']);
             setSinhVien(res.data);
-            console.log(res.data);
         } catch (ex) {
             console.error(ex);
         } finally {

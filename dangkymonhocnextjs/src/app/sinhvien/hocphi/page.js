@@ -9,7 +9,6 @@ const HocPhi = () => {
     const [listChiTietHocPhi, setListChiTietHocPhi] = useState([]);
     const [listHocKy, setListHocKy] = useState([]);
     const [selectedHocKy, setSelectedHocKy] = useState("");
-    const [loading, setLoading] = useState(false);
 
     const loadHocKy = async () => {
         try {
@@ -25,7 +24,6 @@ const HocPhi = () => {
         try {
             let res = await authApis().get(endpoints['hocPhiSinhVien']);
             setListHocPhi(res.data);
-            console.log(res.data);
         } catch (ex) {
             console.error(ex);
         }
@@ -36,7 +34,6 @@ const HocPhi = () => {
         try {
             let res = await authApis().get(`${endpoints['chiTietHocPhiSinhVien']}?hocKyId=${hocKyId}`);
             setListChiTietHocPhi(res.data);
-            console.log(res.data);
         } catch (ex) {
             console.error(ex);
         }

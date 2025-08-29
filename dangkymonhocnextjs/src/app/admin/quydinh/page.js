@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 const QuyDinh = () => {
 
     const [listQuyDinh, setListQuyDinh] = useState([]);
+    const [kw, setKw] = useState("");
     const [loading, setLoading] = useState(false);
     const [msg, setMsg] = useState("");
     const router = useRouter();
@@ -14,9 +15,15 @@ const QuyDinh = () => {
     const loadQuyDinh = async () => {
         setLoading(true);
         try {
-            let res = await Apis.get(endpoints['quyDinh']);
+            let url = endpoints['quyDinh'];
+
+            const params = new URLSearchParams();
+            if (kw.trim() !== "") params.append("quyDinh", kw);
+
+            if (params.toString() !== "") url += `?${params.toString()}`;
+
+            let res = await Apis.get(url);
             setListQuyDinh(res.data);
-            console.info(res.data);
         } catch (ex) {
             console.error(ex);
         } finally {
@@ -26,7 +33,7 @@ const QuyDinh = () => {
 
     useEffect(() => {
         loadQuyDinh();
-    }, []);
+    }, [kw]);
 
     const deleteQuyDinh = async (id) => {
         try {
@@ -58,11 +65,23 @@ const QuyDinh = () => {
             )}
 
             <div className="d-flex justify-content-end mb-3">
-                <button className="btn btn-success" onClick={() => router.push('/admin/quydinh/them')}>
+                <input
+                    type="text"
+                    className="form-control"
+                    style={{ width: "250px" }}
+                    placeholder="Tìm quy định..."
+                    value={kw}
+                    onChange={(e) => setKw(e.target.value)}
+                />
+
+                <button
+                    className="btn btn-success ms-2"
+                    onClick={() => router.push('/admin/quydinh/them')}
+                >
                     Thêm
                 </button>
             </div>
-            
+
             {loading ? (
                 <div className="text-center">
                     <p>Đang tải dữ liệu...</p>
@@ -81,7 +100,7 @@ const QuyDinh = () => {
                         <tbody>
                             {listQuyDinh.map((quyDinh, idx) => (
                                 <tr key={quyDinh.id}>
-                                    <td>{idx+1}</td>
+                                    <td>{idx + 1}</td>
                                     <td>{quyDinh.ten}</td>
                                     <td>{quyDinh.giaTri}</td>
                                     <td>
@@ -105,6 +124,10 @@ const QuyDinh = () => {
                             ))}
                         </tbody>
                     </table>
+
+                    {listQuyDinh.length === 0 && (
+                        <p className="text-center mt-3 text-muted">Không tìm thấy khoa nào</p>
+                    )}
                 </div>
             )}
         </div>

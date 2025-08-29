@@ -41,15 +41,17 @@ public class BuoiHocServiceImpl implements BuoiHocService {
     public List<BuoiHoc> findBuoiHoc(Map<String, String> params) {
         String monHocId = params.get("monHocId");
         String hocKyId = params.get("hocKyId");
-        String lopId = params.get("lopId");
+        String maLop = params.get("maLop");
         boolean hasMonHocId = monHocId != null && !monHocId.isEmpty();
         boolean hasHocKyId = hocKyId != null && !hocKyId.isEmpty();
-        boolean hasLopId = lopId != null && !lopId.isEmpty();
+        boolean hasMaLop = maLop != null && !maLop.isEmpty();
 
-        if (hasLopId) {
-            return this.buoiHocRepo.findByHocKyId_IdAndLopId_IdOrderByIdAsc(Integer.parseInt(hocKyId), Integer.parseInt(lopId));
+        if (hasMaLop && hasHocKyId){
+            return this.buoiHocRepo.findByHocKyId_IdAndLopId_MaLopContainingIgnoreCaseOrderByIdAsc(Integer.parseInt(hocKyId), maLop);
+        }else if (hasMaLop) {
+            return this.buoiHocRepo.findByLopId_MaLopContainingIgnoreCaseOrderByIdAsc(maLop);
         } else if (hasMonHocId) {
-            return this.buoiHocRepo.findByMonHocId_IdAndHocKyId_IdOrderByIdAsc(Integer.parseInt(monHocId), Integer.parseInt(hocKyId));
+            return this.buoiHocRepo.findByMonHocId_IdOrderByIdAsc(Integer.parseInt(monHocId));
         } else if (hasHocKyId) {
             return this.buoiHocRepo.findByHocKyId_IdOrderByIdAsc(Integer.parseInt(hocKyId));
         } else {
@@ -90,7 +92,7 @@ public class BuoiHocServiceImpl implements BuoiHocService {
             }
             return list;
         } else {
-            throw new IllegalArgumentException("Thiếu tham số 'nganhId' hoặc 'monHocId'");
+            throw new IllegalArgumentException("Thiếu tham số 'lopId' hoặc 'monHocId'");
         }
     }
 }

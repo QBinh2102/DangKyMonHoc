@@ -56,7 +56,6 @@ const ThoiKhoaBieu = () => {
     const loadThoiKhoaBieu = async (tuanId) => {
         try {
             const currentTuan = weeks.find(i => i.id == tuanId);
-            console.log(currentTuan);
             let res = await authApis().get(endpoints['thoiKhoaBieuSinhVien'], {
                 params: {
                     hocKyId: parseInt(selectedHocKy),
@@ -65,7 +64,6 @@ const ThoiKhoaBieu = () => {
                 }
             });
             setListThoiKhoaBieu(res.data);
-            console.log(res.data);
         } catch (ex) {
             console.error(ex);
         }

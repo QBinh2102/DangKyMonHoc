@@ -20,7 +20,7 @@ public interface LopRepository extends JpaRepository<Lop, Integer> {
 
     List<Lop> findAllByOrderByIdDesc();
 
-    //List<Lop> findByKhoaId_IdAndHocKyId_IdOrderByIdAsc(int khoaId, int hocKyId);
+    List<Lop> findByMaLopContainingIgnoreCaseOrderByIdAsc(String maLop);
 
     @Query("""
         SELECT l

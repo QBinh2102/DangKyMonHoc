@@ -22,10 +22,12 @@ public interface BuoiHocRepository extends JpaRepository<BuoiHoc, Integer> {
     List<BuoiHoc> findByMonHocId_IdOrderByIdAsc(int monHocId);
 
     List<BuoiHoc> findByHocKyId_IdOrderByIdAsc(int hocKyId);
+    
+    List<BuoiHoc> findByLopId_MaLopContainingIgnoreCaseOrderByIdAsc(String maLop);
 
     List<BuoiHoc> findByMonHocId_IdAndHocKyId_IdOrderByIdAsc(int monHocId, int hocKyId);
 
-    List<BuoiHoc> findByHocKyId_IdAndLopId_IdOrderByIdAsc(int hocKyId, int lopId);
+    List<BuoiHoc> findByHocKyId_IdAndLopId_MaLopContainingIgnoreCaseOrderByIdAsc(int hocKyId, String maLop);
 
     List<BuoiHoc> findByHocKyId_IdAndLopId_NganhId_IdOrderByIdAsc(int hocKyId, int nganhId);
 

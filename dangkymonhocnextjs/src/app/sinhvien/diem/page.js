@@ -18,7 +18,6 @@ const Diem = () => {
         try {
             let res = await authApis().get(endpoints['diemSinhVien']);
             setListDiem(res.data);
-            console.log(res.data);
         } catch (ex) {
             console.error(ex);
         }

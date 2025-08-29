@@ -18,5 +18,6 @@ public interface NganhRepository extends JpaRepository<Nganh, Integer>{
     List<Nganh> findAllByOrderByIdAsc();
     List<Nganh> findByTenNganhContainingIgnoreCaseOrderByIdAsc(String tenNganh);
     List<Nganh> findByKhoaId_IdOrderByIdAsc(int khoaId);
+    List<Nganh> findByTenNganhContainingIgnoreCaseAndKhoaId_IdOrderByIdAsc(String tenNganh, int khoaId);
     
 }

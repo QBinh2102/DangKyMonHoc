@@ -7,25 +7,32 @@ import { useEffect, useState } from "react";
 const GiangVien = () => {
 
     const [listGiangVien, setListGiangVien] = useState([]);
+    const [kw, setKw] = useState("");
     const [loading, setLoading] = useState(false);
     const router = useRouter();
 
-    useEffect(() => {
-        const loadGiangVien = async () => {
-            setLoading(true);
-            try {
-                let res = await authApis().get(endpoints['themHoacLayGiangVien']);
-                setListGiangVien(res.data);
-                console.info(res.data);
-            } catch (ex) {
-                console.error(ex);
-            } finally {
-                setLoading(false);
-            }
-        }
+    const loadGiangVien = async () => {
+        setLoading(true);
+        try {
+            let url = endpoints['themHoacLayGiangVien'];
 
+            const params = new URLSearchParams();
+            if (kw.trim() !== "") params.append("hoTen", kw);
+
+            if (params.toString() !== "") url += `?${params.toString()}`;
+
+            let res = await authApis().get(url);
+            setListGiangVien(res.data);
+        } catch (ex) {
+            console.error(ex);
+        } finally {
+            setLoading(false);
+        }
+    }
+
+    useEffect(() => {
         loadGiangVien();
-    }, []);
+    }, [kw]);
 
     return (
         <div>
@@ -33,7 +40,18 @@ const GiangVien = () => {
                 <h1>QUẢN LÝ GIẢNG VIÊN</h1>
             </div>
             <div className="d-flex justify-content-end mb-3">
-                <button className="btn btn-success" onClick={() => router.push('/admin/giangvien/them')}>
+                <input
+                    type="text"
+                    className="form-control"
+                    style={{ width: "250px" }}
+                    placeholder="Tìm giảng viên..."
+                    value={kw}
+                    onChange={(e) => setKw(e.target.value)}
+                />
+
+                <button
+                    className="btn btn-success ms-2"
+                    onClick={() => router.push('/admin/giangvien/them')}>
                     Thêm
                 </button>
             </div>
@@ -72,6 +90,10 @@ const GiangVien = () => {
                             ))}
                         </tbody>
                     </table>
+
+                    {listGiangVien.length === 0 && (
+                        <p className="text-center mt-3 text-muted">Không tìm thấy giảng viên nào</p>
+                    )}
                 </div>
             )}
         </div>
