@@ -17,6 +17,7 @@ import org.springframework.data.repository.query.Param;
 public interface MonHocRepository extends JpaRepository<MonHoc, Integer>{
     
     MonHoc findById(int id);
+    MonHoc findByTenMon(String tenMon);
     List<MonHoc> findAllByOrderByIdAsc();
     List<MonHoc> findByTenMonContainingIgnoreCaseOrderByIdAsc(String tenMon);
     @Query("""

@@ -4,7 +4,7 @@
  */
 package com.tqb.DangKyMonHoc.repositories;
 
-import com.tqb.DangKyMonHoc.pojo.SinhVien;
+import com.tqb.DangKyMonHoc.pojo.HocPhi;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -12,11 +12,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
  *
  * @author toquocbinh2102
  */
-public interface SinhVienRepository extends JpaRepository<SinhVien, Integer>{
+public interface HocPhiRepository extends JpaRepository<HocPhi, Integer>{
     
-    SinhVien findById(int id);
-    SinhVien findByNguoiDung_Email(String email);
-    List<SinhVien> findByNguoiDung_HoTenContainingIgnoreCaseOrderByIdAsc(String hoTen);
-    List<SinhVien> findAllByOrderByIdDesc();
+    HocPhi findById(int id);
+    HocPhi findBySinhVienId_IdAndHocKyId_Id(int sinhVienId, int hocKyId);
+    List<HocPhi> findBySinhVienId_IdOrderByIdAsc(int sinhVienId);
+    List<HocPhi> findAllByOrderByIdDesc();
     
 }

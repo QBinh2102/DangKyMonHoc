@@ -72,6 +72,9 @@ public class MonHoc implements Serializable {
     private Set<BuoiHoc> buoiHocSet;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "monHocId")
     @JsonIgnore
+    private Set<ChiTietHocPhi> chiTietHocPhiSet;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "monHocId")
+    @JsonIgnore
     private Set<Diem> diemSet;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "monHoc")
     @JsonIgnore
@@ -173,6 +176,14 @@ public class MonHoc implements Serializable {
 
     public void setBuoiHocSet(Set<BuoiHoc> buoiHocSet) {
         this.buoiHocSet = buoiHocSet;
+    }
+
+    public Set<ChiTietHocPhi> getChiTietHocPhiSet() {
+        return chiTietHocPhiSet;
+    }
+
+    public void setChiTietHocPhiSet(Set<ChiTietHocPhi> chiTietHocPhiSet) {
+        this.chiTietHocPhiSet = chiTietHocPhiSet;
     }
 
     public Set<Diem> getDiemSet() {

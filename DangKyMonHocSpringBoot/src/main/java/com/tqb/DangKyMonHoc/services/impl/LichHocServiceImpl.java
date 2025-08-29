@@ -85,13 +85,6 @@ public class LichHocServiceImpl implements LichHocService {
                 throw new IllegalArgumentException("Trùng lịch học: phòng và giờ này đã được sử dụng trong thời gian đó.");
             }
 
-//            // Set giờ kết thúc
-//            QuyDinh soGioMotBuoi = this.quyDinhService.findByTen("Số giờ 1 buổi học");
-//            if (soGioMotBuoi != null) {
-//                int soGioHoc = soGioMotBuoi.getGiaTri();
-//                LocalTime gioKetThuc = gioBatDau.plusHours(soGioHoc);
-//                lichHoc.setGioKetThuc(gioKetThuc);
-//            }
             // Set thứ
             Calendar calThu = Calendar.getInstance();
             calThu.setTime(ngayBatDau);

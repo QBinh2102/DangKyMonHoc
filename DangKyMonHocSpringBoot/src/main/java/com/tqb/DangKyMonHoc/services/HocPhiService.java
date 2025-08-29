@@ -4,7 +4,7 @@
  */
 package com.tqb.DangKyMonHoc.services;
 
-import com.tqb.DangKyMonHoc.pojo.MonHoc;
+import com.tqb.DangKyMonHoc.pojo.HocPhi;
 import java.util.List;
 import java.util.Map;
 
@@ -12,10 +12,11 @@ import java.util.Map;
  *
  * @author toquocbinh2102
  */
-public interface MonHocService {
+public interface HocPhiService {
     
-    MonHoc findById(int id);
-    List<MonHoc> findMonHoc(Map<String,String> params);
-    MonHoc addOrUpdate(MonHoc monHoc);
+    HocPhi findById(int id);
+    HocPhi findHocPhiMoiNhatTheoSinhVien(int sinhVienId);
+    List<HocPhi> findHocPhi(Map<String,String> params);
+    HocPhi add(HocPhi hocPhi);
     
 }

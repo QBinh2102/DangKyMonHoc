@@ -69,6 +69,9 @@ public class HocKy implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "hocKyId")
     @JsonIgnore
     private Set<ThoiKhoaBieu> thoiKhoaBieuSet;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "hocKyId")
+    @JsonIgnore
+    private Set<HocPhi> hocPhiSet;
 
     public HocKy() {
     }
@@ -155,6 +158,14 @@ public class HocKy implements Serializable {
 
     public void setThoiKhoaBieuSet(Set<ThoiKhoaBieu> thoiKhoaBieuSet) {
         this.thoiKhoaBieuSet = thoiKhoaBieuSet;
+    }
+
+    public Set<HocPhi> getHocPhiSet() {
+        return hocPhiSet;
+    }
+
+    public void setHocPhiSet(Set<HocPhi> hocPhiSet) {
+        this.hocPhiSet = hocPhiSet;
     }
 
     @Override

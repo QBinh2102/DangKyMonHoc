@@ -38,15 +38,15 @@ const HocKy = () => {
                 <table className="table text-center">
                     <thead>
                         <tr>
-                            <th>Id</th>
+                            <th>STT</th>
                             <th>Học Kỳ</th>
                             <th>Năm Học</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {listHocKy.map((hk) => (
+                        {listHocKy.map((hk, idx) => (
                             <tr key={hk.id}>
-                                <td>{hk.id}</td>
+                                <td>{idx+1}</td>
                                 <td>{hk.ky}</td>
                                 <td>{hk.namHoc}</td>
                             </tr>

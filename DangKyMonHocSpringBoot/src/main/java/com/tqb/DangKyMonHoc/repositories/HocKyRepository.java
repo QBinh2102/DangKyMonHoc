@@ -18,7 +18,7 @@ public interface HocKyRepository extends JpaRepository<HocKy, Integer>{
     
     HocKy findById(int id);
     HocKy findTopByOrderByIdDesc();
-    List<HocKy> findAllByOrderByIdAsc();
+    List<HocKy> findAllByOrderByIdDesc();
     
     @Query("""
            SELECT DISTINCT hk

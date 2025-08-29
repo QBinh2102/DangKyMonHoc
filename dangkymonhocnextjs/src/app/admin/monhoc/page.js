@@ -48,7 +48,7 @@ const MonHoc = () => {
                     <table className="table text-center">
                         <thead>
                             <tr>
-                                <th>Id</th>
+                                <th>STT</th>
                                 <th>Tên môn</th>
                                 <th>Tín chỉ lý thuyết</th>
                                 <th>Tín chỉ thực hành</th>
@@ -60,9 +60,9 @@ const MonHoc = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {listMonHoc.map((mh) => (
+                            {listMonHoc.map((mh, idx) => (
                                 <tr key={mh.id}>
-                                    <td>{mh.id}</td>
+                                    <td>{idx+1}</td>
                                     <td>{mh.tenMon}</td>
                                     <td>{mh.tinChiLyThuyet}</td>
                                     <td>{mh.tinChiThucHanh}</td>

@@ -118,6 +118,7 @@ const DangKyMonHoc = () => {
         };
         try {
             await authApis().post(endpoints['dangKy'], newDangKy);
+
             for (const lh of listLichHoc) {
                 const newLichHoc = {
                     sinhVienId: sinhVien.id,
@@ -125,6 +126,16 @@ const DangKyMonHoc = () => {
                 };
                 await authApis().post(endpoints['thoiKhoaBieuSinhVien'], newLichHoc);
             }
+
+            let hocPhi = await authApis().get(endpoints['hocPhiMoiNhat']);
+            console.log(hocPhi.data);
+            await authApis().post(endpoints['chiTietHocPhi'], {}, {
+                params: {
+                    hocPhiId: hocPhi.data.id,
+                    buoiHocId: buoiHocId
+                }
+            });
+            
             loadDangKy();
             loadBuoiHoc();
         } catch (ex) {
@@ -137,10 +148,12 @@ const DangKyMonHoc = () => {
         }
     }
 
-    const deleteDangKy = async (dangKyId) => {
+    const deleteDangKy = async (dangKyId, buoiHocId) => {
         try {
+            await authApis().delete(`${endpoints['chiTietHocPhi']}?buoiHocId=${buoiHocId}`);
             await authApis().delete(`${endpoints['thoiKhoaBieuSinhVien']}?dangKyId=${dangKyId}`);
             await authApis().delete(endpoints['xoaDangKy'](dangKyId));
+            
             await loadDangKy();
             await loadBuoiHoc();
         } catch (ex) {
@@ -241,7 +254,7 @@ const DangKyMonHoc = () => {
                                             <button
                                                 className="btn btn-danger"
                                                 style={{ height: '40px', width: '60px' }}
-                                                onClick={() => deleteDangKy(dk.id)}
+                                                onClick={() => deleteDangKy(dk.id, bh.buoiHocId)}
                                             >
                                                 Xóa
                                             </button>

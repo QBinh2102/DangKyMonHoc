@@ -47,16 +47,16 @@ const PhongHoc = () => {
                     <table className="table text-center">
                         <thead>
                             <tr>
-                                <th>Id</th>
+                                <th>STT</th>
                                 <th>Phòng</th>
                                 <th>Loại</th>
                                 <th>Công Cụ</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {listPhongHoc.map(ph =>(
+                            {listPhongHoc.map((ph, idx) =>(
                                 <tr key={ph.id}>
-                                    <td>{ph.id}</td>
+                                    <td>{idx+1}</td>
                                     <td>{ph.tenPhong}</td>
                                     <td>{ph.loai === "LyThuyet" ? "Lý Thuyết" : "Thực Hành"}</td>
                                     <td>

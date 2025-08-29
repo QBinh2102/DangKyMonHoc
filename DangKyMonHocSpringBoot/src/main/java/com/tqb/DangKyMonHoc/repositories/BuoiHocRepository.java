@@ -29,7 +29,7 @@ public interface BuoiHocRepository extends JpaRepository<BuoiHoc, Integer> {
 
     List<BuoiHoc> findByHocKyId_IdAndLopId_NganhId_IdOrderByIdAsc(int hocKyId, int nganhId);
 
-    List<BuoiHoc> findAllByOrderByIdAsc();
+    List<BuoiHoc> findAllByOrderByIdDesc();
 
     @Query("""
        SELECT new com.tqb.DangKyMonHoc.dto.BuoiHocDTO(

@@ -48,7 +48,7 @@ const TietHoc = () => {
                     <table className="table text-center">
                         <thead>
                             <tr>
-                                <th>Id</th>
+                                <th>STT</th>
                                 <th>Tiết</th>
                                 <th>Giờ Bắt Đầu</th>
                                 <th>Giờ Kết Thúc</th>
@@ -56,9 +56,9 @@ const TietHoc = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {listTietHoc.map((tietHoc) => (
+                            {listTietHoc.map((tietHoc, idx) => (
                                 <tr key={tietHoc.id}>
-                                    <td>{tietHoc.id}</td>
+                                    <td>{idx+1}</td>
                                     <td>{tietHoc.tiet}</td>
                                     <td>{tietHoc.gioBatDau}</td>
                                     <td>{tietHoc.gioKetThuc}</td>

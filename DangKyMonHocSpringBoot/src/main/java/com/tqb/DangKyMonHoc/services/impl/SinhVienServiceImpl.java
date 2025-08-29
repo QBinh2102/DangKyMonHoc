@@ -53,7 +53,7 @@ public class SinhVienServiceImpl implements SinhVienService {
         if (hasHoTen) {
             return this.sinhVienRepo.findByNguoiDung_HoTenContainingIgnoreCaseOrderByIdAsc(hoTen);
         } else {
-            return this.sinhVienRepo.findAllByOrderByIdAsc();
+            return this.sinhVienRepo.findAllByOrderByIdDesc();
         }
     }
 

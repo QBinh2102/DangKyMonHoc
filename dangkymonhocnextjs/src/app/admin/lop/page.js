@@ -48,7 +48,7 @@ const Lop = () => {
                     <table className="table text-center">
                         <thead>
                             <tr>
-                                <th>Id</th>
+                                <th>STT</th>
                                 <th>Mã Lớp</th>
                                 <th>Sĩ Số</th>
                                 <th>Ngành</th>
@@ -56,9 +56,9 @@ const Lop = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {listLop.map((lop) => (
+                            {listLop.map((lop, idx) => (
                                 <tr key={lop.id}>
-                                    <td>{lop.id}</td>
+                                    <td>{idx+1}</td>
                                     <td>{lop.maLop}</td>
                                     <td>{lop.siSo}</td>
                                     <td>{lop.nganhId.tenNganh}</td>

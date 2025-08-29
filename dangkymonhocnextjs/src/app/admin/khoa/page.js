@@ -47,15 +47,15 @@ const Khoa = () => {
                         <table className="table text-center">
                             <thead>
                                 <tr>
-                                    <th>Id</th>
+                                    <th>STT</th>
                                     <th>Tên Khoa</th>
                                     <th>Công Cụ</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                {listKhoa.map((khoa) => (
+                                {listKhoa.map((khoa, idx) => (
                                     <tr key={khoa.id}>
-                                        <td>{khoa.id}</td>
+                                        <td>{idx+1}</td>
                                         <td>{khoa.tenKhoa}</td>
                                         <td>
                                             <button className="btn btn-warning" onClick={() => router.push(`/admin/khoa/${khoa.id}`)}>

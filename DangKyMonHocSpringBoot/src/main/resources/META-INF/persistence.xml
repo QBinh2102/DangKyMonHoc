@@ -21,6 +21,8 @@
     <class>com.tqb.DangKyMonHoc.pojo.PhongHoc</class>
     <class>com.tqb.DangKyMonHoc.pojo.Lop</class>
     <class>com.tqb.DangKyMonHoc.pojo.TietHoc</class>
+    <class>com.tqb.DangKyMonHoc.pojo.ChiTietHocPhi</class>
+    <class>com.tqb.DangKyMonHoc.pojo.HocPhi</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/database?zeroDateTimeBehavior=CONVERT_TO_NULL"/>
       <property name="javax.persistence.jdbc.user" value="root"/>

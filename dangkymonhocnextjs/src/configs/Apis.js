@@ -82,6 +82,15 @@ export const endpoints = {
     'danhSachDangKy': '/secure/me/dangky',
     'dangKy': '/secure/me/dangky',
     'xoaDangKy': (dangKyId) => `/secure/me/dangky/${dangKyId}`,
+    // Học phí
+    'hocPhi': '/secure/admin/hocphi',
+    'hocPhiId': (hocPhiId) => `/secure/admin/hocphi/${hocPhiId}`,
+    'hocPhiMoiNhat': '/secure/me/hocphi/latest',
+    'hocPhiSinhVien': '/secure/me/hocphi',
+    // Chi tiểt học phí
+    'chiTietHocPhi': '/secure/admin/chitiethocphi',
+    'chiTietHocPhiSinhVien': '/secure/me/chitiethocphi',
+
 }
 
 export const authApis = () => {

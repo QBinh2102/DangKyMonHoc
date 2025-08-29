@@ -72,16 +72,16 @@ const QuyDinh = () => {
                     <table className="table text-center">
                         <thead>
                             <tr>
-                                <th>Id</th>
+                                <th>STT</th>
                                 <th>Quy Định</th>
                                 <th>Giá trị</th>
                                 <th>Công Cụ</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {listQuyDinh.map((quyDinh) => (
+                            {listQuyDinh.map((quyDinh, idx) => (
                                 <tr key={quyDinh.id}>
-                                    <td>{quyDinh.id}</td>
+                                    <td>{idx+1}</td>
                                     <td>{quyDinh.ten}</td>
                                     <td>{quyDinh.giaTri}</td>
                                     <td>

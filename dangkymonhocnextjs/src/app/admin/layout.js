@@ -15,6 +15,7 @@ const menuItems = [
     { label: "Giảng Viên", href: "/admin/giangvien" },
     { label: "Sinh Viên", href: "/admin/sinhvien" },
     { label: "Buổi Học", href: "/admin/buoihoc" },
+    { label: "Học Phí", href: "/admin/hocphi" },
     { label: "Quy Định", href: "/admin/quydinh" }
 ]
 

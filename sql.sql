@@ -16,17 +16,13 @@ CREATE TABLE phong_hoc (
     UNIQUE(ten_phong, loai)
 );
 
--- ========================
--- 1. KHOA (Faculty)
--- ========================
+-- KHOA 
 CREATE TABLE khoa (
     id INT PRIMARY KEY AUTO_INCREMENT,
     ten_khoa VARCHAR(100) NOT NULL UNIQUE
 );
 
--- ========================
--- 2. NGÀNH (Major)
--- ========================
+-- NGÀNH
 CREATE TABLE nganh (
     id INT PRIMARY KEY AUTO_INCREMENT,
     ten_nganh VARCHAR(100) NOT NULL,
@@ -46,9 +42,7 @@ CREATE TABLE lop (
     UNIQUE (ma_lop, nganh_id, khoa_hoc)
 );
 
--- ===============================
--- 3. Bảng Người Dùng (Chung)
--- ===============================
+-- Người Dùng
 CREATE TABLE nguoi_dung (
     id INT PRIMARY KEY AUTO_INCREMENT,
     ho_ten VARCHAR(100) NOT NULL,
@@ -62,9 +56,7 @@ CREATE TABLE nguoi_dung (
     vai_tro ENUM('ROLE_SINH_VIEN', 'ROLE_GIANG_VIEN', 'ROLE_ADMIN') NOT NULL
 );
 
--- ===============================
--- 4. Bảng Sinh Viên
--- ===============================
+-- Sinh Viên
 CREATE TABLE sinh_vien (
     id INT PRIMARY KEY,  -- Trùng với ID người dùng
     khoa_hoc INT,
@@ -78,9 +70,7 @@ CREATE TABLE sinh_vien (
     FOREIGN KEY (lop_id) REFERENCES lop(id)
 );
 
--- ===============================
--- 5. Bảng Giảng Viên
--- ===============================
+-- Giảng Viên
 CREATE TABLE giang_vien (
     id INT PRIMARY KEY,  -- Trùng với ID người dùng
     hoc_vi VARCHAR(100),
@@ -89,9 +79,7 @@ CREATE TABLE giang_vien (
     FOREIGN KEY (khoa_id) REFERENCES khoa(id)
 );
 
--- ========================
--- 6. MÔN HỌC
--- ========================
+-- MÔN HỌC
 CREATE TABLE mon_hoc (
     id INT PRIMARY KEY AUTO_INCREMENT,
     ten_mon VARCHAR(100) NOT NULL,
@@ -105,9 +93,7 @@ CREATE TABLE mon_hoc (
     FOREIGN KEY (khoa_id) REFERENCES khoa(id)
 );
 
--- ========================
--- 7. MÔN TIÊN QUYẾT (Self Join)
--- ========================
+-- MÔN TIÊN QUYẾT
 CREATE TABLE mon_hoc_lien_quan (
     mon_hoc_id INT NOT NULL,
     lien_quan_id INT NOT NULL,
@@ -119,9 +105,7 @@ CREATE TABLE mon_hoc_lien_quan (
     FOREIGN KEY (nganh_id) REFERENCES nganh(id)
 );
 
--- ========================
--- 8. MÔN HỌC (Thuộc 1 ngành duy nhất)
--- ========================
+-- NGÀNH MÔN HỌC
 CREATE TABLE nganh_mon_hoc (
     nganh_id INT NOT NULL,
     mon_hoc_id INT NOT NULL,
@@ -131,7 +115,7 @@ CREATE TABLE nganh_mon_hoc (
     FOREIGN KEY (mon_hoc_id) REFERENCES mon_hoc(id)
 );
 
--- ĐIỂM (Điểm của học sinh với môn học)
+-- ĐIỂM 
 CREATE TABLE diem (
     id INT PRIMARY KEY AUTO_INCREMENT,
     sinh_vien_id INT NOT NULL,
@@ -145,12 +129,10 @@ CREATE TABLE diem (
     FOREIGN KEY (giang_vien_id) REFERENCES giang_vien(id),
     FOREIGN KEY (mon_hoc_id) REFERENCES mon_hoc(id),
     FOREIGN KEY (hoc_ky_id) REFERENCES hoc_ky(id),
-    UNIQUE (sinh_vien_id, mon_hoc_id, lan_hoc, loai)  -- tránh trùng điểm cùng loại
+    UNIQUE (sinh_vien_id, mon_hoc_id, lan_hoc, loai)
 );
 
--- ========================
--- 9. BUỔI HỌC (Lịch học cụ thể)
--- ========================
+-- BUỔI HỌC
 CREATE TABLE buoi_hoc (
     id INT PRIMARY KEY AUTO_INCREMENT,
     mon_hoc_id INT NOT NULL,
@@ -178,7 +160,7 @@ CREATE TABLE tiet_hoc (
 CREATE TABLE lich_hoc (
     id INT PRIMARY KEY AUTO_INCREMENT,
     buoi_hoc_id INT NOT NULL,
-    thu VARCHAR(20),            -- VD: 'Thứ 2'
+    thu VARCHAR(20),
     tiet_hoc_id INT NOT NULL,
     ngay_bat_dau DATE NOT NULL,
     ngay_ket_thuc DATE NOT NULL,
@@ -190,9 +172,7 @@ CREATE TABLE lich_hoc (
     unique (thu, tiet_hoc_id, ngay_bat_dau, phong_hoc_id)
 );
 
--- ========================
--- 10. ĐĂNG KÝ MÔN HỌC
--- ========================
+-- ĐĂNG KÝ MÔN HỌC
 CREATE TABLE dang_ky (
     id INT PRIMARY KEY AUTO_INCREMENT,
     sinh_vien_id INT NOT NULL,
@@ -241,9 +221,7 @@ CREATE TABLE chi_tiet_hoc_phi (
     UNIQUE (hoc_phi_id, mon_hoc_id)
 );
 
--- ========================
--- 11. QUY ĐỊNH HỆ THỐNG (VD: Giới hạn tín chỉ)
--- ========================
+-- QUY ĐỊNH
 CREATE TABLE quy_dinh (
     id INT PRIMARY KEY AUTO_INCREMENT,
     ten VARCHAR(100) UNIQUE NOT NULL,
@@ -251,14 +229,13 @@ CREATE TABLE quy_dinh (
 );
 
 -- ========================
--- 12. DỮ LIỆU MẪU
+-- DỮ LIỆU MẪU
 -- ========================
 INSERT INTO quy_dinh (ten, gia_tri) VALUES 
-    ('Số tiền 1 tín chỉ', 300000),
+    ('Số tiền 1 tín chỉ', 700000),
     ('Số tín chỉ tối đa', 24),
     ('Số buổi 1 tín chỉ lý thuyết', 3),
     ('Số buổi 1 tín chỉ thực hành', 5);
-    
 
 -- Thêm học kỳ
 -- Kỳ 1: 10,11,12,1
@@ -321,6 +298,7 @@ VALUES
     ("DH24CS01", 10, 2024, 1),
     ("DH24IM01", 10, 2024, 2),
     ("DH24IT02", 10, 2024, 3),
+    
     ("DH25CS01", 10, 2025, 1),
     ("DH25IT01", 10, 2025, 3),
     ("DH25IM01", 10, 2025, 2);
@@ -854,7 +832,15 @@ VALUES
     (11,10,10,10,'LT-TH', 2),
     (11,10,10,10,'LT-TH', 4),
     (24,15,10,10,'LT-TH', 2),
-    (24,14,10,10,'LT-TH', 5);
+    (24,14,10,10,'LT-TH', 5),
+    
+    -- Buổi học cho năm 1
+    (1,14,10,10,'LT-TH', 6),
+    (2,4,10,10,'LT-TH', 6),
+    (1,3,10,10,'LT-TH', 7),
+    (2,4,10,10,'LT-TH', 7),
+    (1,6,10,10,'LT-TH', 8),
+    (2,5,10,10,'LT-TH', 8);
     
 -- Thêm tiết học
 INSERT INTO tiet_hoc(tiet, gio_bat_dau, gio_ket_thuc)
@@ -927,7 +913,20 @@ VALUES
     (35, "Thứ 6", 1, "2025-10-10", "2025-11-14", 2, 'LyThuyet'),	/*58*/
     (35, "Thứ 6", 2, "2025-10-10", "2025-11-07", 14, 'ThucHanh'),	/*59*/
     (36, "Thứ 7", 1, "2025-10-11", "2025-11-15", 10, 'LyThuyet'),	/*60*/
-    (36, "Thứ 7", 2, "2025-10-11", "2025-11-08", 17, 'ThucHanh');	/*61*/
+    (36, "Thứ 7", 2, "2025-10-11", "2025-11-08", 17, 'ThucHanh'),	/*61*/
+    
+    (37, "Thứ 2", 1, "2025-10-06", "2025-11-10", 9, 'LyThuyet'),
+    (37, "Thứ 2", 2, "2025-10-06", "2025-11-03", 19, 'ThucHanh'),
+    (38, "Thứ 4", 1, "2025-10-08", "2025-12-03", , 'LyThuyet'),
+    (38, "Thứ 4", 2, "2025-10-08", "2025-11-05", , 'ThucHanh'),
+    (39, "Thứ 5", 1, "2025-10-09", "2025-11-13", 3, 'LyThuyet'),
+    (39, "Thứ 5", 2, "2025-10-09", "2025-11-06", 16, 'ThucHanh'),
+    (40, "Thứ 7", 1, "2025-10-11", "2025-11-08", , 'LyThuyet'),
+    (40, "Thứ 7", 2, "2025-10-11", "2025-11-08", , 'ThucHanh'),
+    (41, "Thứ 3", 1, "2025-10-07", "2025-11-11", 4, 'LyThuyet'),
+    (41, "Thứ 3", 2, "2025-10-07", "2025-11-04", 21, 'ThucHanh'),
+    (42, "Thứ 7", 1, "2025-10-11", "2025-11-08", , 'LyThuyet'),
+    (42, "Thứ 7", 2, "2025-10-11", "2025-11-08", , 'ThucHanh');
     
 -- Thêm đăng ký 
 INSERT INTO dang_ky(sinh_vien_id, buoi_hoc_id, hoc_ky_id, trang_thai)
@@ -1004,7 +1003,7 @@ VALUES
     (21, 21, 8, "HOAN_THANH"),
     (21, 22, 9, "HOAN_THANH"),
     
-    (21, 25, 8, "HOAN_THANH"),
+    (21, 26, 8, "HOAN_THANH"),
     
     -- Võ Quốc Bảo
 	(22, 24, 7, "HOAN_THANH"),
@@ -1157,3 +1156,130 @@ VALUES
     (22, 50, 9),
     (22, 51, 9),
     (22, 52, 10);
+    
+INSERT INTO hoc_phi(sinh_vien_id, hoc_ky_id, tong_tien, trang_thai)
+VALUES
+	-- Tô Quốc Bình
+	(19,1,4900000,'DA_THANH_TOAN'),
+    (19,2,4900000,'DA_THANH_TOAN'),
+    (19,3,7700000,'DA_THANH_TOAN'),
+    (19,4,7700000,'DA_THANH_TOAN'),
+    (19,5,7700000,'DA_THANH_TOAN'),
+    (19,6,4200000,'DA_THANH_TOAN'),
+    (19,7,6300000,'DA_THANH_TOAN'),
+    (19,8,6300000,'DA_THANH_TOAN'),
+    (19,9,2800000,'DA_THANH_TOAN'),
+    
+    -- Trần Huỳnh Sang
+	(20,1,4900000,'DA_THANH_TOAN'),
+    (20,2,4900000,'DA_THANH_TOAN'),
+    (20,3,7700000,'DA_THANH_TOAN'),
+    (20,4,7700000,'DA_THANH_TOAN'),
+    (20,5,7700000,'DA_THANH_TOAN'),
+    (20,6,4200000,'DA_THANH_TOAN'),
+    (20,7,6300000,'DA_THANH_TOAN'),
+    (20,8,6300000,'DA_THANH_TOAN'),
+    (20,9,2800000,'DA_THANH_TOAN'),
+    
+    -- Nguyễn Đăng Khôi
+	(21,1,4900000,'DA_THANH_TOAN'),
+    (21,2,4900000,'DA_THANH_TOAN'),
+    (21,3,7700000,'DA_THANH_TOAN'),
+    (21,4,7700000,'DA_THANH_TOAN'),
+    (21,5,7700000,'DA_THANH_TOAN'),
+    (21,6,4200000,'DA_THANH_TOAN'),
+    (21,7,6300000,'DA_THANH_TOAN'),
+    (21,8,8400000,'DA_THANH_TOAN'),
+    (21,9,2800000,'DA_THANH_TOAN'),
+    
+    -- Võ Quốc Bảo
+    (22,7,4900000,'DA_THANH_TOAN'),
+    (22,8,4900000,'DA_THANH_TOAN'),
+    (22,9,7700000,'DA_THANH_TOAN'),
+    (22,10,2800000,'CHUA_THANH_TOAN');
+    
+INSERT INTO chi_tiet_hoc_phi(hoc_phi_id, mon_hoc_id, chi_phi)
+VALUES
+	-- Tô Quốc Bình
+	(1,1,2100000),
+    (1,2,2800000),
+    (2,3,2100000),
+    (2,4,2800000),
+    (3,5,2100000),
+    (3,6,2800000),
+    (3,7,2800000),
+    (4,8,2800000),
+    (4,9,2100000),
+    (4,10,2800000),
+    (5,11,2800000),
+    (5,12,2100000),
+    (5,13,2800000),
+    (6,14,2100000),
+    (6,15,2100000),
+    (7,16,2100000),
+    (7,17,2100000),
+    (7,18,2100000),
+    (8,19,2100000),
+    (8,20,2100000),
+    (8,21,2100000),
+    (9,32,2800000),
+    
+    -- Trần Huỳnh Sang
+	(10,1,2100000),
+    (10,2,2800000),
+    (11,3,2100000),
+    (11,4,2800000),
+    (12,5,2100000),
+    (12,6,2800000),
+    (12,7,2800000),
+    (13,8,2800000),
+    (13,9,2100000),
+    (13,10,2800000),
+    (14,11,2800000),
+    (14,12,2100000),
+    (14,13,2800000),
+    (15,14,2100000),
+    (15,15,2100000),
+    (16,16,2100000),
+    (16,17,2100000),
+    (16,18,2100000),
+    (17,19,2100000),
+    (17,20,2100000),
+    (17,21,2100000),
+    (18,32,2800000),
+    
+    -- Nguyễn Đăng Khôi
+	(19,1,2100000),
+    (19,2,2800000),
+    (20,3,2100000),
+    (20,4,2800000),
+    (21,5,2100000),
+    (21,6,2800000),
+    (21,7,2800000),
+    (22,8,2800000),
+    (22,9,2100000),
+    (22,10,2800000),
+    (23,11,2800000),
+    (23,12,2100000),
+    (23,13,2800000),
+    (24,14,2100000),
+    (24,15,2100000),
+    (25,16,2100000),
+    (25,17,2100000),
+    (25,18,2100000),
+    (26,19,2100000),
+    (26,20,2100000),
+    (26,21,2100000),
+    (26,3,2100000),
+    (27,32,2800000),
+    
+    -- Võ Quốc Bảo
+	(28,1,2100000),
+    (28,2,2800000),
+    (29,3,2100000),
+    (29,4,2800000),
+    (30,10,2800000),
+    (30,22,2100000),
+    (30,23,2800000),
+    (31,8,2800000);
+    

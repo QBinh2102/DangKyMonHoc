@@ -42,7 +42,7 @@ public class SinhVien implements Serializable {
     @Column(name = "khoa_hoc")
     private Integer khoaHoc;
     @Column(name = "so_tin_chi")
-    private Integer soTinChi = 0;
+    private Integer soTinChi;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "sinhVienId")
     @JsonIgnore
     private Set<Diem> diemSet;
@@ -65,6 +65,9 @@ public class SinhVien implements Serializable {
     @OneToOne(optional = false)
     @MapsId
     private NguoiDung nguoiDung;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "sinhVienId")
+    @JsonIgnore
+    private Set<HocPhi> hocPhiSet;
 
     public SinhVien() {
     }
@@ -151,6 +154,14 @@ public class SinhVien implements Serializable {
 
     public void setNguoiDung(NguoiDung nguoiDung) {
         this.nguoiDung = nguoiDung;
+    }
+
+    public Set<HocPhi> getHocPhiSet() {
+        return hocPhiSet;
+    }
+
+    public void setHocPhiSet(Set<HocPhi> hocPhiSet) {
+        this.hocPhiSet = hocPhiSet;
     }
 
     @Override

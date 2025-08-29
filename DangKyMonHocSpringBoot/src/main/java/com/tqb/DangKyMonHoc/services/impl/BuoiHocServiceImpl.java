@@ -53,7 +53,7 @@ public class BuoiHocServiceImpl implements BuoiHocService {
         } else if (hasHocKyId) {
             return this.buoiHocRepo.findByHocKyId_IdOrderByIdAsc(Integer.parseInt(hocKyId));
         } else {
-            return this.buoiHocRepo.findAllByOrderByIdAsc();
+            return this.buoiHocRepo.findAllByOrderByIdDesc();
         }
     }
 

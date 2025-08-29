@@ -46,7 +46,7 @@ const BuoiHoc = () => {
                     <table className="table text-center">
                         <thead>
                             <tr>
-                                <th>Id</th>
+                                <th>STT</th>
                                 <th>Môn Học</th>
                                 <th>Mã Lớp</th>
                                 <th>Giảng Viên</th>
@@ -56,9 +56,9 @@ const BuoiHoc = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {listBuoiHoc.map(bh => (
+                            {listBuoiHoc.map((bh, idx) => (
                                 <tr key={bh.id}>
-                                    <td>{bh.id}</td>
+                                    <td>{idx+1}</td>
                                     <td>{bh.monHocId.tenMon}</td>
                                     <td>{bh.lopId.maLop}</td>
                                     <td>{bh.giangVienId?.nguoiDung.hoTen}</td>

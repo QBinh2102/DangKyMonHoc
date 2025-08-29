@@ -33,7 +33,7 @@ public class HocKyServiceImpl implements HocKyService{
 
     @Override
     public List<HocKy> findAllByOrderByIdAsc() {
-        return this.hocKyRepo.findAllByOrderByIdAsc();
+        return this.hocKyRepo.findAllByOrderByIdDesc();
     }
     
     @Override
