@@ -10,21 +10,26 @@ const PhongHoc = () => {
     const [kw, setKw] = useState("");
     const [loai, setLoai] = useState("");
     const [loading, setLoading] = useState(false);
+    const [trang, setTrang] = useState(0);
+    const [tongTrang, setTongTrang] = useState(0);
     const router = useRouter();
 
-    const loadPhongHoc = async () => {
+    const loadPhongHoc = async (page = 0) => {
         setLoading(true);
         try {
-            let url = endpoints['phongHoc'];
+            let url = endpoints['phongHocPage'];
 
             const params = new URLSearchParams();
+            params.append("page", page);
             if (kw.trim() !== "") params.append("tenPhong", kw);
             if (loai !== "") params.append("loai", loai);
 
             if (params.toString() !== "") url += `?${params.toString()}`;
 
             let res = await Apis.get(url);
-            setListPhongHoc(res.data);
+            setListPhongHoc(res.data.content);
+            setTongTrang(res.data.totalPages);
+            setTrang(res.data.number);
         } catch (ex) {
             console.error(ex);
         } finally {
@@ -75,7 +80,7 @@ const PhongHoc = () => {
                     <p>Đang tải dữ liệu...</p>
                 </div>
             ) : (
-                <div>
+                <div className="d-flex flex-column" style={{ minHeight: "650px" }}>
                     <table className="table text-center">
                         <thead>
                             <tr>
@@ -108,6 +113,18 @@ const PhongHoc = () => {
                     {listPhongHoc.length === 0 && (
                         <p className="text-center mt-3 text-muted">Không tìm thấy phòng học nào</p>
                     )}
+
+                    <div className="d-flex justify-content-center mt-auto mb-3">
+                        {Array.from({ length: tongTrang }, (_, i) => (
+                            <button
+                                key={i}
+                                className={`btn btn-sm mx-1 ${i === trang ? 'btn-primary' : 'btn-outline-primary'}`}
+                                onClick={() => loadPhongHoc(i)}
+                            >
+                                {i + 1}
+                            </button>
+                        ))}
+                    </div>
                 </div>
             )}
         </div>

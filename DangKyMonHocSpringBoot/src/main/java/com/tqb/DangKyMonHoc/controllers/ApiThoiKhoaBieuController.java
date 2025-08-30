@@ -70,6 +70,24 @@ public class ApiThoiKhoaBieuController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+    
+    @PostMapping("/secure/admin/thoikhoabieu")
+    public ResponseEntity<?> createForSinhVien(@RequestBody ThoiKhoaBieu thoiKhoaBieu) {
+        if (thoiKhoaBieu.getId() != null) {
+            return ResponseEntity
+                    .status(HttpStatus.CONFLICT)
+                    .body("ID phải để trống khi tạo mới.");
+        }
+
+        try {
+            ThoiKhoaBieu newThoiKhoaBieu = this.thoiKhoaBieuService.add(thoiKhoaBieu);
+            return new ResponseEntity<>(newThoiKhoaBieu, HttpStatus.CREATED);
+        } catch (Exception e) {
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Lỗi khi tạo: " + e.getMessage());
+        }
+    }
 
     @PostMapping("/secure/me/thoikhoabieu")
     public ResponseEntity<?> create(@RequestBody ThoiKhoaBieu thoiKhoaBieu) {

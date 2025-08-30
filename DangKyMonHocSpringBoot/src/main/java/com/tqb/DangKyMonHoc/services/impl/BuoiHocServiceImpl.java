@@ -14,6 +14,9 @@ import com.tqb.DangKyMonHoc.services.BuoiHocService;
 import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 /**
@@ -28,7 +31,7 @@ public class BuoiHocServiceImpl implements BuoiHocService {
 
     @Autowired
     private HocKyRepository hocKyRepo;
-    
+
     @Autowired
     private LichHocRepository lichHocRepo;
 
@@ -39,21 +42,15 @@ public class BuoiHocServiceImpl implements BuoiHocService {
 
     @Override
     public List<BuoiHoc> findBuoiHoc(Map<String, String> params) {
+        String lopId = params.get("lopId");
         String monHocId = params.get("monHocId");
-        String hocKyId = params.get("hocKyId");
-        String maLop = params.get("maLop");
+        boolean hasLopId = lopId != null && !lopId.isEmpty();
         boolean hasMonHocId = monHocId != null && !monHocId.isEmpty();
-        boolean hasHocKyId = hocKyId != null && !hocKyId.isEmpty();
-        boolean hasMaLop = maLop != null && !maLop.isEmpty();
 
-        if (hasMaLop && hasHocKyId){
-            return this.buoiHocRepo.findByHocKyId_IdAndLopId_MaLopContainingIgnoreCaseOrderByIdAsc(Integer.parseInt(hocKyId), maLop);
-        }else if (hasMaLop) {
-            return this.buoiHocRepo.findByLopId_MaLopContainingIgnoreCaseOrderByIdAsc(maLop);
+        if (hasLopId) {
+            return this.buoiHocRepo.findByLopId_IdOrderByIdAsc(Integer.parseInt(lopId));
         } else if (hasMonHocId) {
             return this.buoiHocRepo.findByMonHocId_IdOrderByIdAsc(Integer.parseInt(monHocId));
-        } else if (hasHocKyId) {
-            return this.buoiHocRepo.findByHocKyId_IdOrderByIdAsc(Integer.parseInt(hocKyId));
         } else {
             return this.buoiHocRepo.findAllByOrderByIdDesc();
         }
@@ -85,7 +82,7 @@ public class BuoiHocServiceImpl implements BuoiHocService {
             }
             return list;
         } else if (hasLopId) {
-            List<BuoiHocDTO> list = this.buoiHocRepo.findBuoiHocTheoHocKyVaNganh(hocKyLatest, Integer.parseInt(lopId));
+            List<BuoiHocDTO> list = this.buoiHocRepo.findBuoiHocTheoHocKyVaLop(hocKyLatest, Integer.parseInt(lopId));
             for (BuoiHocDTO dto : list) {
                 List<LichHoc> lichHoc = this.lichHocRepo.findByBuoiHocId_IdOrderByIdAsc(dto.getBuoiHocId());
                 dto.setListLichHoc(lichHoc);
@@ -93,6 +90,22 @@ public class BuoiHocServiceImpl implements BuoiHocService {
             return list;
         } else {
             throw new IllegalArgumentException("Thiếu tham số 'lopId' hoặc 'monHocId'");
+        }
+    }
+
+    @Override
+    public Page<BuoiHoc> findBuoiHocPage(Map<String, String> params) {
+        String page = params.get("page");
+        String maLop = params.get("maLop");
+        boolean hasMaLop = maLop != null && !maLop.isEmpty();
+
+        int size = 10;
+        Pageable pageable = PageRequest.of(Integer.parseInt(page), size);
+
+        if (hasMaLop) {
+            return this.buoiHocRepo.findByLopId_MaLopContainingIgnoreCaseOrderByIdAsc(maLop, pageable);
+        } else {
+            return this.buoiHocRepo.findAllByOrderByIdDesc(pageable);
         }
     }
 }

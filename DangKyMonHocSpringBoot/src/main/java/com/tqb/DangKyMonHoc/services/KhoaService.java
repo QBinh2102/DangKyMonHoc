@@ -7,6 +7,7 @@ package com.tqb.DangKyMonHoc.services;
 import com.tqb.DangKyMonHoc.pojo.Khoa;
 import java.util.List;
 import java.util.Map;
+import org.springframework.data.domain.Page;
 
 /**
  *
@@ -16,6 +17,7 @@ public interface KhoaService {
     
     Khoa findById(int id);
     List<Khoa> findKhoa(Map<String,String> params);
+    Page<Khoa> findKhoaPage(Map<String,String> params);
     Khoa addOrUpdate(Khoa khoa);
     
 }

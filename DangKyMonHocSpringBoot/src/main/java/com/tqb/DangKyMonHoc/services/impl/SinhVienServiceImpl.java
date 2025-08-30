@@ -19,6 +19,9 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -48,13 +51,7 @@ public class SinhVienServiceImpl implements SinhVienService {
 
     @Override
     public List<SinhVien> findSinhVien(Map<String, String> params) {
-        String hoTen = params.get("hoTen");
-        boolean hasHoTen = hoTen != null && !hoTen.isEmpty();
-        if (hasHoTen) {
-            return this.sinhVienRepo.findByNguoiDung_HoTenContainingIgnoreCaseOrderByIdAsc(hoTen);
-        } else {
-            return this.sinhVienRepo.findAllByOrderByIdDesc();
-        }
+        return this.sinhVienRepo.findAllByOrderByIdDesc();
     }
 
     @Override
@@ -101,6 +98,22 @@ public class SinhVienServiceImpl implements SinhVienService {
             sinhVien.setKhoaHoc(LocalDate.now().getYear());
         }
         return this.sinhVienRepo.save(sinhVien);
+    }
+
+    @Override
+    public Page<SinhVien> findSinhVienPage(Map<String, String> params) {
+        String page = params.get("page");
+        String hoTen = params.get("hoTen");
+        boolean hasHoTen = hoTen != null && !hoTen.isEmpty();
+        
+        int size = 10;
+        Pageable pageable = PageRequest.of(Integer.parseInt(page), size);
+        
+        if (hasHoTen) {
+            return this.sinhVienRepo.findByNguoiDung_HoTenContainingIgnoreCaseOrderByIdAsc(hoTen, pageable);
+        } else {
+            return this.sinhVienRepo.findAllByOrderByIdDesc(pageable);
+        }
     }
 
 }

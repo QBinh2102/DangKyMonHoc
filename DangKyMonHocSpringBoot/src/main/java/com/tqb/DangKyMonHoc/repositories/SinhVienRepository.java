@@ -6,6 +6,8 @@ package com.tqb.DangKyMonHoc.repositories;
 
 import com.tqb.DangKyMonHoc.pojo.SinhVien;
 import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
@@ -16,7 +18,8 @@ public interface SinhVienRepository extends JpaRepository<SinhVien, Integer>{
     
     SinhVien findById(int id);
     SinhVien findByNguoiDung_Email(String email);
-    List<SinhVien> findByNguoiDung_HoTenContainingIgnoreCaseOrderByIdAsc(String hoTen);
     List<SinhVien> findAllByOrderByIdDesc();
+    Page<SinhVien> findByNguoiDung_HoTenContainingIgnoreCaseOrderByIdAsc(String hoTen, Pageable pageable);
+    Page<SinhVien> findAllByOrderByIdDesc(Pageable pageable);
     
 }

@@ -11,6 +11,9 @@ import com.tqb.DangKyMonHoc.services.HocPhiService;
 import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 /**
@@ -34,29 +37,9 @@ public class HocPhiServiceImpl implements HocPhiService {
     @Override
     public List<HocPhi> findHocPhi(Map<String, String> params) {
         String sinhVienId = params.get("sinhVienId");
-        String hoTenSV = params.get("hoTen");
-        String hocKyId = params.get("hocKyId");
-        String trangThai = params.get("trangThai");
         boolean hasSinhVienId = sinhVienId != null && !sinhVienId.isEmpty();
-        boolean hasHoTenSV = hoTenSV != null && !hoTenSV.isEmpty();
-        boolean hasHocKyId = hocKyId != null && !hocKyId.isEmpty();
-        boolean hasTrangThai = trangThai != null && !trangThai.isEmpty();
 
-        if (hasHoTenSV && hasHocKyId && hasTrangThai) {
-            return this.hocPhiRepo.findBySinhVienId_NguoiDung_HoTenContainingIgnoreCaseAndHocKyId_IdAndTrangThaiOrderByIdDesc(hoTenSV, Integer.parseInt(hocKyId), trangThai);
-        } else if (hasHoTenSV && hasHocKyId) {
-            return this.hocPhiRepo.findBySinhVienId_NguoiDung_HoTenContainingIgnoreCaseAndHocKyId_IdOrderByIdDesc(hoTenSV, Integer.parseInt(hocKyId));
-        } else if (hasHoTenSV && hasTrangThai) {
-            return this.hocPhiRepo.findBySinhVienId_NguoiDung_HoTenContainingIgnoreCaseAndTrangThaiOrderByIdDesc(hoTenSV, trangThai);
-        } else if (hasTrangThai && hasHocKyId) {
-            return this.hocPhiRepo.findByHocKyId_IdAndTrangThaiOrderByIdDesc(Integer.parseInt(hocKyId), trangThai);
-        } else if (hasHoTenSV) {
-            return this.hocPhiRepo.findBySinhVienId_NguoiDung_HoTenContainingIgnoreCaseOrderByIdDesc(hoTenSV);
-        } else if (hasTrangThai) {
-            return this.hocPhiRepo.findByTrangThaiOrderByIdDesc(trangThai);
-        } else if (hasHocKyId) {
-            return this.hocPhiRepo.findByHocKyId_IdOrderByIdDesc(Integer.parseInt(hocKyId));
-        } else if (hasSinhVienId) {
+        if (hasSinhVienId) {
             return this.hocPhiRepo.findBySinhVienId_IdOrderByIdAsc(Integer.parseInt(sinhVienId));
         } else {
             return this.hocPhiRepo.findAllByOrderByIdDesc();
@@ -75,6 +58,28 @@ public class HocPhiServiceImpl implements HocPhiService {
     @Override
     public HocPhi findHocPhiMoiNhatTheoSinhVien(int sinhVienId) {
         return this.hocPhiRepo.findBySinhVienId_IdAndHocKyId_Id(sinhVienId, this.hocKyRepo.findTopByOrderByIdDesc().getId());
+    }
+
+    @Override
+    public Page<HocPhi> findHocPhiPage(Map<String, String> params) {
+        String page = params.get("page");
+        String hoTenSV = params.get("hoTen");
+        String trangThai = params.get("trangThai");
+        boolean hasHoTenSV = hoTenSV != null && !hoTenSV.isEmpty();
+        boolean hasTrangThai = trangThai != null && !trangThai.isEmpty();
+        
+        int size = 10;
+        Pageable pageable = PageRequest.of(Integer.parseInt(page), size);
+
+        if (hasHoTenSV && hasTrangThai) {
+            return this.hocPhiRepo.findBySinhVienId_NguoiDung_HoTenContainingIgnoreCaseAndTrangThaiOrderByIdDesc(hoTenSV, trangThai, pageable);
+        } else if (hasHoTenSV) {
+            return this.hocPhiRepo.findBySinhVienId_NguoiDung_HoTenContainingIgnoreCaseOrderByIdDesc(hoTenSV, pageable);
+        } else if (hasTrangThai) {
+            return this.hocPhiRepo.findByTrangThaiOrderByIdDesc(trangThai, pageable);
+        } else {
+            return this.hocPhiRepo.findAllByOrderByIdDesc(pageable);
+        }
     }
 
 }

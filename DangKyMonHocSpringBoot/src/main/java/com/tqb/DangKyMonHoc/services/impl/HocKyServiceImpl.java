@@ -10,7 +10,11 @@ import com.tqb.DangKyMonHoc.repositories.HocKyRepository;
 import com.tqb.DangKyMonHoc.repositories.QuyDinhRepository;
 import com.tqb.DangKyMonHoc.services.HocKyService;
 import java.util.List;
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 /**
@@ -35,9 +39,17 @@ public class HocKyServiceImpl implements HocKyService {
     public HocKy findTopByOrderByIdDesc() {
         return this.hocKyRepo.findTopByOrderByIdDesc();
     }
+    
+    @Override
+    public Page<HocKy> findHocKyPage(Map<String,String> params) {
+        String page = params.get("page");
+        int size = 10;
+        Pageable pageable = PageRequest.of(Integer.parseInt(page), size);
+        return this.hocKyRepo.findAllByOrderByIdDesc(pageable);
+    }
 
     @Override
-    public List<HocKy> findAllByOrderByIdAsc() {
+    public List<HocKy> findAllByOrderByIdDesc() {
         return this.hocKyRepo.findAllByOrderByIdDesc();
     }
 

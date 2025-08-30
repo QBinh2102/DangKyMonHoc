@@ -10,6 +10,7 @@ import com.tqb.DangKyMonHoc.services.BuoiHocService;
 import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -47,6 +48,12 @@ public class ApiBuoiHocController {
     @GetMapping("/secure/admin/buoihoc")
     public ResponseEntity<List<BuoiHoc>> getBuoiHoc(@RequestParam Map<String, String> params) {
         return new ResponseEntity<>(this.buoiHocService.findBuoiHoc(params), HttpStatus.OK);
+    }
+    
+    @GetMapping("/secure/admin/buoihoc-page")
+    public ResponseEntity<Page<BuoiHoc>> getBuoiHocPage(@RequestParam Map<String, String> params) {
+        Page<BuoiHoc> buoiHocPage = this.buoiHocService.findBuoiHocPage(params);
+        return new ResponseEntity<>(buoiHocPage, HttpStatus.OK);
     }
     
     @GetMapping("/secure/buoihoc")

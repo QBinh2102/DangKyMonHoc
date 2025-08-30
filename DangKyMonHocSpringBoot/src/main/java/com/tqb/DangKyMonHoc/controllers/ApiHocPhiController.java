@@ -13,6 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -44,6 +45,12 @@ public class ApiHocPhiController {
         NguoiDung nd = this.nguoiDungService.findByEmail(principal.getName());
         return new ResponseEntity<>(this.hocPhiService.findHocPhiMoiNhatTheoSinhVien(nd.getId()), HttpStatus.OK);
     }
+    
+    @GetMapping("/secure/admin/hocphi/latest")
+    public ResponseEntity<HocPhi> getHocPhiMoiNhatCuaSinhVien(@RequestParam(value="sinhVienId") int sinhVienId) {
+        NguoiDung nd = this.nguoiDungService.findById(sinhVienId);
+        return new ResponseEntity<>(this.hocPhiService.findHocPhiMoiNhatTheoSinhVien(nd.getId()), HttpStatus.OK);
+    }
 
     @GetMapping("/secure/me/hocphi")
     public ResponseEntity<List<HocPhi>> getHocPhi(Principal principal) {
@@ -63,9 +70,10 @@ public class ApiHocPhiController {
         }
     }
     
-    @GetMapping("/secure/admin/hocphi")
-    public ResponseEntity<List<HocPhi>> getHocPhi(@RequestParam Map<String, String> params) {
-        return new ResponseEntity<>(this.hocPhiService.findHocPhi(params), HttpStatus.OK);
+    @GetMapping("/secure/admin/hocphi-page")
+    public ResponseEntity<Page<HocPhi>> getHocPhiPage(@RequestParam Map<String, String> params) {
+        Page<HocPhi> hocPhiPage = this.hocPhiService.findHocPhiPage(params);
+        return new ResponseEntity<>(hocPhiPage, HttpStatus.OK);
     }
     
     @PutMapping("/secure/admin/hocphi/{hocPhiId}")

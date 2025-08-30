@@ -10,6 +10,9 @@ import com.tqb.DangKyMonHoc.services.QuyDinhService;
 import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 /**
@@ -28,13 +31,18 @@ public class QuyDinhServiceImpl implements QuyDinhService {
     }
 
     @Override
-    public List<QuyDinh> findQuyDinh(Map<String, String> params) {
+    public Page<QuyDinh> findQuyDinhPage(Map<String, String> params) {
+        String page = params.get("page");
         String quyDinh = params.get("quyDinh");
         boolean hasQuyDinh = quyDinh != null && !quyDinh.isEmpty();
+        
+        int size = 10;
+        Pageable pageable = PageRequest.of(Integer.parseInt(page), size);
+        
         if (hasQuyDinh) {
-            return this.quyDinhRepo.findByTenContainingIgnoreCaseOrderByIdAsc(quyDinh);
+            return this.quyDinhRepo.findByTenContainingIgnoreCaseOrderByIdAsc(quyDinh, pageable);
         } else {
-            return this.quyDinhRepo.findAllByOrderByIdAsc();
+            return this.quyDinhRepo.findAllByOrderByIdAsc(pageable);
         }
     }
 

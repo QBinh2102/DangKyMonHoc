@@ -6,6 +6,8 @@ package com.tqb.DangKyMonHoc.repositories;
 
 import com.tqb.DangKyMonHoc.pojo.Khoa;
 import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
@@ -16,6 +18,7 @@ public interface KhoaRepository extends JpaRepository<Khoa, Integer>{
     
     List<Khoa> findAllByOrderByIdAsc();
     Khoa findById(int id);
-    List<Khoa> findByTenKhoaContainingIgnoreCaseOrderByIdAsc(String tenKhoa);
+    Page<Khoa> findByTenKhoaContainingIgnoreCaseOrderByIdAsc(String tenKhoa, Pageable pageable);
+    Page<Khoa> findAllByOrderByIdAsc(Pageable pageable);
     
 }

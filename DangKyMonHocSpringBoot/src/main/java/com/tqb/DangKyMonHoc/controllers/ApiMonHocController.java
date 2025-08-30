@@ -9,6 +9,7 @@ import com.tqb.DangKyMonHoc.services.MonHocService;
 import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -46,6 +47,12 @@ public class ApiMonHocController {
     @GetMapping("/monhoc")
     public ResponseEntity<List<MonHoc>> getMonHoc(@RequestParam Map<String,String> params) {
         return new ResponseEntity<>(this.monHocService.findMonHoc(params), HttpStatus.OK);
+    }
+    
+    @GetMapping("/monhoc-page")
+    public ResponseEntity<Page<MonHoc>> getMonHocPage(@RequestParam Map<String, String> params) {
+        Page<MonHoc> monHocPage = this.monHocService.findMonHocPage(params);
+        return new ResponseEntity<>(monHocPage, HttpStatus.OK);
     }
 
     @PostMapping("/secure/admin/monhoc")

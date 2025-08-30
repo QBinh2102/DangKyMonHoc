@@ -11,6 +11,9 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 /**
@@ -31,12 +34,9 @@ public class LopServiceImpl implements LopService {
     @Override
     public List<Lop> findLop(Map<String, String> params) {
         String nganhId = params.get("nganhId");
-        String maLop = params.get("maLop");
         boolean hasNganhId = nganhId != null && !nganhId.isEmpty();
-        boolean hasMaLop = maLop != null && !maLop.isEmpty();
-        if (hasMaLop) {
-            return this.lopRepo.findByMaLopContainingIgnoreCaseOrderByIdAsc(maLop);
-        } else if (hasNganhId) {
+
+        if (hasNganhId) {
             return this.lopRepo.findLopChuaDay(Integer.parseInt(nganhId), LocalDate.now().getYear());
         } else {
             return this.lopRepo.findAllByOrderByIdDesc();
@@ -51,6 +51,22 @@ public class LopServiceImpl implements LopService {
             }
         }
         return this.lopRepo.save(lop);
+    }
+
+    @Override
+    public Page<Lop> findLopPage(Map<String, String> params) {
+        String page = params.get("page");
+        String maLop = params.get("maLop");
+        boolean hasMaLop = maLop != null && !maLop.isEmpty();
+
+        int size = 10;
+        Pageable pageable = PageRequest.of(Integer.parseInt(page), size);
+        
+        if (hasMaLop) {
+            return this.lopRepo.findByMaLopContainingIgnoreCaseOrderByIdAsc(maLop, pageable);
+        } else {
+            return this.lopRepo.findAllByOrderByIdDesc(pageable);
+        }
     }
 
 }

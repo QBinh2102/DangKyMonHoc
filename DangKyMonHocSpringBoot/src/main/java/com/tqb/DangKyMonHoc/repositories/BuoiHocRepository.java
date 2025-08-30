@@ -7,6 +7,8 @@ package com.tqb.DangKyMonHoc.repositories;
 import com.tqb.DangKyMonHoc.dto.BuoiHocDTO;
 import com.tqb.DangKyMonHoc.pojo.BuoiHoc;
 import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -21,17 +23,14 @@ public interface BuoiHocRepository extends JpaRepository<BuoiHoc, Integer> {
 
     List<BuoiHoc> findByMonHocId_IdOrderByIdAsc(int monHocId);
 
-    List<BuoiHoc> findByHocKyId_IdOrderByIdAsc(int hocKyId);
-    
-    List<BuoiHoc> findByLopId_MaLopContainingIgnoreCaseOrderByIdAsc(String maLop);
+    List<BuoiHoc> findByLopId_IdOrderByIdAsc(int lopId);
 
-    List<BuoiHoc> findByMonHocId_IdAndHocKyId_IdOrderByIdAsc(int monHocId, int hocKyId);
-
-    List<BuoiHoc> findByHocKyId_IdAndLopId_MaLopContainingIgnoreCaseOrderByIdAsc(int hocKyId, String maLop);
-
-    List<BuoiHoc> findByHocKyId_IdAndLopId_NganhId_IdOrderByIdAsc(int hocKyId, int nganhId);
-
+//    List<BuoiHoc> findByHocKyId_IdAndLopId_NganhId_IdOrderByIdAsc(int hocKyId, int nganhId);
     List<BuoiHoc> findAllByOrderByIdDesc();
+
+    Page<BuoiHoc> findByLopId_MaLopContainingIgnoreCaseOrderByIdAsc(String maLop, Pageable pageable);
+
+    Page<BuoiHoc> findAllByOrderByIdDesc(Pageable pageable);
 
     @Query("""
        SELECT new com.tqb.DangKyMonHoc.dto.BuoiHocDTO(
@@ -50,7 +49,7 @@ public interface BuoiHocRepository extends JpaRepository<BuoiHoc, Integer> {
          AND l.id = :lopId
        GROUP BY bh.id, mh.tenMon, mh.tinChiLyThuyet, mh.tinChiThucHanh, l.maLop, bh.siSo
        """)
-    List<BuoiHocDTO> findBuoiHocTheoHocKyVaNganh(@Param("hocKyId") int hocKyId,
+    List<BuoiHocDTO> findBuoiHocTheoHocKyVaLop(@Param("hocKyId") int hocKyId,
             @Param("lopId") int lopId);
 
     @Query("""

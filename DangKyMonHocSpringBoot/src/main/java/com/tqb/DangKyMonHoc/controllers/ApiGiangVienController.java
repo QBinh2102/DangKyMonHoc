@@ -9,6 +9,7 @@ import com.tqb.DangKyMonHoc.services.GiangVienService;
 import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -46,6 +47,12 @@ public class ApiGiangVienController {
     @GetMapping("/secure/admin/giangvien")
     public ResponseEntity<List<GiangVien>> getGiangVien(@RequestParam Map<String,String> params) {
         return new ResponseEntity<>(this.giangVienService.findGiangVien(params), HttpStatus.OK);
+    }
+    
+    @GetMapping("/secure/admin/giangvien-page")
+    public ResponseEntity<Page<GiangVien>> getGiangVienPage(@RequestParam Map<String, String> params) {
+        Page<GiangVien> giangVienPage = this.giangVienService.findGiangVienPage(params);
+        return new ResponseEntity<>(giangVienPage, HttpStatus.OK);
     }
 
     @PostMapping("/secure/admin/giangvien")

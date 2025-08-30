@@ -10,6 +10,8 @@ const MonHoc = () => {
     const [listKhoa, setListKhoa] = useState([]);
     const [selectedKhoa, setSelectedKhoa] = useState("");
     const [kw, setKw] = useState("");
+    const [trang, setTrang] = useState(0);
+    const [tongTrang, setTongTrang] = useState(0);
     const [loading, setLoading] = useState(false);
     const router = useRouter();
 
@@ -22,19 +24,22 @@ const MonHoc = () => {
         }
     }
 
-    const loadMonHoc = async () => {
+    const loadMonHoc = async (page = 0) => {
         setLoading(true);
         try {
-            let url = endpoints['monHoc'];
+            let url = endpoints['monHocPage'];
 
             const params = new URLSearchParams();
+            params.append("page", page);
             if (kw.trim() !== "") params.append("tenMon", kw);
             if (selectedKhoa !== "") params.append("khoaId", selectedKhoa);
 
             if (params.toString() !== "") url += `?${params.toString()}`;
 
             let res = await Apis.get(url);
-            setListMonHoc(res.data);
+            setListMonHoc(res.data.content);
+            setTongTrang(res.data.totalPages);
+            setTrang(res.data.number);
         } catch (ex) {
             console.error(ex);
         } finally {
@@ -90,7 +95,7 @@ const MonHoc = () => {
                     <p>Đang tải dữ liệu...</p>
                 </div>
             ) : (
-                <div>
+                <div className="d-flex flex-column" style={{ minHeight: "650px" }}>
                     <table className="table text-center">
                         <thead>
                             <tr>
@@ -130,6 +135,18 @@ const MonHoc = () => {
                     {listMonHoc.length === 0 && (
                         <p className="text-center mt-3 text-muted">Không tìm thấy môn học nào</p>
                     )}
+
+                    <div className="d-flex justify-content-center mt-auto mb-3">
+                        {Array.from({ length: tongTrang }, (_, i) => (
+                            <button
+                                key={i}
+                                className={`btn btn-sm mx-1 ${i === trang ? 'btn-primary' : 'btn-outline-primary'}`}
+                                onClick={() => loadMonHoc(i)}
+                            >
+                                {i + 1}
+                            </button>
+                        ))}
+                    </div>
                 </div>
             )}
         </div>

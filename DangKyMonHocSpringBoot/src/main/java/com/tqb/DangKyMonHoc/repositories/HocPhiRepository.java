@@ -6,6 +6,8 @@ package com.tqb.DangKyMonHoc.repositories;
 
 import com.tqb.DangKyMonHoc.pojo.HocPhi;
 import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
@@ -17,13 +19,10 @@ public interface HocPhiRepository extends JpaRepository<HocPhi, Integer>{
     HocPhi findById(int id);
     HocPhi findBySinhVienId_IdAndHocKyId_Id(int sinhVienId, int hocKyId);
     List<HocPhi> findBySinhVienId_IdOrderByIdAsc(int sinhVienId);
-    List<HocPhi> findBySinhVienId_NguoiDung_HoTenContainingIgnoreCaseOrderByIdDesc(String hoTenSV);
-    List<HocPhi> findByHocKyId_IdOrderByIdDesc(int hocKyId);
-    List<HocPhi> findByTrangThaiOrderByIdDesc(String trangThai);
-    List<HocPhi> findBySinhVienId_NguoiDung_HoTenContainingIgnoreCaseAndHocKyId_IdOrderByIdDesc(String hoTenSV, int hocKyId);
-    List<HocPhi> findBySinhVienId_NguoiDung_HoTenContainingIgnoreCaseAndTrangThaiOrderByIdDesc(String hoTenSV, String trangThai);
-    List<HocPhi> findByHocKyId_IdAndTrangThaiOrderByIdDesc(int hocKyId, String trangThai);
-    List<HocPhi> findBySinhVienId_NguoiDung_HoTenContainingIgnoreCaseAndHocKyId_IdAndTrangThaiOrderByIdDesc(String hoTenSV, int hocKyId, String trangThai);
     List<HocPhi> findAllByOrderByIdDesc();
+    Page<HocPhi> findBySinhVienId_NguoiDung_HoTenContainingIgnoreCaseOrderByIdDesc(String hoTenSV, Pageable pageable);
+    Page<HocPhi> findByTrangThaiOrderByIdDesc(String trangThai, Pageable pageable);
+    Page<HocPhi> findBySinhVienId_NguoiDung_HoTenContainingIgnoreCaseAndTrangThaiOrderByIdDesc(String hoTenSV, String trangThai, Pageable pageable);
+    Page<HocPhi> findAllByOrderByIdDesc(Pageable pageable);
     
 }

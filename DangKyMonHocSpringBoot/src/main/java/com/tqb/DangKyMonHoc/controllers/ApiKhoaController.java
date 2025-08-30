@@ -9,6 +9,7 @@ import com.tqb.DangKyMonHoc.services.KhoaService;
 import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -36,6 +37,12 @@ public class ApiKhoaController {
     @GetMapping("/khoa")
     public ResponseEntity<List<Khoa>> getKhoa(@RequestParam Map<String, String> params) {
         return new ResponseEntity<>(this.khoaService.findKhoa(params), HttpStatus.OK);
+    }
+    
+    @GetMapping("/khoa-page")
+    public ResponseEntity<Page<Khoa>> getKhoaPage(@RequestParam Map<String, String> params) {
+        Page<Khoa> khoaPage = this.khoaService.findKhoaPage(params);
+        return new ResponseEntity<>(khoaPage, HttpStatus.OK);
     }
 
     @GetMapping("/khoa/{khoaId}")

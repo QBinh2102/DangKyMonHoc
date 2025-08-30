@@ -8,21 +8,26 @@ const SinhVien = () => {
 
     const [listSinhVien, setListSinhVien] = useState([]);
     const [kw, setKw] = useState("");
+    const [trang, setTrang] = useState(0);
+    const [tongTrang, setTongTrang] = useState(0);
     const [loading, setLoading] = useState(false);
     const router = useRouter();
 
-    const loadSinhVien = async () => {
+    const loadSinhVien = async (page = 0) => {
         setLoading(true);
         try {
-            let url = endpoints['themHoacLaySinhVien'];
+            let url = endpoints['sinhVienPage'];
 
             const params = new URLSearchParams();
+            params.append("page", page);
             if (kw.trim() !== "") params.append("hoTen", kw);
 
             if (params.toString() !== "") url += `?${params.toString()}`;
 
             let res = await authApis().get(url);
-            setListSinhVien(res.data);
+            setListSinhVien(res.data.content);
+            setTongTrang(res.data.totalPages);
+            setTrang(res.data.number);
         } catch (ex) {
             console.error(ex);
         } finally {
@@ -63,7 +68,7 @@ const SinhVien = () => {
                     <p>Đang tải dữ liệu...</p>
                 </div>
             ) : (
-                <div>
+                <div className="d-flex flex-column" style={{ minHeight: "650px" }}>
                     <table className="table text-center">
                         <thead>
                             <tr>
@@ -101,6 +106,18 @@ const SinhVien = () => {
                     {listSinhVien.length === 0 && (
                         <p className="text-center mt-3 text-muted">Không tìm thấy sinh viên nào</p>
                     )}
+
+                    <div className="d-flex justify-content-center mt-auto mb-3">
+                        {Array.from({ length: tongTrang }, (_, i) => (
+                            <button
+                                key={i}
+                                className={`btn btn-sm mx-1 ${i === trang ? 'btn-primary' : 'btn-outline-primary'}`}
+                                onClick={() => loadSinhVien(i)}
+                            >
+                                {i + 1}
+                            </button>
+                        ))}
+                    </div>
                 </div>
             )}
         </div>

@@ -7,6 +7,7 @@ package com.tqb.DangKyMonHoc.services;
 import com.tqb.DangKyMonHoc.pojo.HocPhi;
 import java.util.List;
 import java.util.Map;
+import org.springframework.data.domain.Page;
 
 /**
  *
@@ -17,6 +18,7 @@ public interface HocPhiService {
     HocPhi findById(int id);
     HocPhi findHocPhiMoiNhatTheoSinhVien(int sinhVienId);
     List<HocPhi> findHocPhi(Map<String,String> params);
+    Page<HocPhi> findHocPhiPage(Map<String,String> params);
     HocPhi addOrUpdate(HocPhi hocPhi);
     
 }

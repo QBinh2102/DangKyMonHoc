@@ -5,7 +5,8 @@
 package com.tqb.DangKyMonHoc.repositories;
 
 import com.tqb.DangKyMonHoc.pojo.QuyDinh;
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
@@ -15,8 +16,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface QuyDinhRepository extends JpaRepository<QuyDinh, Integer>{
     
     QuyDinh findById(int id);
-    List<QuyDinh> findAllByOrderByIdAsc();
-    List<QuyDinh> findByTenContainingIgnoreCaseOrderByIdAsc(String quyDinh);
+    Page<QuyDinh> findAllByOrderByIdAsc(Pageable pageable);
+    Page<QuyDinh> findByTenContainingIgnoreCaseOrderByIdAsc(String quyDinh, Pageable pageable);
     QuyDinh findByTen (String ten);
     
 }

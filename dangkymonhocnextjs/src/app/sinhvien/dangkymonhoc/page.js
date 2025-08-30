@@ -23,7 +23,7 @@ const DangKyMonHoc = () => {
 
     const loadDangKy = async () => {
         try {
-            let res = await authApis().get(endpoints['danhSachDangKy']);
+            let res = await authApis().get(endpoints['dangKy']);
             setListDangKy(res.data);
         } catch (ex) {
             console.error(ex);

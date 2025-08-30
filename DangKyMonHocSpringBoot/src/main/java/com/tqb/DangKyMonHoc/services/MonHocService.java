@@ -7,6 +7,7 @@ package com.tqb.DangKyMonHoc.services;
 import com.tqb.DangKyMonHoc.pojo.MonHoc;
 import java.util.List;
 import java.util.Map;
+import org.springframework.data.domain.Page;
 
 /**
  *
@@ -16,6 +17,7 @@ public interface MonHocService {
     
     MonHoc findById(int id);
     List<MonHoc> findMonHoc(Map<String,String> params);
+    Page<MonHoc> findMonHocPage(Map<String,String> params);
     MonHoc addOrUpdate(MonHoc monHoc);
     
 }

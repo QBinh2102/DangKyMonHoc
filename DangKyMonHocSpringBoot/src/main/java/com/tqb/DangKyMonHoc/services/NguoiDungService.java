@@ -13,6 +13,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
  */
 public interface NguoiDungService extends UserDetailsService{
     
+    NguoiDung findById(int id);
     NguoiDung login(String email, String matKhau);
     NguoiDung findByEmail(String email);
     boolean changePassword(int nguoiDungId, String oldPassword, String newPassword);

@@ -6,6 +6,8 @@ package com.tqb.DangKyMonHoc.repositories;
 
 import com.tqb.DangKyMonHoc.pojo.Lop;
 import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -20,7 +22,8 @@ public interface LopRepository extends JpaRepository<Lop, Integer> {
 
     List<Lop> findAllByOrderByIdDesc();
 
-    List<Lop> findByMaLopContainingIgnoreCaseOrderByIdAsc(String maLop);
+    Page<Lop> findByMaLopContainingIgnoreCaseOrderByIdAsc(String maLop, Pageable pageable);
+    Page<Lop> findAllByOrderByIdDesc(Pageable pageable);
 
     @Query("""
         SELECT l

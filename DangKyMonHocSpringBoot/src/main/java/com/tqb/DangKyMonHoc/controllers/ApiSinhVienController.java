@@ -10,6 +10,7 @@ import java.security.Principal;
 import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -47,6 +48,12 @@ public class ApiSinhVienController {
     @GetMapping("/secure/admin/sinhvien")
     public ResponseEntity<List<SinhVien>> getSinhVien(@RequestParam Map<String, String> params) {
         return new ResponseEntity<>(this.sinhVienService.findSinhVien(params), HttpStatus.OK);
+    }
+    
+    @GetMapping("/secure/admin/sinhvien-page")
+    public ResponseEntity<Page<SinhVien>> getSinhVienPage(@RequestParam Map<String, String> params) {
+        Page<SinhVien> sinhVienPage = this.sinhVienService.findSinhVienPage(params);
+        return new ResponseEntity<>(sinhVienPage, HttpStatus.OK);
     }
 
     @PostMapping("/secure/admin/sinhvien")

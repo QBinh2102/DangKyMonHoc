@@ -7,6 +7,7 @@ package com.tqb.DangKyMonHoc.services;
 import com.tqb.DangKyMonHoc.pojo.GiangVien;
 import java.util.List;
 import java.util.Map;
+import org.springframework.data.domain.Page;
 
 /**
  *
@@ -16,6 +17,7 @@ public interface GiangVienService {
     
     GiangVien findById(int id);
     List<GiangVien> findGiangVien(Map<String,String> params);
+    Page<GiangVien> findGiangVienPage(Map<String,String> params);
     GiangVien addOrUpdate(GiangVien giangVien);
     
 }

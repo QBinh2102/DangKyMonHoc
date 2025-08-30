@@ -10,6 +10,9 @@ import com.tqb.DangKyMonHoc.services.NganhService;
 import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 /**
@@ -29,16 +32,10 @@ public class NganhServiceImpl implements NganhService {
 
     @Override
     public List<Nganh> findNganh(Map<String, String> params) {
-        String tenNganh = params.get("tenNganh");
         String khoaId = params.get("khoaId");
-        boolean hasTenNganh = tenNganh != null && !tenNganh.isEmpty();
         boolean hasKhoaId = khoaId != null && !khoaId.isEmpty();
 
-        if (hasTenNganh && hasKhoaId) {
-            return this.nganhRepo.findByTenNganhContainingIgnoreCaseAndKhoaId_IdOrderByIdAsc(tenNganh, Integer.parseInt(khoaId));
-        } else if (hasTenNganh) {
-            return this.nganhRepo.findByTenNganhContainingIgnoreCaseOrderByIdAsc(tenNganh);
-        } else if (hasKhoaId) {
+        if (hasKhoaId) {
             return this.nganhRepo.findByKhoaId_IdOrderByIdAsc(Integer.parseInt(khoaId));
         } else {
             return this.nganhRepo.findAllByOrderByIdAsc();
@@ -48,6 +45,28 @@ public class NganhServiceImpl implements NganhService {
     @Override
     public Nganh addOrUpdate(Nganh nganh) {
         return this.nganhRepo.save(nganh);
+    }
+
+    @Override
+    public Page<Nganh> findNganhPage(Map<String, String> params) {
+        String page = params.get("page");
+        String tenNganh = params.get("tenNganh");
+        String khoaId = params.get("khoaId");
+        boolean hasTenNganh = tenNganh != null && !tenNganh.isEmpty();
+        boolean hasKhoaId = khoaId != null && !khoaId.isEmpty();
+
+        int size = 10;
+        Pageable pageable = PageRequest.of(Integer.parseInt(page), size);
+
+        if (hasTenNganh && hasKhoaId) {
+            return this.nganhRepo.findByTenNganhContainingIgnoreCaseAndKhoaId_IdOrderByIdAsc(tenNganh, Integer.parseInt(khoaId), pageable);
+        } else if (hasTenNganh) {
+            return this.nganhRepo.findByTenNganhContainingIgnoreCaseOrderByIdAsc(tenNganh, pageable);
+        } else if (hasKhoaId) {
+            return this.nganhRepo.findByKhoaId_IdOrderByIdAsc(Integer.parseInt(khoaId), pageable);
+        } else {
+            return this.nganhRepo.findAllByOrderByIdAsc(pageable);
+        }
     }
 
 }

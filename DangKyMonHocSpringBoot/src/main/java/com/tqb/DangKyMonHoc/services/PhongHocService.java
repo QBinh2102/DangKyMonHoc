@@ -7,6 +7,7 @@ package com.tqb.DangKyMonHoc.services;
 import com.tqb.DangKyMonHoc.pojo.PhongHoc;
 import java.util.List;
 import java.util.Map;
+import org.springframework.data.domain.Page;
 
 /**
  *
@@ -16,6 +17,7 @@ public interface PhongHocService {
     
     PhongHoc findById (int id);
     List<PhongHoc> findPhongHoc (Map<String, String> params);
+    Page<PhongHoc> findPhongHocPage(Map<String,String> params);
     PhongHoc addOrUpdate (PhongHoc phongHoc);
     
 }

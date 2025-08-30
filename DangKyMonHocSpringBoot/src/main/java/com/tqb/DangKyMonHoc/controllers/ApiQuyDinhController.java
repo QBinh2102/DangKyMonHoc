@@ -9,6 +9,7 @@ import com.tqb.DangKyMonHoc.services.QuyDinhService;
 import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -44,9 +45,9 @@ public class ApiQuyDinhController {
         }
     }
     
-    @GetMapping("/quydinh")
-    public ResponseEntity<List<QuyDinh>> getQuyDinh(@RequestParam Map<String,String> params){
-        return new ResponseEntity<>(this.quyDinhService.findQuyDinh(params), HttpStatus.OK);
+    @GetMapping("/quydinh-page")
+    public ResponseEntity<Page<QuyDinh>> getQuyDinhPage(@RequestParam Map<String,String> params){
+        return new ResponseEntity<>(this.quyDinhService.findQuyDinhPage(params), HttpStatus.OK);
     }
     
     @PostMapping("/secure/admin/quydinh")

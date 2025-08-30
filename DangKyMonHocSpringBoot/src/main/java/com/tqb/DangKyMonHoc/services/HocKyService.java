@@ -6,6 +6,8 @@ package com.tqb.DangKyMonHoc.services;
 
 import com.tqb.DangKyMonHoc.pojo.HocKy;
 import java.util.List;
+import java.util.Map;
+import org.springframework.data.domain.Page;
 
 /**
  *
@@ -15,7 +17,8 @@ public interface HocKyService {
     
     HocKy findById(int id);
     HocKy findTopByOrderByIdDesc();
-    List<HocKy> findAllByOrderByIdAsc();
+    Page<HocKy> findHocKyPage(Map<String,String> params);
+    List<HocKy> findAllByOrderByIdDesc();
     List<HocKy> findHocKyBySinhVienId(int sinhVienId);
     HocKy add(HocKy hocKy);
     

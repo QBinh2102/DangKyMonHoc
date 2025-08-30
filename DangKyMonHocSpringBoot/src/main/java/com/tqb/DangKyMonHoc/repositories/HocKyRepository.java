@@ -6,6 +6,8 @@ package com.tqb.DangKyMonHoc.repositories;
 
 import com.tqb.DangKyMonHoc.pojo.HocKy;
 import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -19,7 +21,7 @@ public interface HocKyRepository extends JpaRepository<HocKy, Integer>{
     HocKy findById(int id);
     HocKy findTopByOrderByIdDesc();
     List<HocKy> findAllByOrderByIdDesc();
-    
+    Page<HocKy> findAllByOrderByIdDesc(Pageable pageable);
     @Query("""
            SELECT DISTINCT hk
            FROM DangKy dk

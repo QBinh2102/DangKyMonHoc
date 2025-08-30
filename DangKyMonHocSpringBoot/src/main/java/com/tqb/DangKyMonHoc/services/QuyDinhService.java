@@ -5,8 +5,8 @@
 package com.tqb.DangKyMonHoc.services;
 
 import com.tqb.DangKyMonHoc.pojo.QuyDinh;
-import java.util.List;
 import java.util.Map;
+import org.springframework.data.domain.Page;
 
 /**
  *
@@ -15,7 +15,7 @@ import java.util.Map;
 public interface QuyDinhService {
     
     QuyDinh findById(int id);
-    List<QuyDinh> findQuyDinh(Map<String,String> params);
+    Page<QuyDinh> findQuyDinhPage(Map<String,String> params);
     QuyDinh findByTen(String ten);
     QuyDinh addOrUpdate(QuyDinh quyDinh);
     QuyDinh delete(QuyDinh quyDinh);

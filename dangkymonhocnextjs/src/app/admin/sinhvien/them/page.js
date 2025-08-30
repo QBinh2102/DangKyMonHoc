@@ -33,8 +33,8 @@ const ThemSinhVien = () => {
     });
     const [listKhoa, setListKhoa] = useState([]);
     const [listNganh, setListNganh] = useState([]);
-    const [selectedNganh, setSelectedNganh] = useState("");
     const [listLop, setListLop] = useState([]);
+    const [selectedNganh, setSelectedNganh] = useState("");
     const [loading, setLoading] = useState(false);
     const [msg, setMsg] = useState("");
 
@@ -99,11 +99,63 @@ const ThemSinhVien = () => {
         }
     }, [selectedNganh]);
 
+    const loadBuoiHocTheoMaLop = async (lopId) => {
+        try {
+            let res = await authApis().get(`${endpoints['themHoacLayBuoiHoc']}?lopId=${lopId}`);
+            return res.data;
+        } catch (ex) {
+            console.error(ex);
+        }
+    }
+
+    //Gán thời khóa biểu, học phí
+    const addKhoaHoc = async (sinhVien) => {
+        console.log(sinhVien);
+        const listBuoiHoc = await loadBuoiHocTheoMaLop(sinhVien.lopId?.id);
+        console.log(listBuoiHoc);
+
+        for (const bh of listBuoiHoc) {
+            //Đăng ký
+            const newDangKy = {
+                sinhVienId: sinhVien.id,
+                buoiHocId: bh.id,
+            };
+            console.log(newDangKy);
+            await authApis().post(endpoints['dangKyChoSinhVien'], newDangKy);
+
+            //Thời khóa biểu
+            let res = await Apis.get(`${endpoints['lichHoc']}?buoiHocId=${bh.id}`);
+            let listLichHocByBuoiHocId = res.data
+            console.log(listLichHocByBuoiHocId);
+            for (const lh of listLichHocByBuoiHocId) {
+                const newLichHoc = {
+                    sinhVienId: sinhVien.id,
+                    lichHocId: lh.id,
+                };
+                console.log(newLichHoc);
+                await authApis().post(endpoints['thoiKhoaBieuChoSinhVien'], newLichHoc);
+            };
+
+            //Học phí
+            let hocPhi = await authApis().get(`${endpoints['hocPhiMoiNhatBySinhVien']}?sinhVienId=${sinhVien.id}`);
+            await authApis().post(endpoints['chiTietHocPhi'], {}, {
+                params: {
+                    hocPhiId: hocPhi.data.id,
+                    buoiHocId: bh.id,
+                }
+            });
+        }
+
+    }
+
     const addSinhVien = async (e) => {
         e.preventDefault();
         setLoading(true);
         try {
-            await authApis().post(endpoints['themHoacLaySinhVien'], newSinhVien);
+            let res = await authApis().post(endpoints['themHoacLaySinhVien'], newSinhVien);
+
+            await addKhoaHoc(res.data);
+
             setMsg("Thêm thành công!");
             setNewSinhVien({
                 nguoiDung: {},

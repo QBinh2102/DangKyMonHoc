@@ -9,20 +9,25 @@ const Khoa = () => {
     const [listKhoa, setListKhoa] = useState([]);
     const [kw, setKw] = useState("");
     const [loading, setLoading] = useState(false);
+    const [trang, setTrang] = useState(0);
+    const [tongTrang, setTongTrang] = useState(0);
     const router = useRouter();
 
-    const loadKhoa = async () => {
+    const loadKhoa = async (page = 0) => {
         setLoading(true);
         try {
-            let url = endpoints['khoa'];
+            let url = endpoints['khoaPage'];
 
             const params = new URLSearchParams();
+            params.append("page", page);
             if (kw.trim() !== "") params.append("tenKhoa", kw);
 
             if (params.toString() !== "") url += `?${params.toString()}`;
 
             let res = await Apis.get(url);
-            setListKhoa(res.data);
+            setListKhoa(res.data.content);
+            setTongTrang(res.data.totalPages);
+            setTrang(res.data.number);
         } catch (ex) {
             console.error(ex);
         } finally {
@@ -62,7 +67,7 @@ const Khoa = () => {
                         <p>Đang tải dữ liệu...</p>
                     </div>
                 ) : (
-                    <div>
+                    <div className="d-flex flex-column" style={{ minHeight: "650px" }}>
                         <table className="table text-center">
                             <thead>
                                 <tr>
@@ -90,6 +95,18 @@ const Khoa = () => {
                         {listKhoa.length === 0 && (
                             <p className="text-center mt-3 text-muted">Không tìm thấy khoa nào</p>
                         )}
+
+                        <div className="d-flex justify-content-center mt-auto mb-3">
+                            {Array.from({ length: tongTrang }, (_, i) => (
+                                <button
+                                    key={i}
+                                    className={`btn btn-sm mx-1 ${i === trang ? 'btn-primary' : 'btn-outline-primary'}`}
+                                    onClick={() => loadKhoa(i)}
+                                >
+                                    {i + 1}
+                                </button>
+                            ))}
+                        </div>
                     </div>
                 )}
             </div>

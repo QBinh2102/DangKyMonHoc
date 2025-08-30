@@ -55,6 +55,28 @@ public class ApiDangKyController {
         params.put("sinhVienId", nd.getId().toString());
         return new ResponseEntity<>(this.dangKyService.findDangKy(params), HttpStatus.OK);
     }
+    
+    @PostMapping("/secure/admin/dangky")
+    public ResponseEntity<?> createForSinhVien(@RequestBody DangKy dangKy) {
+        if (dangKy.getId() != null) {
+            return ResponseEntity
+                    .status(HttpStatus.CONFLICT)
+                    .body("ID phải để trống khi tạo mới.");
+        }
+
+        try {
+            DangKy newDangKy = this.dangKyService.add(dangKy);
+            return new ResponseEntity<>(newDangKy, HttpStatus.CREATED);
+        } catch (RuntimeException e) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Lỗi khi tạo: " + e.getMessage());
+        }
+    }
 
     @PostMapping("/secure/me/dangky")
     public ResponseEntity<?> create(@RequestBody DangKy dangKy) {

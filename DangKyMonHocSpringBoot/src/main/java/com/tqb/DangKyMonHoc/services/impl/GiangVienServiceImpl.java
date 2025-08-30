@@ -18,6 +18,9 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -47,13 +50,10 @@ public class GiangVienServiceImpl implements GiangVienService {
 
     @Override
     public List<GiangVien> findGiangVien(Map<String, String> params) {
-        String hoTen = params.get("hoTen");
         String khoaId = params.get("khoaId");
-        boolean hasHoTen = hoTen != null && !hoTen.isEmpty();
         boolean hasKhoaId = khoaId != null && !khoaId.isEmpty();
-        if (hasHoTen) {
-            return this.giangVienRepo.findByNguoiDung_HoTenContainingIgnoreCaseOrderByIdAsc(hoTen);
-        } else if (hasKhoaId) {
+        
+        if (hasKhoaId) {
             return this.giangVienRepo.findByKhoaId_IdOrderByIdAsc(Integer.parseInt(khoaId));
         } else {
             return this.giangVienRepo.findAllByOrderByIdAsc();
@@ -97,6 +97,22 @@ public class GiangVienServiceImpl implements GiangVienService {
         }
 
         return this.giangVienRepo.save(giangVien);
+    }
+
+    @Override
+    public Page<GiangVien> findGiangVienPage(Map<String, String> params) {
+        String page = params.get("page");
+        String hoTen = params.get("hoTen");
+        boolean hasHoTen = hoTen != null && !hoTen.isEmpty();
+
+        int size = 10;
+        Pageable pageable = PageRequest.of(Integer.parseInt(page), size);
+        
+        if (hasHoTen) {
+            return this.giangVienRepo.findByNguoiDung_HoTenContainingIgnoreCaseOrderByIdAsc(hoTen, pageable);
+        } else {
+            return this.giangVienRepo.findAllByOrderByIdAsc(pageable);
+        }
     }
 
 }

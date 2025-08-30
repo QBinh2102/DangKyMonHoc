@@ -9,6 +9,7 @@ import com.tqb.DangKyMonHoc.services.LopService;
 import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -46,6 +47,12 @@ public class ApiLopController {
     @GetMapping("/lop")
     public ResponseEntity<List<Lop>> getLop(@RequestParam Map<String, String> params) {
         return new ResponseEntity<>(this.lopService.findLop(params), HttpStatus.OK);
+    }
+    
+    @GetMapping("/lop-page")
+    public ResponseEntity<Page<Lop>> getLopPage(@RequestParam Map<String, String> params) {
+        Page<Lop> lopPage = this.lopService.findLopPage(params);
+        return new ResponseEntity<>(lopPage, HttpStatus.OK);
     }
 
     @PostMapping("/secure/admin/lop")

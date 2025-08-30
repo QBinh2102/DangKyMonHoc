@@ -9,6 +9,7 @@ import com.tqb.DangKyMonHoc.services.PhongHocService;
 import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -36,6 +37,12 @@ public class ApiPhongHocController {
     @GetMapping("/phonghoc")
     public ResponseEntity<List<PhongHoc>> getPhongHoc(@RequestParam Map<String,String> params){
         return new ResponseEntity<>(this.phongHocService.findPhongHoc(params), HttpStatus.OK);
+    }
+    
+    @GetMapping("/phonghoc-page")
+    public ResponseEntity<Page<PhongHoc>> getPhongHocPage(@RequestParam Map<String,String> params){
+        Page<PhongHoc> phongHocPage = this.phongHocService.findPhongHocPage(params);
+        return new ResponseEntity<>(phongHocPage, HttpStatus.OK);
     }
     
     @GetMapping("/phonghoc/{phongHocId}")

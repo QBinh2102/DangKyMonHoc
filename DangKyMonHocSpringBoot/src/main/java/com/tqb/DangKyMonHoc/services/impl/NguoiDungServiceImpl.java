@@ -31,6 +31,11 @@ public class NguoiDungServiceImpl implements NguoiDungService{
     private BCryptPasswordEncoder passwordEncoder;
 
     @Override
+    public NguoiDung findById(int id) {
+        return this.nguoiDungRepo.findById(id);
+    }
+    
+    @Override
     public NguoiDung login(String email, String matKhau) {
         NguoiDung existing = this.nguoiDungRepo.findByEmail(email);
         if(existing != null && passwordEncoder.matches(matKhau, existing.getMatKhau()))
@@ -58,17 +63,17 @@ public class NguoiDungServiceImpl implements NguoiDungService{
     
     @Override
     public boolean changePassword(int nguoiDungId, String oldPassword, String newPassword) {
-        NguoiDung nguoiDung = nguoiDungRepo.findById(nguoiDungId).orElse(null);
+        NguoiDung nguoiDung = nguoiDungRepo.findById(nguoiDungId);
         if (nguoiDung == null) {
-            return false; // Không tìm thấy user
+            return false; //Không tìm thấy user
         }
 
-        // Kiểm tra mật khẩu cũ có khớp không
+        //Kiểm tra mật khẩu cũ có khớp không
         if (!passwordEncoder.matches(oldPassword, nguoiDung.getMatKhau())) {
             return false; // Sai mật khẩu cũ
         }
 
-        // Đổi mật khẩu mới
+        //Đổi mật khẩu mới
         nguoiDung.setMatKhau(passwordEncoder.encode(newPassword));
         nguoiDungRepo.save(nguoiDung);
 

@@ -9,6 +9,7 @@ import com.tqb.DangKyMonHoc.services.NganhService;
 import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -36,6 +37,12 @@ public class ApiNganhController {
     @GetMapping("/nganh")
     public ResponseEntity<List<Nganh>> getNganh(@RequestParam Map<String, String> params) {
         return new ResponseEntity<>(this.nganhService.findNganh(params), HttpStatus.OK);
+    }
+    
+    @GetMapping("/nganh-page")
+    public ResponseEntity<Page<Nganh>> getNganhPage(@RequestParam Map<String, String> params) {
+        Page<Nganh> nganhPage = this.nganhService.findNganhPage(params);
+        return new ResponseEntity<>(nganhPage, HttpStatus.OK);
     }
     
     @GetMapping("/nganh/{nganhId}")
