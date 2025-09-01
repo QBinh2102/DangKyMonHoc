@@ -3,7 +3,6 @@
 import Apis, { authApis, endpoints } from "@/configs/Apis";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import "../../admin.css";
 
 const SuaBuoiHoc = () => {
 

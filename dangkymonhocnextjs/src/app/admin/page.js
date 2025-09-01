@@ -4,7 +4,6 @@ import { useEffect, useRef, useState } from "react";
 import Chart from 'chart.js/auto';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
-import "./admin.css";
 import Apis, { authApis, endpoints } from "@/configs/Apis";
 import ChartDataLabels from "chartjs-plugin-datalabels";
 Chart.register(ChartDataLabels);
@@ -18,10 +17,13 @@ const Admin = () => {
     const [listMonHoc, setListMonHoc] = useState([]);
     const [monHocId, setMonHocId] = useState("");
     const [data, setData] = useState({ hoanThanh: 0, truot: 0 });
+    const [dataByLop, setDataByLop] = useState([]);
     const [showThongKe, setShowThongKe] = useState(false);
 
     const chartRef = useRef(null);
     const chartInstance = useRef(null);
+    const barChartRef = useRef(null);
+    const barChartInstance = useRef(null);
     const exportRef = useRef(null);
 
     const loadHocKy = async () => {
@@ -74,6 +76,16 @@ const Admin = () => {
         }
     }
 
+    const loadThongKeTheoLop = async (hocKyId, monHocId) => {
+        try {
+            let res = await authApis().get(`${endpoints['thongKeTheoLop']}?hocKyId=${hocKyId}&monHocId=${monHocId}`);
+            setDataByLop(res.data);
+            setShowThongKe(true);
+        } catch (ex) {
+            console.error(ex);
+        }
+    }
+
     useEffect(() => {
         if (showThongKe && chartRef.current) {
             if (chartInstance.current) {
@@ -115,8 +127,49 @@ const Admin = () => {
     }, [showThongKe, data]);
 
     useEffect(() => {
+        if (showThongKe && barChartRef.current) {
+            if (barChartInstance.current) barChartInstance.current.destroy();
+
+            barChartInstance.current = new Chart(barChartRef.current, {
+                type: "bar",
+                data: {
+                    labels: dataByLop.map((lop) => lop.maLop), // tên lớp trên trục X
+                    datasets: [
+                        {
+                            label: "Hoàn thành",
+                            data: dataByLop.map((lop) => lop.soHoanThanh),
+                            backgroundColor: "#4CAF50", // xanh
+                        },
+                        {
+                            label: "Trượt",
+                            data: dataByLop.map((lop) => lop.soTruot),
+                            backgroundColor: "#F44336", // đỏ
+                        },
+                    ],
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        datalabels: {
+                            anchor: "end",
+                            align: "top",
+                            formatter: (value) => value,
+                            color: "#000",
+                            font: { weight: "bold" },
+                        },
+                    },
+                },
+                plugins: [ChartDataLabels],
+            });
+        }
+    }, [showThongKe, dataByLop]);
+
+
+    useEffect(() => {
         if (hocKyId && khoaId && monHocId) {
             loadThongKe(hocKyId, khoaId, monHocId);
+            loadThongKeTheoLop(hocKyId, monHocId);
         } else {
             setShowThongKe(false);
         }
@@ -141,7 +194,7 @@ const Admin = () => {
     };
 
     return (
-        <div >
+        <div>
             <div ref={exportRef}>
                 <h1 className="text-center mt-3 mb-3">Thống kê kết quả học tập</h1>
 
@@ -185,9 +238,17 @@ const Admin = () => {
 
                 {showThongKe &&
                     <div>
-                        <div className="chart-container">
-                            <canvas ref={chartRef}></canvas>
+                        <div className="d-flex justify-content-center align-items-center gap-5 mt-4 mb-4">
+                            <div style={{ width: "400px", height: "400px" }}>
+                                <canvas ref={chartRef}></canvas>
+                            </div>
+
+                            <div style={{ width: "400px", height: "400px" }}>
+                                <canvas ref={barChartRef}></canvas>
+                            </div>
                         </div>
+
+
                         <table className="table mt-3" border="1">
                             <thead>
                                 <tr>

@@ -235,7 +235,8 @@ INSERT INTO quy_dinh (ten, gia_tri) VALUES
     ('Số tiền 1 tín chỉ', 700000),
     ('Số tín chỉ tối đa', 24),
     ('Số buổi 1 tín chỉ lý thuyết', 3),
-    ('Số buổi 1 tín chỉ thực hành', 5);
+    ('Số buổi 1 tín chỉ thực hành', 5),
+    ('Số tuần 1 học kỳ', 15);
 
 -- Thêm học kỳ
 -- Kỳ 1: 10,11,12,1
@@ -326,8 +327,6 @@ INSERT INTO nguoi_dung (ho_ten, ngay_sinh, gioi_tinh, so_dien_thoai, email, cccd
     ('Trương Trí Kiệt', '1975-10-07', 'nam', '0123456789', 'kiettruongtri@giangvien.edu.vn', '012345678912', '$2a$10$PG5LlPWRAfOGgkDIy/SfOu/a6IHgsVn1s5AqnWPPYtGhPQRn7EX0S', 'https://res.cloudinary.com/dbhhpljbo/image/upload/v1755243635/356743267_641722777924328_3854581708681478680_n_rnpytv.jpg', 'ROLE_GIANG_VIEN'),
     ('Ngô Ngọc Hậu', '1975-10-07', 'nam', '0123456789', 'haungongoc@giangvien.edu.vn', '012345678912', '$2a$10$PG5LlPWRAfOGgkDIy/SfOu/a6IHgsVn1s5AqnWPPYtGhPQRn7EX0S', 'https://res.cloudinary.com/dbhhpljbo/image/upload/v1755243635/356743267_641722777924328_3854581708681478680_n_rnpytv.jpg', 'ROLE_GIANG_VIEN');
 
--- Giả sử id tự động tăng từ 1 đến 14 cho giảng viên
-
 INSERT INTO giang_vien (id, hoc_vi, khoa_id) VALUES
     (1, 'Thạc sĩ', 1),
     (2, 'Tiến sĩ', 1),
@@ -355,15 +354,15 @@ INSERT INTO nguoi_dung (ho_ten, ngay_sinh, gioi_tinh, so_dien_thoai, email, cccd
     ('Tô Quốc Bình', '2004-02-21', 'nam', '0762590966', 'binh@student.edu.vn', '079204036719', '$2a$10$ovRvIJrlNrhHGxX2140Lj.0OyoPdePXeU/.tls11mdwOuWefISv0O', 'https://res.cloudinary.com/dbhhpljbo/image/upload/v1755243635/356743267_641722777924328_3854581708681478680_n_rnpytv.jpg', 'ROLE_SINH_VIEN'),
     ('Trần Huỳnh Sang', '2004-03-24', 'nam', '0762514230', 'sang@student.edu.vn', '012345678912', '$2a$10$PG5LlPWRAfOGgkDIy/SfOu/a6IHgsVn1s5AqnWPPYtGhPQRn7EX0S', 'https://res.cloudinary.com/dbhhpljbo/image/upload/v1755243635/356743267_641722777924328_3854581708681478680_n_rnpytv.jpg', 'ROLE_SINH_VIEN'),
     ('Nguyễn Đăng Khôi', '2004-05-27', 'nam', '0903234139', 'khoi@student.edu.vn', '012345678912', '$2a$10$PG5LlPWRAfOGgkDIy/SfOu/a6IHgsVn1s5AqnWPPYtGhPQRn7EX0S', 'https://res.cloudinary.com/dbhhpljbo/image/upload/v1755243635/356743267_641722777924328_3854581708681478680_n_rnpytv.jpg', 'ROLE_SINH_VIEN'),
-    ('Võ Quốc Bảo', '2006-05-15', 'nam', '0789764093', 'bao@student.edu.vn', '012345678912', '$2a$10$PG5LlPWRAfOGgkDIy/SfOu/a6IHgsVn1s5AqnWPPYtGhPQRn7EX0S', 'https://res.cloudinary.com/dbhhpljbo/image/upload/v1755243635/356743267_641722777924328_3854581708681478680_n_rnpytv.jpg', 'ROLE_SINH_VIEN');
-
--- Giả sử id tiếp tục từ 15 đến 19
+    ('Võ Quốc Bảo', '2006-05-15', 'nam', '0789764093', 'bao@student.edu.vn', '012345678912', '$2a$10$PG5LlPWRAfOGgkDIy/SfOu/a6IHgsVn1s5AqnWPPYtGhPQRn7EX0S', 'https://res.cloudinary.com/dbhhpljbo/image/upload/v1755243635/356743267_641722777924328_3854581708681478680_n_rnpytv.jpg', 'ROLE_SINH_VIEN'),
+    ('Trần Quốc Phong', '2006-05-15', 'nam', '0789764094', 'phong@student.edu.vn', '012345678912', '$2a$10$PG5LlPWRAfOGgkDIy/SfOu/a6IHgsVn1s5AqnWPPYtGhPQRn7EX0S', 'https://res.cloudinary.com/dbhhpljbo/image/upload/v1755243635/356743267_641722777924328_3854581708681478680_n_rnpytv.jpg', 'ROLE_SINH_VIEN');
 
 INSERT INTO sinh_vien (id, khoa_hoc, so_tin_chi, khoa_id, nganh_id, lop_id) VALUES
     (19, 2022, 75, 1, 1, 1),
     (20, 2022, 75, 1, 1, 1),
     (21, 2022, 75, 1, 1, 1),
-    (22, 2024, 25, 1, 3, 2);
+    (22, 2024, 25, 1, 3, 2),
+    (23, 2024, 25, 1, 3, 5);
 
 -- Thêm admin
 INSERT INTO nguoi_dung (ho_ten, email, mat_khau, vai_tro)
@@ -782,7 +781,30 @@ VALUES
     (22,15,22,9, "TONG_KET",5.3),
     (22,4,23,9, "GIUA_KY",9),
     (22,4,23,9, "CUOI_KY",5.5),
-    (22,4,23,9, "TONG_KET",6.9);
+    (22,4,23,9, "TONG_KET",6.9),
+    
+    -- Trần Quốc Phong
+    (23,13,1,7, "GIUA_KY",6),
+    (23,13,1,7, "CUOI_KY",9),
+    (23,13,1,7, "TONG_KET",7.8),
+    (23,18,2,7, "GIUA_KY",9),
+    (23,18,2,7, "CUOI_KY",9.5),
+    (23,18,2,7, "TONG_KET",9.3),
+    (23,6,3,8, "GIUA_KY",9.9),
+    (23,6,3,8, "CUOI_KY",7.6),
+    (23,6,3,8, "TONG_KET",8.3),
+    (23,4,4,8, "GIUA_KY",8),
+    (23,4,4,8, "CUOI_KY",6),
+    (23,4,4,8, "TONG_KET",6.8),
+	(23,15,10,9, "GIUA_KY",10),
+    (23,15,10,9, "CUOI_KY",3.3),
+    (23,15,10,9, "TONG_KET",6),
+    (23,15,22,9, "GIUA_KY",6.5),
+    (23,15,22,9, "CUOI_KY",4.5),
+    (23,15,22,9, "TONG_KET",5.3),
+    (23,4,23,9, "GIUA_KY",9),
+    (23,4,23,9, "CUOI_KY",5.5),
+    (23,4,23,9, "TONG_KET",6.9);
     
 -- Thêm điểm học lại lần 2
 INSERT INTO diem(sinh_vien_id, giang_vien_id, mon_hoc_id, hoc_ky_id, lan_hoc, loai, diem)
@@ -795,6 +817,7 @@ VALUES
 -- Thêm buổi học
 INSERT INTO buoi_hoc(mon_hoc_id, giang_vien_id, hoc_ky_id, si_so, loai, lop_id)
 VALUES
+	-- 2022
 	(1,14,1,10,'LT-TH', 1),
     (2,4,1,10,'LT-TH', 1),
     (3,6,2,10,'LT', 1),
@@ -817,8 +840,11 @@ VALUES
     (20,13,8,10,'LT-TH', 1),
     (21,10,8,10,'LT-TH', 1),
     (32,null,9,null,'TH', 1),
+    -- buổi học cho kỳ mới 2022
     (33,null,10,null,'TH',1),
     
+    -- 2024
+    -- 24IT01
     (1,13,7,10,'LT-TH', 2),
     (2,18,7,10,'LT-TH', 2),
     (3,6,8,10,'LT', 2),
@@ -826,13 +852,23 @@ VALUES
     (10,15,9,10,'LT-TH', 2),
     (22,15,9,10,'LT-TH', 2),
     (23,4,9,10,'LT-TH', 2),
-    
+    -- 24IT02
+    (1,13,7,10,'LT-TH', 5),
+    (2,18,7,10,'LT-TH', 5),
+    (3,6,8,10,'LT', 5),
+    (4,18,8,10,'LT-TH', 5),
+    (10,15,9,10,'LT-TH', 5),
+    (22,15,9,10,'LT-TH', 5),
+    (23,4,9,10,'LT-TH', 5),
+    -- buổi học cho kỳ mới 2024
     (8,17,10,10,'LT', 2),
     (8,1,10,10,'LT', 3),
     (11,10,10,10,'LT-TH', 2),
     (11,10,10,10,'LT-TH', 4),
     (24,15,10,10,'LT-TH', 2),
     (24,14,10,10,'LT-TH', 5),
+    (8,17,10,10,'LT', 5),
+    (11,10,10,10,'LT-TH', 5),
     
     -- Buổi học cho năm 1
     (1,14,10,10,'LT-TH', 6),
@@ -851,6 +887,7 @@ VALUES
 -- Thêm lịch học
 INSERT INTO lich_hoc(buoi_hoc_id, thu, tiet_hoc_id, ngay_bat_dau, ngay_ket_thuc, phong_hoc_id, loai)
 VALUES
+	-- 2022
 	(1, "Thứ 2", 1, "2022-10-10", "2022-11-14", 8, 'LyThuyet'),		/*1*/
     (1, "Thứ 2", 2, "2022-10-10", "2022-11-07", 15, 'ThucHanh'),	/*2*/
     (2, "Thứ 4", 1, "2022-10-12", "2022-12-07", 5, 'LyThuyet'),		/*3*/
@@ -890,6 +927,7 @@ VALUES
     (21, "Thứ 6", 1, "2025-02-28", "2025-04-04", 5, 'LyThuyet'),	/*37*/
     (21, "Thứ 6", 2, "2025-02-28", "2025-03-28", 17, 'ThucHanh'),	/*38*/
     
+    -- 2024
     (24, "Thứ 3", 1, "2024-10-08", "2024-11-12", 1, 'LyThuyet'),	/*39*/
     (24, "Thứ 3", 2, "2024-10-08", "2024-11-05", 15, 'ThucHanh'),	/*40*/
     (25, "Thứ 5", 1, "2024-10-10", "2024-12-05", 2, 'LyThuyet'),	/*41*/
@@ -904,29 +942,49 @@ VALUES
     (30, "Thứ 6", 1, "2025-06-13", "2025-08-08", 7, 'LyThuyet'),	/*50*/
     (30, "Thứ 6", 2, "2025-06-13", "2025-07-11", 20, 'ThucHanh'),	/*51*/
     
-    (31, "Thứ 2", 1, "2025-10-06", "2025-12-22", 6, 'LyThuyet'),	/*52*/
-    (32, "Thứ 6", 1, "2025-10-10", "2025-12-26", 5, 'LyThuyet'),	/*53*/
-    (33, "Thứ 4", 1, "2025-10-08", "2025-12-03", 8, 'LyThuyet'),	/*54*/
-    (33, "Thứ 4", 2, "2025-10-08", "2025-11-05", 20, 'ThucHanh'),	/*55*/
-    (34, "Thứ 3", 1, "2025-10-07", "2025-12-02", 7, 'LyThuyet'),	/*56*/
-    (34, "Thứ 3", 2, "2025-10-07", "2025-11-04", 20, 'ThucHanh'),	/*57*/
-    (35, "Thứ 6", 1, "2025-10-10", "2025-11-14", 2, 'LyThuyet'),	/*58*/
-    (35, "Thứ 6", 2, "2025-10-10", "2025-11-07", 14, 'ThucHanh'),	/*59*/
-    (36, "Thứ 7", 1, "2025-10-11", "2025-11-15", 10, 'LyThuyet'),	/*60*/
-    (36, "Thứ 7", 2, "2025-10-11", "2025-11-08", 17, 'ThucHanh'),	/*61*/
+    (31, "Thứ 4", 1, "2024-10-09", "2024-11-13", 1, 'LyThuyet'),	/*52*/
+    (31, "Thứ 4", 2, "2024-10-09", "2024-11-06", 15, 'ThucHanh'),	/*53*/
+    (32, "Thứ 6", 1, "2024-10-11", "2024-12-06", 2, 'LyThuyet'),	/*54*/
+    (32, "Thứ 6", 2, "2024-10-11", "2024-11-08", 17, 'ThucHanh'),	/*55*/
+    (33, "Thứ 7", 1, "2025-02-15", "2025-04-12", 10, 'LyThuyet'),	/*56*/
+    (34, "Thứ 3", 1, "2025-02-11", "2025-04-08", 10, 'LyThuyet'),	/*57*/
+    (34, "Thứ 3", 2, "2025-02-11", "2025-03-11", 21, 'ThucHanh'),	/*58*/
+    (35, "Thứ 3", 1, "2025-06-10", "2025-08-05", 12, 'LyThuyet'),	/*59*/
+    (35, "Thứ 3", 2, "2025-06-10", "2025-07-08", 20, 'ThucHanh'),	/*60*/
+    (36, "Thứ 4", 1, "2025-06-11", "2025-07-16", 8, 'LyThuyet'),	/*61*/
+    (36, "Thứ 4", 2, "2025-06-11", "2025-07-09", 19, 'ThucHanh'),	/*62*/
+    (37, "Thứ 7", 1, "2025-06-14", "2025-08-09", 7, 'LyThuyet'),	/*63*/
+    (37, "Thứ 7", 2, "2025-06-14", "2025-07-12", 20, 'ThucHanh'),	/*64*/
     
-    (37, "Thứ 2", 1, "2025-10-06", "2025-11-10", 9, 'LyThuyet'),
-    (37, "Thứ 2", 2, "2025-10-06", "2025-11-03", 19, 'ThucHanh'),
-    (38, "Thứ 4", 1, "2025-10-08", "2025-12-03", 1, 'LyThuyet'),
-    (38, "Thứ 4", 2, "2025-10-08", "2025-11-05", 18, 'ThucHanh'),
-    (39, "Thứ 5", 1, "2025-10-09", "2025-11-13", 3, 'LyThuyet'),
-    (39, "Thứ 5", 2, "2025-10-09", "2025-11-06", 16, 'ThucHanh'),
-    (40, "Thứ 3", 1, "2025-10-07", "2025-12-02", 2, 'LyThuyet'),
-    (40, "Thứ 3", 2, "2025-10-07", "2025-11-04", 18, 'ThucHanh'),
-    (41, "Thứ 3", 1, "2025-10-07", "2025-11-11", 4, 'LyThuyet'),
-    (41, "Thứ 3", 2, "2025-10-07", "2025-11-04", 21, 'ThucHanh'),
-    (42, "Thứ 7", 1, "2025-10-11", "2025-12-06", 3, 'LyThuyet'),
-    (42, "Thứ 7", 2, "2025-10-11", "2025-11-08", 13, 'ThucHanh');
+    
+    
+    (38, "Thứ 2", 1, "2025-10-06", "2025-12-22", 6, 'LyThuyet'),	/*65*/
+    (39, "Thứ 6", 1, "2025-10-10", "2025-12-26", 5, 'LyThuyet'),	/*66*/
+    (40, "Thứ 4", 1, "2025-10-08", "2025-12-03", 8, 'LyThuyet'),	/*67*/
+    (40, "Thứ 4", 2, "2025-10-08", "2025-11-05", 20, 'ThucHanh'),	/*68*/
+    (41, "Thứ 3", 1, "2025-10-07", "2025-12-02", 7, 'LyThuyet'),	/*69*/
+    (41, "Thứ 3", 2, "2025-10-07", "2025-11-04", 20, 'ThucHanh'),	/*70*/
+    (42, "Thứ 6", 1, "2025-10-10", "2025-11-14", 2, 'LyThuyet'),	/*71*/
+    (42, "Thứ 6", 2, "2025-10-10", "2025-11-07", 14, 'ThucHanh'),	/*72*/
+    (43, "Thứ 7", 1, "2025-10-11", "2025-11-15", 10, 'LyThuyet'),	/*73*/
+    (43, "Thứ 7", 2, "2025-10-11", "2025-11-08", 17, 'ThucHanh'),	/*74*/
+    (44, "Thứ 3", 1, "2025-10-07", "2025-12-23", 6, 'LyThuyet'),	/*75*/
+    (45, "Thứ 5", 1, "2025-10-09", "2025-12-04", 8, 'LyThuyet'),	/*76*/
+    (45, "Thứ 5", 2, "2025-10-09", "2025-11-06", 20, 'ThucHanh'),	/*77*/
+    
+    -- 2025
+    (46, "Thứ 2", 1, "2025-10-06", "2025-11-10", 9, 'LyThuyet'),
+    (46, "Thứ 2", 2, "2025-10-06", "2025-11-03", 19, 'ThucHanh'),
+    (47, "Thứ 4", 1, "2025-10-08", "2025-12-03", 1, 'LyThuyet'),
+    (47, "Thứ 4", 2, "2025-10-08", "2025-11-05", 18, 'ThucHanh'),
+    (48, "Thứ 5", 1, "2025-10-09", "2025-11-13", 3, 'LyThuyet'),
+    (48, "Thứ 5", 2, "2025-10-09", "2025-11-06", 16, 'ThucHanh'),
+    (49, "Thứ 3", 1, "2025-10-07", "2025-12-02", 2, 'LyThuyet'),
+    (49, "Thứ 3", 2, "2025-10-07", "2025-11-04", 18, 'ThucHanh'),
+    (50, "Thứ 3", 1, "2025-10-07", "2025-11-11", 4, 'LyThuyet'),
+    (50, "Thứ 3", 2, "2025-10-07", "2025-11-04", 21, 'ThucHanh'),
+    (51, "Thứ 7", 1, "2025-10-11", "2025-12-06", 3, 'LyThuyet'),
+    (51, "Thứ 7", 2, "2025-10-11", "2025-11-08", 13, 'ThucHanh');
     
 -- Thêm đăng ký 
 INSERT INTO dang_ky(sinh_vien_id, buoi_hoc_id, hoc_ky_id, trang_thai)
@@ -1013,7 +1071,16 @@ VALUES
     (22, 28, 9, "HOAN_THANH"),
     (22, 29, 9, "HOAN_THANH"),
     (22, 30, 9, "HOAN_THANH"),
-    (22, 31, 10, "DANG_KY");
+    (22, 38, 10, "DANG_KY"),
+    
+    -- Trần Quốc Phong
+	(23, 31, 7, "HOAN_THANH"),
+    (23, 32, 7, "HOAN_THANH"),
+    (23, 33, 8, "HOAN_THANH"),
+    (23, 34, 8, "HOAN_THANH"), 
+    (23, 35, 9, "HOAN_THANH"),
+    (23, 36, 9, "HOAN_THANH"),
+    (23, 37, 9, "HOAN_THANH");
     
     
 -- Thêm thời khóa biểu
@@ -1155,7 +1222,22 @@ VALUES
     (22, 49, 9),
     (22, 50, 9),
     (22, 51, 9),
-    (22, 52, 10);
+    (22, 65, 10),
+    
+    -- Trần Quốc Phong
+    (23, 52, 7),
+    (23, 53, 7),
+    (23, 54, 7),
+    (23, 55, 7),
+    (23, 56, 8),
+    (23, 57, 8),
+    (23, 58, 8),
+    (23, 59, 9),
+    (23, 60, 9),
+    (23, 61, 9),
+    (23, 62, 9),
+    (23, 63, 9),
+    (23, 64, 9);
     
 INSERT INTO hoc_phi(sinh_vien_id, hoc_ky_id, tong_tien, trang_thai)
 VALUES
@@ -1196,7 +1278,12 @@ VALUES
     (22,7,4900000,'DA_THANH_TOAN'),
     (22,8,4900000,'DA_THANH_TOAN'),
     (22,9,7700000,'DA_THANH_TOAN'),
-    (22,10,2800000,'CHUA_THANH_TOAN');
+    (22,10,2800000,'CHUA_THANH_TOAN'),
+    
+    -- Trần Quốc Phong
+    (23,7,4900000,'DA_THANH_TOAN'),
+    (23,8,4900000,'DA_THANH_TOAN'),
+    (23,9,7700000,'DA_THANH_TOAN');
     
 INSERT INTO chi_tiet_hoc_phi(hoc_phi_id, mon_hoc_id, chi_phi)
 VALUES
@@ -1281,5 +1368,14 @@ VALUES
     (30,10,2800000),
     (30,22,2100000),
     (30,23,2800000),
-    (31,8,2800000);
+    (31,8,2800000),
+    
+    -- Trần Quốc Phong
+	(32,1,2100000),
+    (32,2,2800000),
+    (33,3,2100000),
+    (33,4,2800000),
+    (34,10,2800000),
+    (34,22,2100000),
+    (34,23,2800000);
     

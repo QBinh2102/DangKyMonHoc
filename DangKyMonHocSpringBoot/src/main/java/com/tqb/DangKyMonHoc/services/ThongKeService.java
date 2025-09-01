@@ -5,6 +5,8 @@
 package com.tqb.DangKyMonHoc.services;
 
 import com.tqb.DangKyMonHoc.dto.ThongKeDTO;
+import com.tqb.DangKyMonHoc.dto.ThongKeTheoLopDTO;
+import java.util.List;
 
 /**
  *
@@ -12,4 +14,5 @@ import com.tqb.DangKyMonHoc.dto.ThongKeDTO;
  */
 public interface ThongKeService {
     ThongKeDTO thongKe(int hocKyId, int khoaId, int monHocId);
+    List<ThongKeTheoLopDTO> thongKeTheoLop(int hocKyId, int monHocId);
 }

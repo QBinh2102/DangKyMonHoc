@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 import cookie from "react-cookies";
 
 const menuItems = [
@@ -21,6 +22,13 @@ const menuItems = [
 
 export default function AdminLayout({ children }) {
     const router = useRouter();
+
+    useEffect(() => {
+        const token = cookie.load("token");
+        if (!token) {
+            router.replace("/dangnhap");
+        }
+    }, [router]);
 
     const dangXuat = () => {
         cookie.remove('token');

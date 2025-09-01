@@ -5,8 +5,10 @@
 package com.tqb.DangKyMonHoc.services.impl;
 
 import com.tqb.DangKyMonHoc.dto.ThongKeDTO;
+import com.tqb.DangKyMonHoc.dto.ThongKeTheoLopDTO;
 import com.tqb.DangKyMonHoc.repositories.DangKyRepository;
 import com.tqb.DangKyMonHoc.services.ThongKeService;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +25,11 @@ public class ThongKeServiceImpl implements ThongKeService{
     @Override
     public ThongKeDTO thongKe(int hocKyId, int khoaId, int monHocId) {
         return this.dangKyRepo.thongKe(hocKyId, khoaId, monHocId);
+    }
+
+    @Override
+    public List<ThongKeTheoLopDTO> thongKeTheoLop(int hocKyId, int monHocId) {
+        return this.dangKyRepo.thongKeTheoLop(hocKyId, monHocId);
     }
     
 }

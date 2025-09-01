@@ -60,7 +60,7 @@ public class ApiHocPhiController {
         return new ResponseEntity<>(this.hocPhiService.findHocPhi(params), HttpStatus.OK);
     }
     
-    @GetMapping("/secure/admin/hocphi/{hocPhiId}")
+    @GetMapping("/secure/hocphi/{hocPhiId}")
     public ResponseEntity<HocPhi> getHocPhiById(@PathVariable(value = "hocPhiId") int id) {
         HocPhi existing = this.hocPhiService.findById(id);
         if (existing == null) {
@@ -76,7 +76,7 @@ public class ApiHocPhiController {
         return new ResponseEntity<>(hocPhiPage, HttpStatus.OK);
     }
     
-    @PutMapping("/secure/admin/hocphi/{hocPhiId}")
+    @PutMapping("/secure/hocphi/{hocPhiId}")
     public ResponseEntity<HocPhi> update(@PathVariable(value = "hocPhiId") int id, @RequestBody HocPhi hocPhi) {
         HocPhi existing = this.hocPhiService.findById(id);
         if (existing == null) {

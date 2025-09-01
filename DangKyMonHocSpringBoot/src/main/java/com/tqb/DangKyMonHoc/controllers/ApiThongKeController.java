@@ -5,7 +5,9 @@
 package com.tqb.DangKyMonHoc.controllers;
 
 import com.tqb.DangKyMonHoc.dto.ThongKeDTO;
+import com.tqb.DangKyMonHoc.dto.ThongKeTheoLopDTO;
 import com.tqb.DangKyMonHoc.services.ThongKeService;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,6 +34,14 @@ public class ApiThongKeController {
             @RequestParam int monHocId
     ) {
         return this.thongKeService.thongKe(hocKyId, khoaId, monHocId);
+    }
+    
+    @GetMapping("/secure/admin/thongketheolop")
+    public List<ThongKeTheoLopDTO> thongKeTheoLop(
+            @RequestParam int hocKyId,
+            @RequestParam int monHocId
+    ) {
+        return this.thongKeService.thongKeTheoLop(hocKyId, monHocId);
     }
     
 }

@@ -80,6 +80,7 @@ export const endpoints = {
     'suaHoacXoaQuyDinhId': (quyDinhId) => `/secure/admin/quydinh/${quyDinhId}`,
     // Thống kê
     'thongKe': '/secure/admin/thongke',
+    'thongKeTheoLop': '/secure/admin/thongketheolop',
     // Điểm
     'diemSinhVien': '/secure/me/diem',
     // Tổng kết
@@ -94,7 +95,7 @@ export const endpoints = {
     'xoaDangKy': (dangKyId) => `/secure/me/dangky/${dangKyId}`,
     // Học phí
     'hocPhiPage': '/secure/admin/hocphi-page',
-    'layHoacSuaHocPhiId': (hocPhiId) => `/secure/admin/hocphi/${hocPhiId}`,
+    'layHoacSuaHocPhiId': (hocPhiId) => `/secure/hocphi/${hocPhiId}`,
     'hocPhiMoiNhatBySinhVien': '/secure/admin/hocphi/latest',
     'hocPhiMoiNhat': '/secure/me/hocphi/latest',
     'hocPhiSinhVien': '/secure/me/hocphi',
