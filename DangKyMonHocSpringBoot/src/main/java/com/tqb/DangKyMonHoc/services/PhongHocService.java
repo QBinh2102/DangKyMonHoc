@@ -14,10 +14,13 @@ import org.springframework.data.domain.Page;
  * @author toquocbinh2102
  */
 public interface PhongHocService {
-    
-    PhongHoc findById (int id);
-    List<PhongHoc> findPhongHoc (Map<String, String> params);
-    Page<PhongHoc> findPhongHocPage(Map<String,String> params);
-    PhongHoc addOrUpdate (PhongHoc phongHoc);
-    
+
+    PhongHoc findById(int id);
+
+    List<PhongHoc> findPhongHoc(Map<String, String> params);
+
+    Page<PhongHoc> findPhongHocPage(Map<String, String> params);
+
+    PhongHoc addOrUpdate(PhongHoc phongHoc);
+
 }

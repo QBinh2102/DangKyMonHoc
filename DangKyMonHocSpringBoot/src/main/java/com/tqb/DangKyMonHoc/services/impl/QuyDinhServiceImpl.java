@@ -7,7 +7,6 @@ package com.tqb.DangKyMonHoc.services.impl;
 import com.tqb.DangKyMonHoc.pojo.QuyDinh;
 import com.tqb.DangKyMonHoc.repositories.QuyDinhRepository;
 import com.tqb.DangKyMonHoc.services.QuyDinhService;
-import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -35,10 +34,10 @@ public class QuyDinhServiceImpl implements QuyDinhService {
         String page = params.get("page");
         String quyDinh = params.get("quyDinh");
         boolean hasQuyDinh = quyDinh != null && !quyDinh.isEmpty();
-        
+
         int size = 10;
         Pageable pageable = PageRequest.of(Integer.parseInt(page), size);
-        
+
         if (hasQuyDinh) {
             return this.quyDinhRepo.findByTenContainingIgnoreCaseOrderByIdAsc(quyDinh, pageable);
         } else {

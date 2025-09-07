@@ -13,10 +13,13 @@ import java.util.Map;
  * @author toquocbinh2102
  */
 public interface DangKyService {
-    
+
     DangKy findById(int id);
-    List<DangKy> findDangKy(Map<String,String> params);
+
+    List<DangKy> findDangKy(Map<String, String> params);
+
     DangKy add(DangKy dangKy);
+
     DangKy delete(DangKy dangKy);
-    
+
 }

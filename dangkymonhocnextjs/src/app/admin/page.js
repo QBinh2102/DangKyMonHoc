@@ -186,7 +186,7 @@ const Admin = () => {
         const pageWidth = pdf.internal.pageSize.getWidth();
 
         // Tính kích thước ảnh cho vừa trang
-        const imgWidth = pageWidth - 20; // chừa lề
+        const imgWidth = pageWidth - 20;
         const imgHeight = (canvas.height * imgWidth) / canvas.width;
 
         pdf.addImage(imgData, 'PNG', 10, 10, imgWidth, imgHeight);
@@ -276,7 +276,7 @@ const Admin = () => {
             </div>
 
             {showThongKe &&
-                <button className="btn btn-primary mt-3" onClick={exportPDF}>
+                <button className="btn btn-primary mt-3 mb-3" onClick={exportPDF}>
                     Xuất PDF
                 </button>
             }

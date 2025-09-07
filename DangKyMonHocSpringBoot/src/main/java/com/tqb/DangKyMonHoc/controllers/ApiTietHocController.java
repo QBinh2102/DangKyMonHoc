@@ -30,49 +30,49 @@ public class ApiTietHocController {
 
     @Autowired
     private TietHocService tietHocService;
-    
+
     @GetMapping("/tiethoc/{tietHocId}")
-    public ResponseEntity<TietHoc> getTietHocById(@PathVariable(value = "tietHocId") int id){
+    public ResponseEntity<TietHoc> getTietHocById(@PathVariable(value = "tietHocId") int id) {
         TietHoc existing = this.tietHocService.findById(id);
-        if(existing==null){
+        if (existing == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }else{
+        } else {
             return new ResponseEntity<>(existing, HttpStatus.OK);
         }
     }
-    
+
     @GetMapping("/tiethoc")
-    public ResponseEntity<List<TietHoc>> getTietHoc(){
+    public ResponseEntity<List<TietHoc>> getTietHoc() {
         return new ResponseEntity<>(this.tietHocService.findTietHoc(), HttpStatus.OK);
     }
-    
+
     @PostMapping("/secure/admin/tiethoc")
-    public ResponseEntity<?> create(@RequestBody TietHoc tietHoc){
-        if(tietHoc.getId()!=null){
+    public ResponseEntity<?> create(@RequestBody TietHoc tietHoc) {
+        if (tietHoc.getId() != null) {
             return ResponseEntity
                     .status(HttpStatus.CONFLICT)
                     .body("ID phải để trống khi tạo mới.");
         }
-        
-        try{
+
+        try {
             TietHoc newTietHoc = this.tietHocService.addOrUpdate(tietHoc);
             return new ResponseEntity<>(newTietHoc, HttpStatus.CREATED);
-        }catch(Exception e){
+        } catch (Exception e) {
             return ResponseEntity
                     .status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("Lỗi khi tạo: " + e.getMessage());
         }
     }
-    
+
     @PutMapping("/secure/admin/tiethoc/{tietHocId}")
-    public ResponseEntity<TietHoc> update(@PathVariable(value="tietHocId") int id, @RequestBody TietHoc tietHoc){
+    public ResponseEntity<TietHoc> update(@PathVariable(value = "tietHocId") int id, @RequestBody TietHoc tietHoc) {
         TietHoc existing = this.tietHocService.findById(id);
-        if(existing==null){
+        if (existing == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }else{
+        } else {
             tietHoc.setId(id);
             return new ResponseEntity<>(this.tietHocService.addOrUpdate(tietHoc), HttpStatus.OK);
         }
     }
-    
+
 }

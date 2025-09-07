@@ -16,16 +16,21 @@ import org.springframework.data.repository.query.Param;
  * @author toquocbinh2102
  */
 public interface NganhMonHocRepository extends JpaRepository<NganhMonHoc, NganhMonHocPK> {
-    
+
     List<NganhMonHoc> findById_NganhId(int nganhId);
+
     List<NganhMonHoc> findById_MonHocId(int monHocId);
+
     List<NganhMonHoc> findById_NganhIdAndId_MonHocId(int nganhId, int monHocId);
+
     List<NganhMonHoc> findAllByOrderById_NganhIdAscId_MonHocIdAsc();
+
+    //Danh sách môn học theo ngành và trước kỳ của môn học
     @Query("""
-        SELECT n
-        FROM NganhMonHoc n
-        WHERE n.nganh.id = :nganhId AND n.ky < :ky
-    """)
+            SELECT n
+            FROM NganhMonHoc n
+            WHERE n.nganh.id = :nganhId AND n.ky < :ky
+           """)
     List<NganhMonHoc> findById_NganhIdAndKy(@Param("nganhId") int nganhId, @Param("ky") int ky);
-    
+
 }

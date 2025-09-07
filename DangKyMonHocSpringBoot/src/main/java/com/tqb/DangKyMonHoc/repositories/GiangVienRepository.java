@@ -14,12 +14,16 @@ import org.springframework.data.jpa.repository.JpaRepository;
  *
  * @author toquocbinh2102
  */
-public interface GiangVienRepository extends JpaRepository<GiangVien, Integer>{
-    
+public interface GiangVienRepository extends JpaRepository<GiangVien, Integer> {
+
     GiangVien findById(int id);
+
     List<GiangVien> findAllByOrderByIdAsc();
+
     List<GiangVien> findByKhoaId_IdOrderByIdAsc(int khoaId);
+
     Page<GiangVien> findByNguoiDung_HoTenContainingIgnoreCaseOrderByIdAsc(String hoTen, Pageable pageable);
+
     Page<GiangVien> findAllByOrderByIdAsc(Pageable pageable);
-    
+
 }

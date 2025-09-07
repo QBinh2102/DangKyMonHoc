@@ -17,8 +17,8 @@ import org.springframework.stereotype.Service;
  * @author toquocbinh2102
  */
 @Service
-public class ThongKeServiceImpl implements ThongKeService{
-    
+public class ThongKeServiceImpl implements ThongKeService {
+
     @Autowired
     private DangKyRepository dangKyRepo;
 
@@ -31,5 +31,5 @@ public class ThongKeServiceImpl implements ThongKeService{
     public List<ThongKeTheoLopDTO> thongKeTheoLop(int hocKyId, int monHocId) {
         return this.dangKyRepo.thongKeTheoLop(hocKyId, monHocId);
     }
-    
+
 }

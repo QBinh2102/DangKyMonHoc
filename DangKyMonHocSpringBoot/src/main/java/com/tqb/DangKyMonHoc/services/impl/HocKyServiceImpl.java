@@ -39,9 +39,9 @@ public class HocKyServiceImpl implements HocKyService {
     public HocKy findTopByOrderByIdDesc() {
         return this.hocKyRepo.findTopByOrderByIdDesc();
     }
-    
+
     @Override
-    public Page<HocKy> findHocKyPage(Map<String,String> params) {
+    public Page<HocKy> findHocKyPage(Map<String, String> params) {
         String page = params.get("page");
         int size = 10;
         Pageable pageable = PageRequest.of(Integer.parseInt(page), size);

@@ -14,11 +14,15 @@ import org.springframework.data.domain.Page;
  * @author toquocbinh2102
  */
 public interface SinhVienService {
-    
+
     SinhVien findById(int id);
+
     SinhVien findByEmail(String email);
-    List<SinhVien> findSinhVien(Map<String,String> params);
-    Page<SinhVien> findSinhVienPage(Map<String,String> params);
+
+    List<SinhVien> findSinhVien(Map<String, String> params);
+
+    Page<SinhVien> findSinhVienPage(Map<String, String> params);
+
     SinhVien addOrUpdate(SinhVien sinhVien);
-    
+
 }

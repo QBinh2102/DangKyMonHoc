@@ -14,14 +14,20 @@ import org.springframework.data.jpa.repository.JpaRepository;
  *
  * @author toquocbinh2102
  */
-public interface NganhRepository extends JpaRepository<Nganh, Integer>{
-    
+public interface NganhRepository extends JpaRepository<Nganh, Integer> {
+
     Nganh findById(int id);
+
     List<Nganh> findAllByOrderByIdAsc();
+
     List<Nganh> findByKhoaId_IdOrderByIdAsc(int khoaId);
+
     Page<Nganh> findByTenNganhContainingIgnoreCaseOrderByIdAsc(String tenKhoa, Pageable pageable);
+
     Page<Nganh> findByKhoaId_IdOrderByIdAsc(int khoaId, Pageable pageable);
+
     Page<Nganh> findByTenNganhContainingIgnoreCaseAndKhoaId_IdOrderByIdAsc(String tenNganh, int khoaId, Pageable pageable);
+
     Page<Nganh> findAllByOrderByIdAsc(Pageable pageable);
-    
+
 }

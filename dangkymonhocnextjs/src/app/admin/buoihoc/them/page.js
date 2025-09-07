@@ -142,7 +142,7 @@ const ThemBuoiHoc = () => {
             }
 
             setLoai(loaiTmp);
-            setNewBuoiHoc(prev => ({ ...prev, loai: loaiTmp })); // dùng prev để không mất dữ liệu cũ
+            setNewBuoiHoc(prev => ({ ...prev, loai: loaiTmp }));
             await loadPhongHoc(loaiTmp);
 
         } catch (ex) {

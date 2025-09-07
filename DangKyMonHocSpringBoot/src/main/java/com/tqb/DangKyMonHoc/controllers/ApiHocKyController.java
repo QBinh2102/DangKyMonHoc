@@ -45,7 +45,7 @@ public class ApiHocKyController {
     }
 
     @GetMapping("/secure/admin/hocky-page")
-    public ResponseEntity<Page<HocKy>> getHocKyPage(@RequestParam Map<String,String> params) {
+    public ResponseEntity<Page<HocKy>> getHocKyPage(@RequestParam Map<String, String> params) {
         Page<HocKy> hocKyPage = this.hocKyService.findHocKyPage(params);
         return new ResponseEntity<>(hocKyPage, HttpStatus.OK);
     }

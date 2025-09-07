@@ -59,7 +59,7 @@ public class LichHocServiceImpl implements LichHocService {
                     .orElseThrow(() -> new RuntimeException("BuoiHoc không tồn tại!"));
             MonHoc monHoc = buoiHoc.getMonHocId();
 
-            // Set ngày kết thúc
+            //Set ngày kết thúc
             int soBuoi = 0;
             Calendar cal = Calendar.getInstance();
             cal.setTime(ngayBatDau);
@@ -78,12 +78,13 @@ public class LichHocServiceImpl implements LichHocService {
             Date ngayKetThuc = cal.getTime();
             lichHoc.setNgayKetThuc(ngayKetThuc);
 
+            //Kiểm tra có trùng lịch học
             boolean isTrungLichHoc = this.lichHocRepo.existsLichHocTrung(lichHoc.getPhongHocId().getId(), lichHoc.getTietHocId().getGioBatDau(), ngayBatDau, ngayKetThuc);
             if (isTrungLichHoc) {
                 throw new IllegalArgumentException("Trùng lịch học: phòng và giờ này đã được sử dụng trong thời gian đó.");
             }
 
-            // Set thứ
+            //Set thứ
             Calendar calThu = Calendar.getInstance();
             calThu.setTime(ngayBatDau);
             int thu = calThu.get(Calendar.DAY_OF_WEEK) - 1;

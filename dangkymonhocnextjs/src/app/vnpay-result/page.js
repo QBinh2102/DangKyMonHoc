@@ -1,11 +1,13 @@
 'use client'
 
-import { useContext, useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState, Suspense } from "react";
 import { authApis, endpoints } from "@/configs/Apis";
 import { useRouter, useSearchParams } from "next/navigation";
 import { MyUserContext } from "@/configs/Contexts";
 
-function VNPayResult() {
+export const dynamic = "force-dynamic";
+
+const VNPayResultContent = () => {
     const user = useContext(MyUserContext);
     const searchParams = useSearchParams();
     const [status, setStatus] = useState("loading");
@@ -13,19 +15,23 @@ function VNPayResult() {
     const [transactionId, setTransactionId] = useState("");
     const [id, setId] = useState("");
     const router = useRouter();
-
-
     const hasHandledRef = useRef(false);
 
     useEffect(() => {
         if (hasHandledRef.current) return;
-
         hasHandledRef.current = true;
 
         const responseCode = searchParams.get("vnp_ResponseCode");
         const txnId = searchParams.get("vnp_TransactionNo");
-        const hocPhiId = searchParams.get("vnp_OrderInfo").replace("HOC_PHI", "");
+        const orderInfo = searchParams.get("vnp_OrderInfo");
 
+        if (!orderInfo) {
+            setStatus("fail");
+            setMessage("❌ Không tìm thấy thông tin giao dịch.");
+            return;
+        }
+
+        const hocPhiId = orderInfo.replace("HOC_PHI", "");
         setId(hocPhiId);
         setTransactionId(txnId);
 
@@ -56,9 +62,9 @@ function VNPayResult() {
     }, [searchParams]);
 
     const chuyenTrang = () => {
-        if (user.vaiTro === "ROLE_ADMIN"){
+        if (user?.vaiTro === "ROLE_ADMIN") {
             router.push(`/admin/hocphi/${id}`);
-        }else{
+        } else {
             router.push(`/sinhvien/hocphi`);
         }
     };
@@ -83,6 +89,17 @@ function VNPayResult() {
         </div>
     );
 }
+
+const VNPayResult = () => {
+    return (
+        <Suspense fallback={<p>Đang tải dữ liệu giao dịch...</p>}>
+            <VNPayResultContent />
+        </Suspense>
+    );
+};
+
+export default VNPayResult;
+
 
 function getVNPayErrorMessage(code) {
     const messages = {
@@ -117,5 +134,3 @@ const styles = {
         textDecoration: "none",
     },
 };
-
-export default VNPayResult;

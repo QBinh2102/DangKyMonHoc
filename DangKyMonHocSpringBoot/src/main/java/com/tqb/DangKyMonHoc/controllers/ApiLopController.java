@@ -48,7 +48,7 @@ public class ApiLopController {
     public ResponseEntity<List<Lop>> getLop(@RequestParam Map<String, String> params) {
         return new ResponseEntity<>(this.lopService.findLop(params), HttpStatus.OK);
     }
-    
+
     @GetMapping("/lop-page")
     public ResponseEntity<Page<Lop>> getLopPage(@RequestParam Map<String, String> params) {
         Page<Lop> lopPage = this.lopService.findLopPage(params);
@@ -56,7 +56,7 @@ public class ApiLopController {
     }
 
     @PostMapping("/secure/admin/lop")
-    public ResponseEntity<?> create(@RequestBody Lop lop){
+    public ResponseEntity<?> create(@RequestBody Lop lop) {
         if (lop.getId() != null) {
             return ResponseEntity
                     .status(HttpStatus.CONFLICT)
@@ -72,16 +72,16 @@ public class ApiLopController {
                     .body("Lỗi khi tạo: " + e.getMessage());
         }
     }
-    
+
     @PutMapping("/secure/admin/lop/{lopId}")
-    public ResponseEntity<Lop> update(@RequestBody Lop lop, @PathVariable(value = "lopId") int id){
+    public ResponseEntity<Lop> update(@RequestBody Lop lop, @PathVariable(value = "lopId") int id) {
         Lop existing = this.lopService.findById(id);
-        if(existing==null){
+        if (existing == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }else{
+        } else {
             lop.setId(id);
             return new ResponseEntity<>(this.lopService.addOrUpdate(lop), HttpStatus.OK);
         }
     }
-    
+
 }

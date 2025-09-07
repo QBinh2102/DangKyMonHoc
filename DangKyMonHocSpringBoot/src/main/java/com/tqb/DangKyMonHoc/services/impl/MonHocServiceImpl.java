@@ -59,7 +59,7 @@ public class MonHocServiceImpl implements MonHocService {
 
         int size = 10;
         Pageable pageable = PageRequest.of(Integer.parseInt(page), size);
-        
+
         if (hasTenMon && hasKhoaId) {
             return this.monHocRepo.findByTenMonContainingIgnoreCaseAndKhoaId_IdOrderByIdAsc(tenMon, Integer.parseInt(khoaId), pageable);
         } else if (hasTenMon) {

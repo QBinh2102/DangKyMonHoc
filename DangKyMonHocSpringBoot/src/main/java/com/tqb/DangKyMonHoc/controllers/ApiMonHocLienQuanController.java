@@ -49,7 +49,7 @@ public class ApiMonHocLienQuanController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Lỗi server: " + e.getMessage());
         }
     }
-    
+
     @DeleteMapping("/secure/admin/monhoclienquan")
     public ResponseEntity<?> delete(@RequestBody MonHocLienQuanPK id) {
         boolean deleted = monHocLienQuanService.delete(id);

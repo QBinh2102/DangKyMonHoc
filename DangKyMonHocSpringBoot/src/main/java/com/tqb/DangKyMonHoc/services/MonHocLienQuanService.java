@@ -14,9 +14,11 @@ import java.util.Map;
  * @author toquocbinh2102
  */
 public interface MonHocLienQuanService {
-    
-    List<MonHocLienQuan> findMonHocLienQuan(Map<String,String> params);
+
+    List<MonHocLienQuan> findMonHocLienQuan(Map<String, String> params);
+
     MonHocLienQuan add(MonHocLienQuan monHocLienQuan);
+
     boolean delete(MonHocLienQuanPK id);
-    
+
 }

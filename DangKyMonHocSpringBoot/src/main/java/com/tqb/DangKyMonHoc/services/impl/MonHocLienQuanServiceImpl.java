@@ -47,7 +47,7 @@ public class MonHocLienQuanServiceImpl implements MonHocLienQuanService {
         }
         return monHocLienQuanRepo.save(monHocLienQuan);
     }
-    
+
     @Override
     public boolean delete(MonHocLienQuanPK id) {
         if (!monHocLienQuanRepo.existsById(id)) {

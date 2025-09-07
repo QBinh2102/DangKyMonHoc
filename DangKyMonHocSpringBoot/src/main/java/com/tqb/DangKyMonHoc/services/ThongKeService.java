@@ -13,6 +13,8 @@ import java.util.List;
  * @author toquocbinh2102
  */
 public interface ThongKeService {
+
     ThongKeDTO thongKe(int hocKyId, int khoaId, int monHocId);
+
     List<ThongKeTheoLopDTO> thongKeTheoLop(int hocKyId, int monHocId);
 }

@@ -16,8 +16,8 @@ import org.springframework.stereotype.Service;
  * @author toquocbinh2102
  */
 @Service
-public class TietHocServiceImpl implements TietHocService{
-    
+public class TietHocServiceImpl implements TietHocService {
+
     @Autowired
     private TietHocRepository tietHocRepo;
 
@@ -35,5 +35,5 @@ public class TietHocServiceImpl implements TietHocService{
     public TietHoc addOrUpdate(TietHoc tietHoc) {
         return this.tietHocRepo.save(tietHoc);
     }
-    
+
 }

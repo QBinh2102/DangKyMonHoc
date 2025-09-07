@@ -14,10 +14,13 @@ import org.springframework.data.domain.Page;
  * @author toquocbinh2102
  */
 public interface KhoaService {
-    
+
     Khoa findById(int id);
-    List<Khoa> findKhoa(Map<String,String> params);
-    Page<Khoa> findKhoaPage(Map<String,String> params);
+
+    List<Khoa> findKhoa(Map<String, String> params);
+
+    Page<Khoa> findKhoaPage(Map<String, String> params);
+
     Khoa addOrUpdate(Khoa khoa);
-    
+
 }

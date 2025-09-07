@@ -13,11 +13,14 @@ import org.springframework.data.jpa.repository.JpaRepository;
  *
  * @author toquocbinh2102
  */
-public interface QuyDinhRepository extends JpaRepository<QuyDinh, Integer>{
-    
+public interface QuyDinhRepository extends JpaRepository<QuyDinh, Integer> {
+
     QuyDinh findById(int id);
+
     Page<QuyDinh> findAllByOrderByIdAsc(Pageable pageable);
+
     Page<QuyDinh> findByTenContainingIgnoreCaseOrderByIdAsc(String quyDinh, Pageable pageable);
-    QuyDinh findByTen (String ten);
-    
+
+    QuyDinh findByTen(String ten);
+
 }

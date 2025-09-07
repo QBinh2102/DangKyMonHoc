@@ -13,6 +13,7 @@ import javax.crypto.spec.SecretKeySpec;
  * @author toquocbinh2102
  */
 public class HMACUtil {
+
     public static String hmacSHA512(String key, String data) {
         try {
             Mac hmac512 = Mac.getInstance("HmacSHA512");

@@ -9,6 +9,7 @@ package com.tqb.DangKyMonHoc.dto;
  * @author toquocbinh2102
  */
 public class TongKetHocKyDTO {
+
     private int sinhVienId;
     private String ky;
     private String namHoc;
@@ -125,5 +126,4 @@ public class TongKetHocKyDTO {
         this.tinChiTichLuy = tinChiTichLuy;
     }
 
-    
 }

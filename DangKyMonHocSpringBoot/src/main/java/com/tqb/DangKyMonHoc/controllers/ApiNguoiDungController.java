@@ -28,18 +28,18 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api")
 @CrossOrigin
 public class ApiNguoiDungController {
-    
+
     @Autowired
     private NguoiDungService nguoiDungService;
-    
+
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody Map<String,String> loginInfo){
+    public ResponseEntity<?> login(@RequestBody Map<String, String> loginInfo) {
         String email = loginInfo.get("email");
         String matKhau = loginInfo.get("matKhau");
-        
+
         NguoiDung existing = this.nguoiDungService.login(email, matKhau);
-        
-        if (existing!=null) {
+
+        if (existing != null) {
             try {
                 String token = JwtUtils.generateToken(existing.getEmail(), existing.getVaiTro());
                 return ResponseEntity.ok().body(Collections.singletonMap("token", token));
@@ -48,15 +48,15 @@ public class ApiNguoiDungController {
             }
         }
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Sai thông tin đăng nhập");
-        
+
     }
-    
+
     @RequestMapping("/secure/profile")
     @ResponseBody
     public ResponseEntity<NguoiDung> getProfile(Principal principal) {
         return new ResponseEntity<>(this.nguoiDungService.findByEmail(principal.getName()), HttpStatus.OK);
     }
-    
+
     @PostMapping("/secure/profile/changepassword")
     public ResponseEntity<?> changePassword(Principal principal, @RequestBody Map<String, String> payload) {
         String email = principal.getName();
@@ -75,5 +75,5 @@ public class ApiNguoiDungController {
         }
         return ResponseEntity.ok("Đổi mật khẩu thành công");
     }
-    
+
 }

@@ -67,7 +67,7 @@ public class HocPhiServiceImpl implements HocPhiService {
         String trangThai = params.get("trangThai");
         boolean hasHoTenSV = hoTenSV != null && !hoTenSV.isEmpty();
         boolean hasTrangThai = trangThai != null && !trangThai.isEmpty();
-        
+
         int size = 10;
         Pageable pageable = PageRequest.of(Integer.parseInt(page), size);
 

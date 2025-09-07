@@ -16,19 +16,24 @@ import org.springframework.data.repository.query.Param;
  *
  * @author toquocbinh2102
  */
-public interface HocKyRepository extends JpaRepository<HocKy, Integer>{
-    
+public interface HocKyRepository extends JpaRepository<HocKy, Integer> {
+
     HocKy findById(int id);
+
     HocKy findTopByOrderByIdDesc();
+
     List<HocKy> findAllByOrderByIdDesc();
+
     Page<HocKy> findAllByOrderByIdDesc(Pageable pageable);
+
+    //Lấy danh sách học kỳ sinh viên đã học
     @Query("""
-           SELECT DISTINCT hk
-           FROM DangKy dk
-           JOIN dk.hocKyId hk
-           WHERE dk.sinhVienId.id = :sinhVienId
-           ORDER BY hk.namHoc, hk.ky
+            SELECT DISTINCT hk
+            FROM DangKy dk
+            JOIN dk.hocKyId hk
+            WHERE dk.sinhVienId.id = :sinhVienId
+            ORDER BY hk.namHoc, hk.ky
            """)
     List<HocKy> findHocKyBySinhVienId(@Param("sinhVienId") int sinhVienId);
-    
+
 }

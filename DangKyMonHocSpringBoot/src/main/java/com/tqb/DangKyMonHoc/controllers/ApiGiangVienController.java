@@ -45,10 +45,10 @@ public class ApiGiangVienController {
     }
 
     @GetMapping("/secure/admin/giangvien")
-    public ResponseEntity<List<GiangVien>> getGiangVien(@RequestParam Map<String,String> params) {
+    public ResponseEntity<List<GiangVien>> getGiangVien(@RequestParam Map<String, String> params) {
         return new ResponseEntity<>(this.giangVienService.findGiangVien(params), HttpStatus.OK);
     }
-    
+
     @GetMapping("/secure/admin/giangvien-page")
     public ResponseEntity<Page<GiangVien>> getGiangVienPage(@RequestParam Map<String, String> params) {
         Page<GiangVien> giangVienPage = this.giangVienService.findGiangVienPage(params);

@@ -14,10 +14,13 @@ import org.springframework.data.domain.Page;
  * @author toquocbinh2102
  */
 public interface LopService {
-    
+
     Lop findById(int id);
-    List<Lop> findLop(Map<String,String> params);
-    Page<Lop> findLopPage(Map<String,String> params);
+
+    List<Lop> findLop(Map<String, String> params);
+
+    Page<Lop> findLopPage(Map<String, String> params);
+
     Lop addOrUpdate(Lop lop);
-    
+
 }

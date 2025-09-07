@@ -14,10 +14,13 @@ import org.springframework.data.domain.Page;
  * @author toquocbinh2102
  */
 public interface MonHocService {
-    
+
     MonHoc findById(int id);
-    List<MonHoc> findMonHoc(Map<String,String> params);
-    Page<MonHoc> findMonHocPage(Map<String,String> params);
+
+    List<MonHoc> findMonHoc(Map<String, String> params);
+
+    Page<MonHoc> findMonHocPage(Map<String, String> params);
+
     MonHoc addOrUpdate(MonHoc monHoc);
-    
+
 }

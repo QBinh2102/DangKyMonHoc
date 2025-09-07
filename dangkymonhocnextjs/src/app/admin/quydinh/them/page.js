@@ -70,7 +70,7 @@ const ThemQuyDinh = () => {
                         </div>
                     ))}
                     <div className="text-center">
-                        <button type="submit" className="text-center btn btn-primary" disabled={loading}>
+                        <button type="submit" className="text-center btn btn-primary mb-3" disabled={loading}>
                             {loading ?
                                 <>
                                     <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>

@@ -24,7 +24,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
  *
  * @author toquocbinh2102
  */
-public class JwtFilter implements Filter{
+public class JwtFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest sr, ServletResponse sr1, FilterChain fc) throws IOException, ServletException {
@@ -43,12 +43,12 @@ public class JwtFilter implements Filter{
                 String token = header.substring(7);
                 String email = JwtUtils.validateTokenAndGetEmail(token);
                 String vaiTro = JwtUtils.getRoleFromToken(token);
-                
+
                 if (email != null && vaiTro != null) {
                     httpRequest.setAttribute("email", email);
                     httpRequest.setAttribute("role", vaiTro);
                     Set<GrantedAuthority> authorities = new HashSet<>();
-                        authorities.add(new SimpleGrantedAuthority(vaiTro));
+                    authorities.add(new SimpleGrantedAuthority(vaiTro));
                     UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(email, null, authorities);
                     SecurityContextHolder.getContext().setAuthentication(authentication);
                     fc.doFilter(sr, sr1);
@@ -64,5 +64,5 @@ public class JwtFilter implements Filter{
 
         fc.doFilter(sr, sr1);
     }
-    
+
 }

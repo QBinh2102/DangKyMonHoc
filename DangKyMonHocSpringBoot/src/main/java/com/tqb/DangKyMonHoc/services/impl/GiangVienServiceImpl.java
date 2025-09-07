@@ -52,7 +52,7 @@ public class GiangVienServiceImpl implements GiangVienService {
     public List<GiangVien> findGiangVien(Map<String, String> params) {
         String khoaId = params.get("khoaId");
         boolean hasKhoaId = khoaId != null && !khoaId.isEmpty();
-        
+
         if (hasKhoaId) {
             return this.giangVienRepo.findByKhoaId_IdOrderByIdAsc(Integer.parseInt(khoaId));
         } else {
@@ -79,7 +79,7 @@ public class GiangVienServiceImpl implements GiangVienService {
                     giangVien.setNguoiDung(existing);
                 }
             } else {
-                if (nguoiDung.getAvatar()!= null && !nguoiDung.getAvatar().isEmpty()) {
+                if (nguoiDung.getAvatar() != null && !nguoiDung.getAvatar().isEmpty()) {
                     try {
                         String file = nguoiDung.getAvatar().split(",")[1]; // bỏ "data:image/png;base64,"
                         byte[] imageBytes = Base64.getDecoder().decode(file);
@@ -107,7 +107,7 @@ public class GiangVienServiceImpl implements GiangVienService {
 
         int size = 10;
         Pageable pageable = PageRequest.of(Integer.parseInt(page), size);
-        
+
         if (hasHoTen) {
             return this.giangVienRepo.findByNguoiDung_HoTenContainingIgnoreCaseOrderByIdAsc(hoTen, pageable);
         } else {

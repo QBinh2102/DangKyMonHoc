@@ -141,6 +141,7 @@ const DangKyMonHoc = () => {
         } catch (ex) {
             if (ex.response && ex.response.data) {
                 alert(ex.response.data);
+                loadBuoiHoc();
             } else {
                 console.error(ex);
                 alert("Có lỗi xảy ra, vui lòng thử lại.");
@@ -205,7 +206,7 @@ const DangKyMonHoc = () => {
 
                                 const monHoc = listMonHoc.find(mh => mh.tenMon === value);
                                 if (monHoc) {
-                                    setSelectedMonHoc(monHoc.id); 
+                                    setSelectedMonHoc(monHoc.id);
                                 } else {
                                     setSelectedMonHoc("");
                                 }
@@ -240,8 +241,8 @@ const DangKyMonHoc = () => {
                                 <td className="format-name">{bh.tenMon}</td>
                                 <td className="format-properties">{bh.soTinChi}</td>
                                 <td className="format-properties">{bh.lop}</td>
-                                <td className="format-properties">{bh.soLuong === 0 ? "" : bh.soLuong}</td>
-                                <td className="format-properties">{bh.conLai === 0 ? "" : bh.conLai}</td>
+                                <td className="format-properties">{bh.soLuong === 0 ? 0 : bh.soLuong}</td>
+                                <td className="format-properties">{bh.conLai === 0 ? 0 : bh.conLai}</td>
                                 <td>
                                     {bh.listLichHoc.map(lh => {
                                         const ngayBatDau = new Date(lh.ngayBatDau).toLocaleDateString("vi-VN");
@@ -273,6 +274,7 @@ const DangKyMonHoc = () => {
                                                 className="btn btn-success"
                                                 style={{ height: '40px', width: '60px' }}
                                                 onClick={() => addDangKy(bh.buoiHocId, bh.listLichHoc)}
+                                                disabled={bh.conLai === 0}
                                             >
                                                 Thêm
                                             </button>

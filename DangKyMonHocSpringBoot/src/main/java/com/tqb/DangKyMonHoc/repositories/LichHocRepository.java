@@ -24,18 +24,19 @@ public interface LichHocRepository extends JpaRepository<LichHoc, Integer> {
 
     List<LichHoc> findAllByOrderByIdAsc();
 
+    //Kiểm tra trùng lịch khi tạo
     @Query("""
-        SELECT COUNT(l) > 0
-        FROM LichHoc l
-        WHERE l.phongHocId.id = :phongId
-          AND l.tietHocId.gioBatDau = :gioBatDau
-          AND FUNCTION('dayofweek', l.ngayBatDau) = FUNCTION('dayofweek', :ngayBatDau)
-          AND (
-                (:ngayBatDau BETWEEN l.ngayBatDau AND l.ngayKetThuc)
-             OR (:ngayKetThuc BETWEEN l.ngayBatDau AND l.ngayKetThuc)
-             OR (l.ngayBatDau BETWEEN :ngayBatDau AND :ngayKetThuc)
-          )
-    """)
+            SELECT COUNT(l) > 0
+            FROM LichHoc l
+            WHERE l.phongHocId.id = :phongId
+                AND l.tietHocId.gioBatDau = :gioBatDau
+                AND FUNCTION('dayofweek', l.ngayBatDau) = FUNCTION('dayofweek', :ngayBatDau)
+                AND (
+                      (:ngayBatDau BETWEEN l.ngayBatDau AND l.ngayKetThuc)
+                   OR (:ngayKetThuc BETWEEN l.ngayBatDau AND l.ngayKetThuc)
+                   OR (l.ngayBatDau BETWEEN :ngayBatDau AND :ngayKetThuc)
+                )
+           """)
     boolean existsLichHocTrung(
             @Param("phongId") int phongId,
             @Param("gioBatDau") LocalTime gioBatDau,

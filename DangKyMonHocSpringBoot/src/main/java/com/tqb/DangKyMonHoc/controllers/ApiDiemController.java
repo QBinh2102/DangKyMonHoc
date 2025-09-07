@@ -40,7 +40,7 @@ public class ApiDiemController {
 
     @Autowired
     private NguoiDungService nguoiDungService;
-    
+
     @GetMapping("/diem/{diemId}")
     public ResponseEntity<Diem> getDiemById(@PathVariable(value = "diemId") int id) {
         return new ResponseEntity<>(this.diemService.findById(id), HttpStatus.OK);
@@ -50,15 +50,15 @@ public class ApiDiemController {
     public ResponseEntity<List<Diem>> getDiem(@RequestParam Map<String, String> params) {
         return new ResponseEntity<>(this.diemService.findDiem(params), HttpStatus.OK);
     }
-    
+
     @GetMapping("/secure/me/diem")
     @ResponseBody
     public ResponseEntity<List<DiemSinhVienDTO>> getDiemSinhVien(Principal principal) {
         String email = principal.getName();
         NguoiDung nd = this.nguoiDungService.findByEmail(email);
-        if(nd!=null){
+        if (nd != null) {
             return new ResponseEntity<>(this.diemService.findDiemBySinhVienId(nd.getId()), HttpStatus.OK);
-        }else{
+        } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
@@ -80,13 +80,13 @@ public class ApiDiemController {
                     .body("Lỗi khi tạo: " + e.getMessage());
         }
     }
-    
+
     @PutMapping("/diem/{diemId}")
-    public ResponseEntity<Diem> update(@PathVariable(value="diemId") int id, @RequestBody Diem diem){
+    public ResponseEntity<Diem> update(@PathVariable(value = "diemId") int id, @RequestBody Diem diem) {
         Diem existing = this.diemService.findById(id);
-        if(existing == null){
+        if (existing == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }else{
+        } else {
             diem.setId(id);
             return new ResponseEntity<>(this.diemService.addOrUpdate(diem), HttpStatus.OK);
         }

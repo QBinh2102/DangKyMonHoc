@@ -14,11 +14,14 @@ import org.springframework.data.jpa.repository.JpaRepository;
  *
  * @author toquocbinh2102
  */
-public interface KhoaRepository extends JpaRepository<Khoa, Integer>{
-    
+public interface KhoaRepository extends JpaRepository<Khoa, Integer> {
+
     List<Khoa> findAllByOrderByIdAsc();
+
     Khoa findById(int id);
+
     Page<Khoa> findByTenKhoaContainingIgnoreCaseOrderByIdAsc(String tenKhoa, Pageable pageable);
+
     Page<Khoa> findAllByOrderByIdAsc(Pageable pageable);
-    
+
 }

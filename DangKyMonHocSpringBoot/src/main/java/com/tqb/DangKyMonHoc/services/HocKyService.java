@@ -14,12 +14,17 @@ import org.springframework.data.domain.Page;
  * @author toquocbinh2102
  */
 public interface HocKyService {
-    
+
     HocKy findById(int id);
+
     HocKy findTopByOrderByIdDesc();
-    Page<HocKy> findHocKyPage(Map<String,String> params);
+
+    Page<HocKy> findHocKyPage(Map<String, String> params);
+
     List<HocKy> findAllByOrderByIdDesc();
+
     List<HocKy> findHocKyBySinhVienId(int sinhVienId);
+
     HocKy add(HocKy hocKy);
-    
+
 }

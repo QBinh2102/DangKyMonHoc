@@ -13,9 +13,11 @@ import java.util.Map;
  * @author toquocbinh2102
  */
 public interface LichHocService {
-    
+
     LichHoc findById(int id);
-    List<LichHoc> findLichHoc(Map<String,String> params);
+
+    List<LichHoc> findLichHoc(Map<String, String> params);
+
     LichHoc addOrUpdate(LichHoc lichHoc);
-    
+
 }

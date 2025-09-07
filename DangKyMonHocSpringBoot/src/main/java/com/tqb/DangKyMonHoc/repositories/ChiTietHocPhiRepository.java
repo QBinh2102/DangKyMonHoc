@@ -16,11 +16,11 @@ import org.springframework.transaction.annotation.Transactional;
  * @author toquocbinh2102
  */
 public interface ChiTietHocPhiRepository extends JpaRepository<ChiTietHocPhi, Integer> {
-    
+
     List<ChiTietHocPhi> findByHocPhiId_SinhVienId_IdAndHocPhiId_HocKyId_IdOrderByIdAsc(int sinhVienId, int hocKyId);
-    
+
     List<ChiTietHocPhi> findByHocPhiId_Id(int hocPhiId);
-    
+
     @Transactional
     void deleteByHocPhiId_IdAndMonHocId_Id(int hocPhiId, int monHocId);
 

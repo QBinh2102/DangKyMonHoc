@@ -11,10 +11,12 @@ import org.springframework.data.jpa.repository.JpaRepository;
  *
  * @author toquocbinh2102
  */
-public interface NguoiDungRepository extends JpaRepository<NguoiDung, Integer>{
-    
+public interface NguoiDungRepository extends JpaRepository<NguoiDung, Integer> {
+
     NguoiDung findById(int id);
+
     NguoiDung findByEmailAndMatKhau(String email, String matKhau);
+
     NguoiDung findByEmail(String email);
-    
+
 }

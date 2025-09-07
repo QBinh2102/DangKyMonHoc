@@ -61,7 +61,7 @@ public class LopServiceImpl implements LopService {
 
         int size = 10;
         Pageable pageable = PageRequest.of(Integer.parseInt(page), size);
-        
+
         if (hasMaLop) {
             return this.lopRepo.findByMaLopContainingIgnoreCaseOrderByIdAsc(maLop, pageable);
         } else {

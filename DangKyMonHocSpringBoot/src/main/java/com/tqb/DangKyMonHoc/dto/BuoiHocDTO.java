@@ -12,6 +12,7 @@ import java.util.List;
  * @author toquocbinh2102
  */
 public class BuoiHocDTO {
+
     private int buoiHocId;
     private String tenMon;
     private int soTinChi;
@@ -127,6 +128,4 @@ public class BuoiHocDTO {
         this.listLichHoc = listLichHoc;
     }
 
-    
-    
 }

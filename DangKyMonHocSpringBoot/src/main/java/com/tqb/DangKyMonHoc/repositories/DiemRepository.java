@@ -15,17 +15,23 @@ import org.springframework.data.repository.query.Param;
  *
  * @author toquocbinh2102
  */
-public interface DiemRepository extends JpaRepository<Diem, Integer>{
-    
+public interface DiemRepository extends JpaRepository<Diem, Integer> {
+
     Diem findById(int id);
+
     List<Diem> findBySinhVienId_IdOrderByIdAsc(int sinhVienId);
+
     List<Diem> findBySinhVienId_IdAndMonHocId_IdOrderByIdAsc(int sinhVienId, int monHocId);
+
     List<Diem> findBySinhVienId_IdAndHocKyId_IdOrderByIdAsc(int sinhVienId, int hocKyId);
+
     List<Diem> findByMonHocId_IdAndHocKyId_IdAndLoaiOrderByIdAsc(int monHocId, int hocKyId, String loai);
+
     List<Diem> findAllByOrderByIdAsc();
-    
+
+    //Danh sách điểm của sinh viên theo mỗi kỳ
     @Query("""
-           SELECT new com.tqb.DangKyMonHoc.dto.DiemSinhVienDTO(
+            SELECT new com.tqb.DangKyMonHoc.dto.DiemSinhVienDTO(
                 hk.ky,
                 hk.namHoc,
                 mh.tenMon,
@@ -36,33 +42,33 @@ public interface DiemRepository extends JpaRepository<Diem, Integer>{
                 diem_ck.diem,
                 diem_tk.diem,
                 dk.trangThai
-           )
-           FROM DangKy dk
-           JOIN dk.hocKyId hk
-           JOIN dk.buoiHocId bh
-           JOIN bh.monHocId mh
-           JOIN bh.lopId l
-           LEFT JOIN Diem diem_gk
+            )
+            FROM DangKy dk
+            JOIN dk.hocKyId hk
+            JOIN dk.buoiHocId bh
+            JOIN bh.monHocId mh
+            JOIN bh.lopId l
+            LEFT JOIN Diem diem_gk
                 ON diem_gk.sinhVienId.id = dk.sinhVienId.id
                 AND diem_gk.monHocId.id = mh.id
                 AND diem_gk.hocKyId.id = dk.hocKyId.id
                 AND diem_gk.loai = 'GIUA_KY'
-           LEFT JOIN Diem diem_ck
+            LEFT JOIN Diem diem_ck
                 ON diem_ck.sinhVienId.id = dk.sinhVienId.id
                 AND diem_ck.monHocId.id = mh.id
                 AND diem_ck.hocKyId.id = dk.hocKyId.id
                 AND diem_ck.loai = 'CUOI_KY'
-           LEFT JOIN Diem diem_tk
+            LEFT JOIN Diem diem_tk
                 ON diem_tk.sinhVienId.id = dk.sinhVienId.id
                 AND diem_tk.monHocId.id = mh.id
                 AND diem_tk.hocKyId.id = dk.hocKyId.id
                 ANd diem_tk.loai = 'TONG_KET'
-           WHERE dk.sinhVienId.id = :sinhVienId
-           ORDER BY hk.namHoc, hk.ky, mh.id
+            WHERE dk.sinhVienId.id = :sinhVienId
+            ORDER BY hk.namHoc, hk.ky, mh.id
            """)
     List<DiemSinhVienDTO> findDiemBySinhVienId(@Param("sinhVienId") int sinhVienId);
-    
+
     @Query(value = "CALL sp_tongket_hocky(:sinhVienId)", nativeQuery = true)
     List<Object[]> callTongKetHocKy(@Param("sinhVienId") int sinhVienId);
-    
+
 }

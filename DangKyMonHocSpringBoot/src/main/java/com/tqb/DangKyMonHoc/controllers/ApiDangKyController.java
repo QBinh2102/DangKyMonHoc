@@ -55,7 +55,7 @@ public class ApiDangKyController {
         params.put("sinhVienId", nd.getId().toString());
         return new ResponseEntity<>(this.dangKyService.findDangKy(params), HttpStatus.OK);
     }
-    
+
     @PostMapping("/secure/admin/dangky")
     public ResponseEntity<?> createForSinhVien(@RequestBody DangKy dangKy) {
         if (dangKy.getId() != null) {

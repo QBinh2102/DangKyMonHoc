@@ -9,6 +9,7 @@ package com.tqb.DangKyMonHoc.dto;
  * @author toquocbinh2102
  */
 public class ThongKeDTO {
+
     private Long hoanThanh;
     private Long truot;
 
@@ -17,20 +18,19 @@ public class ThongKeDTO {
         this.truot = truot;
     }
 
-    public Long getHoanThanh(){
+    public Long getHoanThanh() {
         return this.hoanThanh;
     }
-    
-    public void setHoanThanh(Long hoanThanh){
+
+    public void setHoanThanh(Long hoanThanh) {
         this.hoanThanh = hoanThanh;
     }
-    
-    public Long getTruot(){
+
+    public Long getTruot() {
         return this.truot;
     }
-    
-    public void setTruot(Long truot){
+
+    public void setTruot(Long truot) {
         this.truot = truot;
     }
 }
-

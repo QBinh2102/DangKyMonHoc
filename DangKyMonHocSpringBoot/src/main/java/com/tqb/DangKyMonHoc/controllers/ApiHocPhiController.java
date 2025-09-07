@@ -39,15 +39,15 @@ public class ApiHocPhiController {
 
     @Autowired
     private NguoiDungService nguoiDungService;
-    
+
     @GetMapping("/secure/me/hocphi/latest")
     public ResponseEntity<HocPhi> getHocPhiMoiNhat(Principal principal) {
         NguoiDung nd = this.nguoiDungService.findByEmail(principal.getName());
         return new ResponseEntity<>(this.hocPhiService.findHocPhiMoiNhatTheoSinhVien(nd.getId()), HttpStatus.OK);
     }
-    
+
     @GetMapping("/secure/admin/hocphi/latest")
-    public ResponseEntity<HocPhi> getHocPhiMoiNhatCuaSinhVien(@RequestParam(value="sinhVienId") int sinhVienId) {
+    public ResponseEntity<HocPhi> getHocPhiMoiNhatCuaSinhVien(@RequestParam(value = "sinhVienId") int sinhVienId) {
         NguoiDung nd = this.nguoiDungService.findById(sinhVienId);
         return new ResponseEntity<>(this.hocPhiService.findHocPhiMoiNhatTheoSinhVien(nd.getId()), HttpStatus.OK);
     }
@@ -59,7 +59,7 @@ public class ApiHocPhiController {
         params.put("sinhVienId", nd.getId().toString());
         return new ResponseEntity<>(this.hocPhiService.findHocPhi(params), HttpStatus.OK);
     }
-    
+
     @GetMapping("/secure/hocphi/{hocPhiId}")
     public ResponseEntity<HocPhi> getHocPhiById(@PathVariable(value = "hocPhiId") int id) {
         HocPhi existing = this.hocPhiService.findById(id);
@@ -69,13 +69,13 @@ public class ApiHocPhiController {
             return new ResponseEntity<>(existing, HttpStatus.OK);
         }
     }
-    
+
     @GetMapping("/secure/admin/hocphi-page")
     public ResponseEntity<Page<HocPhi>> getHocPhiPage(@RequestParam Map<String, String> params) {
         Page<HocPhi> hocPhiPage = this.hocPhiService.findHocPhiPage(params);
         return new ResponseEntity<>(hocPhiPage, HttpStatus.OK);
     }
-    
+
     @PutMapping("/secure/hocphi/{hocPhiId}")
     public ResponseEntity<HocPhi> update(@PathVariable(value = "hocPhiId") int id, @RequestBody HocPhi hocPhi) {
         HocPhi existing = this.hocPhiService.findById(id);
@@ -86,5 +86,5 @@ public class ApiHocPhiController {
             return new ResponseEntity<>(this.hocPhiService.addOrUpdate(hocPhi), HttpStatus.OK);
         }
     }
-    
+
 }

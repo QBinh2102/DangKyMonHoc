@@ -12,9 +12,11 @@ import java.util.List;
  * @author toquocbinh2102
  */
 public interface TietHocService {
-    
+
     TietHoc findById(int id);
+
     List<TietHoc> findTietHoc();
+
     TietHoc addOrUpdate(TietHoc tietHoc);
-    
+
 }

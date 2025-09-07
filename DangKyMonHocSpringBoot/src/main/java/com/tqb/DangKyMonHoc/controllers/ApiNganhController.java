@@ -30,21 +30,21 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api")
 @CrossOrigin
 public class ApiNganhController {
-    
+
     @Autowired
     private NganhService nganhService;
-    
+
     @GetMapping("/nganh")
     public ResponseEntity<List<Nganh>> getNganh(@RequestParam Map<String, String> params) {
         return new ResponseEntity<>(this.nganhService.findNganh(params), HttpStatus.OK);
     }
-    
+
     @GetMapping("/nganh-page")
     public ResponseEntity<Page<Nganh>> getNganhPage(@RequestParam Map<String, String> params) {
         Page<Nganh> nganhPage = this.nganhService.findNganhPage(params);
         return new ResponseEntity<>(nganhPage, HttpStatus.OK);
     }
-    
+
     @GetMapping("/nganh/{nganhId}")
     public ResponseEntity<Nganh> getNganhById(@PathVariable(value = "nganhId") int id) {
         Nganh existing = this.nganhService.findById(id);
@@ -54,7 +54,7 @@ public class ApiNganhController {
             return new ResponseEntity<>(existing, HttpStatus.OK);
         }
     }
-    
+
     @PostMapping("/secure/admin/nganh")
     public ResponseEntity<?> create(@RequestBody Nganh nganh) {
         if (nganh.getId() != null) {
@@ -62,7 +62,7 @@ public class ApiNganhController {
                     .status(HttpStatus.CONFLICT)
                     .body("ID phải để trống khi tạo mới.");
         }
-        
+
         try {
             Nganh newNganh = this.nganhService.addOrUpdate(nganh);
             return new ResponseEntity<>(newNganh, HttpStatus.CREATED);
@@ -72,7 +72,7 @@ public class ApiNganhController {
                     .body("Lỗi khi tạo: " + e.getMessage());
         }
     }
-    
+
     @PutMapping("/secure/admin/nganh/{nganhId}")
     public ResponseEntity<Nganh> update(@PathVariable(value = "nganhId") int id, @RequestBody Nganh nganh) {
         Nganh existing = this.nganhService.findById(id);
@@ -83,5 +83,5 @@ public class ApiNganhController {
             return new ResponseEntity<>(this.nganhService.addOrUpdate(nganh), HttpStatus.OK);
         }
     }
-    
+
 }

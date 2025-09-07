@@ -20,11 +20,11 @@ import org.springframework.stereotype.Service;
  * @author toquocbinh2102
  */
 @Service
-public class ThoiKhoaBieuServiceImpl implements ThoiKhoaBieuService{
-    
+public class ThoiKhoaBieuServiceImpl implements ThoiKhoaBieuService {
+
     @Autowired
     private ThoiKhoaBieuRepository thoiKhoaBieuRepo;
-    
+
     @Autowired
     private HocKyRepository hocKyRepo;
 
@@ -37,11 +37,11 @@ public class ThoiKhoaBieuServiceImpl implements ThoiKhoaBieuService{
     public List<ThoiKhoaBieu> findThoiKhoaBieu(Map<String, String> params) {
         String sinhVienId = params.get("sinhVienId");
         String hocKyId = params.get("hocKyId");
-        boolean hasSinhVienId = sinhVienId!=null&&!sinhVienId.isEmpty();
-        boolean hasHocKyId = hocKyId!=null&&!hocKyId.isEmpty();
-        if(hasSinhVienId&&hasHocKyId){
+        boolean hasSinhVienId = sinhVienId != null && !sinhVienId.isEmpty();
+        boolean hasHocKyId = hocKyId != null && !hocKyId.isEmpty();
+        if (hasSinhVienId && hasHocKyId) {
             return this.thoiKhoaBieuRepo.findBySinhVienId_IdAndHocKyId_IdOrderByIdAsc(Integer.parseInt(sinhVienId), Integer.parseInt(hocKyId));
-        }else{
+        } else {
             return this.thoiKhoaBieuRepo.findAllByOrderByIdAsc();
         }
     }
@@ -68,5 +68,5 @@ public class ThoiKhoaBieuServiceImpl implements ThoiKhoaBieuService{
     public void deleteByDangKyId(int dangKyId) {
         this.thoiKhoaBieuRepo.deleteByDangKyId(dangKyId);
     }
-    
+
 }

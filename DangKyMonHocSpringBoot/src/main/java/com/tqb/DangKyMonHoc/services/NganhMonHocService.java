@@ -13,8 +13,10 @@ import java.util.Map;
  * @author toquocbinh2102
  */
 public interface NganhMonHocService {
-    
-    List<NganhMonHoc> findNganhMonHoc(Map<String,String> params);
+
+    List<NganhMonHoc> findNganhMonHoc(Map<String, String> params);
+
     NganhMonHoc add(NganhMonHoc nganhMonHoc);
+
     void deleteByIdMonHocId(int monHocId);
 }

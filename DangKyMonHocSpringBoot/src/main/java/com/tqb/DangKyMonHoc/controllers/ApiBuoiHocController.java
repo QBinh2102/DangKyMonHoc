@@ -49,13 +49,13 @@ public class ApiBuoiHocController {
     public ResponseEntity<List<BuoiHoc>> getBuoiHoc(@RequestParam Map<String, String> params) {
         return new ResponseEntity<>(this.buoiHocService.findBuoiHoc(params), HttpStatus.OK);
     }
-    
+
     @GetMapping("/secure/admin/buoihoc-page")
     public ResponseEntity<Page<BuoiHoc>> getBuoiHocPage(@RequestParam Map<String, String> params) {
         Page<BuoiHoc> buoiHocPage = this.buoiHocService.findBuoiHocPage(params);
         return new ResponseEntity<>(buoiHocPage, HttpStatus.OK);
     }
-    
+
     @GetMapping("/secure/buoihoc")
     public ResponseEntity<List<BuoiHocDTO>> getBuoiHocDangKy(@RequestParam Map<String, String> params) {
         return new ResponseEntity<>(this.buoiHocService.findDanhSachBuoiHocDangKy(params), HttpStatus.OK);

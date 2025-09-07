@@ -38,7 +38,7 @@ public class ApiKhoaController {
     public ResponseEntity<List<Khoa>> getKhoa(@RequestParam Map<String, String> params) {
         return new ResponseEntity<>(this.khoaService.findKhoa(params), HttpStatus.OK);
     }
-    
+
     @GetMapping("/khoa-page")
     public ResponseEntity<Page<Khoa>> getKhoaPage(@RequestParam Map<String, String> params) {
         Page<Khoa> khoaPage = this.khoaService.findKhoaPage(params);

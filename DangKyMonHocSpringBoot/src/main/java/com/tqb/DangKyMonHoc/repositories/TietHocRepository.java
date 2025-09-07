@@ -12,9 +12,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
  *
  * @author toquocbinh2102
  */
-public interface TietHocRepository extends JpaRepository<TietHoc, Integer>{
-    
+public interface TietHocRepository extends JpaRepository<TietHoc, Integer> {
+
     TietHoc findById(int id);
+
     List<TietHoc> findAllByOrderByIdAsc();
-    
+
 }

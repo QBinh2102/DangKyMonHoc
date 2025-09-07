@@ -22,11 +22,11 @@ import org.springframework.stereotype.Service;
  * @author toquocbinh2102
  */
 @Service
-public class NguoiDungServiceImpl implements NguoiDungService{
-    
+public class NguoiDungServiceImpl implements NguoiDungService {
+
     @Autowired
     private NguoiDungRepository nguoiDungRepo;
-    
+
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
 
@@ -34,12 +34,13 @@ public class NguoiDungServiceImpl implements NguoiDungService{
     public NguoiDung findById(int id) {
         return this.nguoiDungRepo.findById(id);
     }
-    
+
     @Override
     public NguoiDung login(String email, String matKhau) {
         NguoiDung existing = this.nguoiDungRepo.findByEmail(email);
-        if(existing != null && passwordEncoder.matches(matKhau, existing.getMatKhau()))
+        if (existing != null && passwordEncoder.matches(matKhau, existing.getMatKhau())) {
             return existing;
+        }
         return null;
     }
 
@@ -60,7 +61,7 @@ public class NguoiDungServiceImpl implements NguoiDungService{
     public NguoiDung findByEmail(String email) {
         return this.nguoiDungRepo.findByEmail(email);
     }
-    
+
     @Override
     public boolean changePassword(int nguoiDungId, String oldPassword, String newPassword) {
         NguoiDung nguoiDung = nguoiDungRepo.findById(nguoiDungId);
@@ -79,5 +80,5 @@ public class NguoiDungServiceImpl implements NguoiDungService{
 
         return true;
     }
-    
+
 }

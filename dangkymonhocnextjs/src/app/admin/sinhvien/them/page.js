@@ -283,17 +283,16 @@ const ThemSinhVien = () => {
                                         ...newSinhVien,
                                         nguoiDung: {
                                             ...newSinhVien.nguoiDung,
-                                            avatar: reader.result // base64 string
+                                            avatar: reader.result 
                                         }
                                     });
                                 };
-                                reader.readAsDataURL(file); // convert file -> base64
+                                reader.readAsDataURL(file);
                             }
                         }}
                     />
                 </div>
 
-                {/* Xem trước ảnh */}
                 {newSinhVien.nguoiDung.avatar && (
                     <div className="mt-3 text-center">
                         <img
@@ -305,7 +304,7 @@ const ThemSinhVien = () => {
                 )}
 
                 <div className="text-center mt-3 mb-3">
-                    <button type="submit" className="btn btn-primary" disabled={loading}>
+                    <button type="submit" className="btn btn-primary mb-3" disabled={loading}>
                         {loading ?
                             <>
                                 <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>

@@ -12,5 +12,6 @@ import java.util.List;
  * @author toquocbinh2102
  */
 public interface TongKetService {
+
     List<TongKetHocKyDTO> getTongKetHocKy(int sinhVienId);
 }

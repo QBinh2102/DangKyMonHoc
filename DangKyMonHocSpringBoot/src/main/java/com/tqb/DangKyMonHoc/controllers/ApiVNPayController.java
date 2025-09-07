@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api")
 @CrossOrigin
 public class ApiVNPayController {
-    
+
     @Autowired
     private VNPayService vnpayService;
 
@@ -84,5 +84,5 @@ public class ApiVNPayController {
             ));
         }
     }
-    
+
 }

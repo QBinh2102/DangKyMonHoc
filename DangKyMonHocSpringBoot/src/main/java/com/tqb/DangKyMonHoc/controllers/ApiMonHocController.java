@@ -45,10 +45,10 @@ public class ApiMonHocController {
     }
 
     @GetMapping("/monhoc")
-    public ResponseEntity<List<MonHoc>> getMonHoc(@RequestParam Map<String,String> params) {
+    public ResponseEntity<List<MonHoc>> getMonHoc(@RequestParam Map<String, String> params) {
         return new ResponseEntity<>(this.monHocService.findMonHoc(params), HttpStatus.OK);
     }
-    
+
     @GetMapping("/monhoc-page")
     public ResponseEntity<Page<MonHoc>> getMonHocPage(@RequestParam Map<String, String> params) {
         Page<MonHoc> monHocPage = this.monHocService.findMonHocPage(params);

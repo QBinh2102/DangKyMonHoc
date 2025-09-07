@@ -14,15 +14,22 @@ import org.springframework.data.jpa.repository.JpaRepository;
  *
  * @author toquocbinh2102
  */
-public interface HocPhiRepository extends JpaRepository<HocPhi, Integer>{
-    
+public interface HocPhiRepository extends JpaRepository<HocPhi, Integer> {
+
     HocPhi findById(int id);
+
     HocPhi findBySinhVienId_IdAndHocKyId_Id(int sinhVienId, int hocKyId);
+
     List<HocPhi> findBySinhVienId_IdOrderByIdAsc(int sinhVienId);
+
     List<HocPhi> findAllByOrderByIdDesc();
+
     Page<HocPhi> findBySinhVienId_NguoiDung_HoTenContainingIgnoreCaseOrderByIdDesc(String hoTenSV, Pageable pageable);
+
     Page<HocPhi> findByTrangThaiOrderByIdDesc(String trangThai, Pageable pageable);
+
     Page<HocPhi> findBySinhVienId_NguoiDung_HoTenContainingIgnoreCaseAndTrangThaiOrderByIdDesc(String hoTenSV, String trangThai, Pageable pageable);
+
     Page<HocPhi> findAllByOrderByIdDesc(Pageable pageable);
-    
+
 }

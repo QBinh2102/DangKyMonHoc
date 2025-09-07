@@ -37,7 +37,7 @@ public class ApiThoiKhoaBieuController {
 
     @Autowired
     private ThoiKhoaBieuService thoiKhoaBieuService;
-    
+
     @Autowired
     private NguoiDungService nguoiDungService;
 
@@ -55,22 +55,22 @@ public class ApiThoiKhoaBieuController {
     public ResponseEntity<List<ThoiKhoaBieu>> getThoiKhoaBieu(@RequestParam Map<String, String> params) {
         return new ResponseEntity<>(this.thoiKhoaBieuService.findThoiKhoaBieu(params), HttpStatus.OK);
     }
-    
+
     @GetMapping("/secure/me/thoikhoabieu")
     public ResponseEntity<List<ThoiKhoaBieu>> getThoiKhoaBieuSinhVien(
-            Principal principal, 
+            Principal principal,
             @RequestParam int hocKyId,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date ngayBatDau,
-            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date ngayKetThuc){
-        
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date ngayKetThuc) {
+
         NguoiDung nd = this.nguoiDungService.findByEmail(principal.getName());
-        if(nd!=null){
+        if (nd != null) {
             return new ResponseEntity<>(this.thoiKhoaBieuService.findBySinhVienAndHocKy(nd.getId(), hocKyId, ngayBatDau, ngayKetThuc), HttpStatus.OK);
-        }else{
+        } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
-    
+
     @PostMapping("/secure/admin/thoikhoabieu")
     public ResponseEntity<?> createForSinhVien(@RequestBody ThoiKhoaBieu thoiKhoaBieu) {
         if (thoiKhoaBieu.getId() != null) {
@@ -108,7 +108,7 @@ public class ApiThoiKhoaBieuController {
     }
 
     @DeleteMapping("/secure/me/thoikhoabieu")
-    public ResponseEntity<Void> delete(@RequestParam(value="dangKyId") int dangKyId) {
+    public ResponseEntity<Void> delete(@RequestParam(value = "dangKyId") int dangKyId) {
         this.thoiKhoaBieuService.deleteByDangKyId(dangKyId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

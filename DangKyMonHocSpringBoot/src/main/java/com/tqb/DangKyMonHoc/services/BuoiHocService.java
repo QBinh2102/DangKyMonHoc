@@ -15,10 +15,14 @@ import org.springframework.data.domain.Page;
  * @author toquocbinh2102
  */
 public interface BuoiHocService {
-    
+
     BuoiHoc findById(int id);
-    List<BuoiHoc> findBuoiHoc(Map<String,String> params);
-    Page<BuoiHoc> findBuoiHocPage(Map<String,String> params);
+
+    List<BuoiHoc> findBuoiHoc(Map<String, String> params);
+
+    Page<BuoiHoc> findBuoiHocPage(Map<String, String> params);
+
     BuoiHoc addOrUpdate(BuoiHoc buoiHoc);
-    List<BuoiHocDTO> findDanhSachBuoiHocDangKy(Map<String,String> params);
+
+    List<BuoiHocDTO> findDanhSachBuoiHocDangKy(Map<String, String> params);
 }

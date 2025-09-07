@@ -13,10 +13,13 @@ import java.util.Map;
  * @author toquocbinh2102
  */
 public interface ChiTietHocPhiService {
-    
+
     List<ChiTietHocPhi> findChiTietHocPhiBySinhVienAndHocKy(int sinhVienId, int hocKyId);
+
     List<ChiTietHocPhi> findChiTietHocPhiByHocPhiId(int hocPhiId);
-    ChiTietHocPhi add(Map<String,String> params);
+
+    ChiTietHocPhi add(Map<String, String> params);
+
     void delete(int sinhVienId, int buoiHocId);
-    
+
 }

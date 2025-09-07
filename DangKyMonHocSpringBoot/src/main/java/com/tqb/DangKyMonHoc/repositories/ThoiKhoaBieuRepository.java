@@ -26,12 +26,12 @@ public interface ThoiKhoaBieuRepository extends JpaRepository<ThoiKhoaBieu, Inte
     List<ThoiKhoaBieu> findAllByOrderByIdAsc();
 
     @Query("""
-           SELECT tkb
-           FROM ThoiKhoaBieu tkb
-           JOIN tkb.lichHocId lh
-           WHERE tkb.sinhVienId.id = :sinhVienId
-           AND tkb.hocKyId.id = :hocKyId
-           AND NOT (lh.ngayKetThuc < :ngayBatDau OR lh.ngayBatDau > :ngayKetThuc)
+            SELECT tkb
+            FROM ThoiKhoaBieu tkb
+            JOIN tkb.lichHocId lh
+            WHERE tkb.sinhVienId.id = :sinhVienId
+                AND tkb.hocKyId.id = :hocKyId
+                AND NOT (lh.ngayKetThuc < :ngayBatDau OR lh.ngayBatDau > :ngayKetThuc)
            """)
     List<ThoiKhoaBieu> findBySinhVienAndHocKy(
             @Param("sinhVienId") int sinhVienId,
@@ -40,6 +40,7 @@ public interface ThoiKhoaBieuRepository extends JpaRepository<ThoiKhoaBieu, Inte
             @Param("ngayKetThuc") Date ngayKetThuc
     );
 
+    //Xóa thời khóa biểu theo dangKyId
     @Transactional
     @Modifying
     @Query("""
@@ -47,13 +48,13 @@ public interface ThoiKhoaBieuRepository extends JpaRepository<ThoiKhoaBieu, Inte
             WHERE tkb.sinhVienId.id = (
                 SELECT dk.sinhVienId.id FROM DangKy dk WHERE dk.id = :dangKyId
             )
-            AND tkb.lichHocId.id IN (
-                SELECT lh.id
-                FROM LichHoc lh
-                JOIN lh.buoiHocId bh
-                JOIN DangKy dk ON dk.buoiHocId = bh
-                WHERE dk.id = :dangKyId
-            )
+                AND tkb.lichHocId.id IN (
+                    SELECT lh.id
+                    FROM LichHoc lh
+                    JOIN lh.buoiHocId bh
+                    JOIN DangKy dk ON dk.buoiHocId = bh
+                    WHERE dk.id = :dangKyId
+                )
            """)
     void deleteByDangKyId(@Param("dangKyId") int dangKyId);
 

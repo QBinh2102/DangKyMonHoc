@@ -30,39 +30,39 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api")
 @CrossOrigin
 public class ApiPhongHocController {
-    
+
     @Autowired
     private PhongHocService phongHocService;
-    
+
     @GetMapping("/phonghoc")
-    public ResponseEntity<List<PhongHoc>> getPhongHoc(@RequestParam Map<String,String> params){
+    public ResponseEntity<List<PhongHoc>> getPhongHoc(@RequestParam Map<String, String> params) {
         return new ResponseEntity<>(this.phongHocService.findPhongHoc(params), HttpStatus.OK);
     }
-    
+
     @GetMapping("/phonghoc-page")
-    public ResponseEntity<Page<PhongHoc>> getPhongHocPage(@RequestParam Map<String,String> params){
+    public ResponseEntity<Page<PhongHoc>> getPhongHocPage(@RequestParam Map<String, String> params) {
         Page<PhongHoc> phongHocPage = this.phongHocService.findPhongHocPage(params);
         return new ResponseEntity<>(phongHocPage, HttpStatus.OK);
     }
-    
+
     @GetMapping("/phonghoc/{phongHocId}")
-    public ResponseEntity<PhongHoc> getPhongHocById(@PathVariable(value="phongHocId") int id){
+    public ResponseEntity<PhongHoc> getPhongHocById(@PathVariable(value = "phongHocId") int id) {
         PhongHoc existing = this.phongHocService.findById(id);
-        if(existing!=null){
+        if (existing != null) {
             return new ResponseEntity<>(this.phongHocService.findById(id), HttpStatus.OK);
-        }else {
+        } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
-    
+
     @PostMapping("/secure/admin/phonghoc")
-    public ResponseEntity<?> createPhongHoc(@RequestBody PhongHoc phongHoc){
+    public ResponseEntity<?> createPhongHoc(@RequestBody PhongHoc phongHoc) {
         if (phongHoc.getId() != null) {
             return ResponseEntity
                     .status(HttpStatus.CONFLICT)
                     .body("ID phải để trống khi tạo mới.");
         }
-        
+
         try {
             PhongHoc newPhongHoc = this.phongHocService.addOrUpdate(phongHoc);
             return new ResponseEntity<>(newPhongHoc, HttpStatus.CREATED);
@@ -72,7 +72,7 @@ public class ApiPhongHocController {
                     .body("Lỗi khi tạo: " + e.getMessage());
         }
     }
-    
+
     @PutMapping("/secure/admin/phonghoc/{phongHocId}")
     public ResponseEntity<PhongHoc> update(@PathVariable(value = "phongHocId") int id, @RequestBody PhongHoc phongHoc) {
         PhongHoc existing = this.phongHocService.findById(id);
@@ -83,5 +83,5 @@ public class ApiPhongHocController {
             return new ResponseEntity<>(this.phongHocService.addOrUpdate(phongHoc), HttpStatus.OK);
         }
     }
-    
+
 }

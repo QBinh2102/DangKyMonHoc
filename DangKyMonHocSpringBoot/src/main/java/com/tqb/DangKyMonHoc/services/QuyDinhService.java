@@ -13,11 +13,15 @@ import org.springframework.data.domain.Page;
  * @author toquocbinh2102
  */
 public interface QuyDinhService {
-    
+
     QuyDinh findById(int id);
-    Page<QuyDinh> findQuyDinhPage(Map<String,String> params);
+
+    Page<QuyDinh> findQuyDinhPage(Map<String, String> params);
+
     QuyDinh findByTen(String ten);
+
     QuyDinh addOrUpdate(QuyDinh quyDinh);
+
     QuyDinh delete(QuyDinh quyDinh);
-    
+
 }

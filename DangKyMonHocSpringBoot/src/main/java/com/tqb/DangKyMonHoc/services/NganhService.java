@@ -14,10 +14,13 @@ import org.springframework.data.domain.Page;
  * @author toquocbinh2102
  */
 public interface NganhService {
-    
+
     Nganh findById(int id);
-    List<Nganh> findNganh(Map<String,String> params);
-    Page<Nganh> findNganhPage(Map<String,String> params);
+
+    List<Nganh> findNganh(Map<String, String> params);
+
+    Page<Nganh> findNganhPage(Map<String, String> params);
+
     Nganh addOrUpdate(Nganh nganh);
-    
+
 }

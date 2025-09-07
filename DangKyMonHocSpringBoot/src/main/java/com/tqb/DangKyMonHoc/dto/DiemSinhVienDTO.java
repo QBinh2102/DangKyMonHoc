@@ -11,7 +11,7 @@ import java.math.BigDecimal;
  * @author toquocbinh2102
  */
 public class DiemSinhVienDTO {
-    
+
     private String hocKy;
     private String namHoc;
     private String tenMonHoc;
@@ -23,8 +23,8 @@ public class DiemSinhVienDTO {
     private BigDecimal diemTongKet;
     private String trangThai;
 
-    public DiemSinhVienDTO(String hocKy, String namHoc, String tenMonHoc, String maLop, 
-            int tinChiLyThuyet, int tinChiThucHanh, BigDecimal diemGiuaKy, 
+    public DiemSinhVienDTO(String hocKy, String namHoc, String tenMonHoc, String maLop,
+            int tinChiLyThuyet, int tinChiThucHanh, BigDecimal diemGiuaKy,
             BigDecimal diemCuoiKy, BigDecimal diemTongKet, String trangThai) {
         this.hocKy = hocKy;
         this.namHoc = namHoc;
@@ -177,5 +177,5 @@ public class DiemSinhVienDTO {
     public void setTrangThai(String trangThai) {
         this.trangThai = trangThai;
     }
-    
+
 }

@@ -42,19 +42,19 @@ public class ApiChiTietHocPhiController {
         NguoiDung nd = this.nguoiDungService.findByEmail(principal.getName());
         return new ResponseEntity<>(this.chiTietHocPhiService.findChiTietHocPhiBySinhVienAndHocKy(nd.getId(), hocKyId), HttpStatus.OK);
     }
-    
+
     @GetMapping("/secure/admin/chitiethocphi")
     public ResponseEntity<List<ChiTietHocPhi>> getChiTietHocPhi(@RequestParam(value = "hocPhiId") int hocPhiId) {
         return new ResponseEntity<>(this.chiTietHocPhiService.findChiTietHocPhiByHocPhiId(hocPhiId), HttpStatus.OK);
     }
-    
+
     @PostMapping("/secure/admin/chitiethocphi")
-    public ResponseEntity<?> createForSinhVien(@RequestParam Map<String,String> params) {
+    public ResponseEntity<?> createForSinhVien(@RequestParam Map<String, String> params) {
         return new ResponseEntity<>(this.chiTietHocPhiService.add(params), HttpStatus.CREATED);
     }
 
     @PostMapping("/secure/me/chitiethocphi")
-    public ResponseEntity<?> create(@RequestParam Map<String,String> params) {
+    public ResponseEntity<?> create(@RequestParam Map<String, String> params) {
         return new ResponseEntity<>(this.chiTietHocPhiService.add(params), HttpStatus.CREATED);
     }
 

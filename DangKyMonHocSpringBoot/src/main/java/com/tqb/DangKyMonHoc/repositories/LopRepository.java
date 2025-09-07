@@ -23,18 +23,18 @@ public interface LopRepository extends JpaRepository<Lop, Integer> {
     List<Lop> findAllByOrderByIdDesc();
 
     Page<Lop> findByMaLopContainingIgnoreCaseOrderByIdAsc(String maLop, Pageable pageable);
+
     Page<Lop> findAllByOrderByIdDesc(Pageable pageable);
 
+    //Danh sách các lớp chưa đủ sinh viên
     @Query("""
-        SELECT l
-        FROM Lop l
-        LEFT JOIN l.sinhVienSet sv
-        WHERE l.nganhId.id = :nganhId AND l.khoaHoc = :khoaHoc
-        GROUP BY l
-        HAVING COUNT(sv) < l.siSo
-    """)
+            SELECT l
+            FROM Lop l
+            LEFT JOIN l.sinhVienSet sv
+            WHERE l.nganhId.id = :nganhId AND l.khoaHoc = :khoaHoc
+            GROUP BY l
+            HAVING COUNT(sv) < l.siSo
+           """)
     List<Lop> findLopChuaDay(@Param("nganhId") int nganhId, @Param("khoaHoc") int khoaHoc);
-
-
 
 }

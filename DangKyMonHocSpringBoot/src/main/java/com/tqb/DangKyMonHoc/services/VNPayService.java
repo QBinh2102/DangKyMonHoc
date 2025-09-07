@@ -14,10 +14,11 @@ import java.util.Map;
  * @author toquocbinh2102
  */
 public interface VNPayService {
-    
+
     String createPayment(String hocPhiId, long amount, String bankCode, HttpServletRequest request) throws UnsupportedEncodingException, NoSuchAlgorithmException;
+
     String hmacSHA512(String key, String data) throws NoSuchAlgorithmException;
 
     public boolean validatePaymentResponse(Map<String, String> params);
-    
+
 }

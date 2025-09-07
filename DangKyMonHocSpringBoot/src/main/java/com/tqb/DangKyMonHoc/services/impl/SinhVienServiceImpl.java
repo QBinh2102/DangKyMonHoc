@@ -105,10 +105,10 @@ public class SinhVienServiceImpl implements SinhVienService {
         String page = params.get("page");
         String hoTen = params.get("hoTen");
         boolean hasHoTen = hoTen != null && !hoTen.isEmpty();
-        
+
         int size = 10;
         Pageable pageable = PageRequest.of(Integer.parseInt(page), size);
-        
+
         if (hasHoTen) {
             return this.sinhVienRepo.findByNguoiDung_HoTenContainingIgnoreCaseOrderByIdAsc(hoTen, pageable);
         } else {

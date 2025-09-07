@@ -30,8 +30,8 @@ import org.springframework.stereotype.Service;
  * @author toquocbinh2102
  */
 @Service
-public class VNPayServiceImpl implements VNPayService{
-    
+public class VNPayServiceImpl implements VNPayService {
+
     private final String vnp_TmnCode = "P8BL9H6B";
     private final String vnp_HashSecret = "122G8CAKEGU2NDEGBX137HF19UGJ8K6H";
     private final String vnp_Url = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
@@ -174,5 +174,5 @@ public class VNPayServiceImpl implements VNPayService{
         }
         return ipAdress;
     }
-    
+
 }

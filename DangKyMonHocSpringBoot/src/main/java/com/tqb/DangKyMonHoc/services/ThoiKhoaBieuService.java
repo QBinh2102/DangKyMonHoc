@@ -22,7 +22,7 @@ public interface ThoiKhoaBieuService {
     ThoiKhoaBieu add(ThoiKhoaBieu thoiKhoaBieu);
 
     ThoiKhoaBieu delete(ThoiKhoaBieu thoiKhoaBieu);
-    
+
     void deleteByDangKyId(int dangKyId);
 
     List<ThoiKhoaBieu> findBySinhVienAndHocKy(int sinhVienId, int hocKyId, Date ngayBatDau, Date ngayKetThuc);

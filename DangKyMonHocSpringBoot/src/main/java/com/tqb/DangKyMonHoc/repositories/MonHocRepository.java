@@ -16,22 +16,29 @@ import org.springframework.data.repository.query.Param;
  *
  * @author toquocbinh2102
  */
-public interface MonHocRepository extends JpaRepository<MonHoc, Integer>{
-    
+public interface MonHocRepository extends JpaRepository<MonHoc, Integer> {
+
     MonHoc findById(int id);
+
     List<MonHoc> findAllByOrderByIdAsc();
+
     Page<MonHoc> findByTenMonContainingIgnoreCaseOrderByIdAsc(String tenMon, Pageable pageable);
+
     Page<MonHoc> findByKhoaId_IdOrderByIdAsc(int khoaId, Pageable pageable);
+
     Page<MonHoc> findByTenMonContainingIgnoreCaseAndKhoaId_IdOrderByIdAsc(String tenMon, int khoaId, Pageable pageable);
+
     Page<MonHoc> findAllByOrderByIdAsc(Pageable pageable);
+
+    //Danh sách môn học đã đăng ký theo kỳ và khoa để thống kê
     @Query("""
-           SELECT DISTINCT mh
-           FROM DangKy dk
-           JOIN dk.buoiHocId bh
-           JOIN bh.monHocId mh
-           WHERE dk.hocKyId.id = :hocKyId
-            AND mh.khoaId.id = :khoaId
+            SELECT DISTINCT mh
+            FROM DangKy dk
+            JOIN dk.buoiHocId bh
+            JOIN bh.monHocId mh
+            WHERE dk.hocKyId.id = :hocKyId
+                AND mh.khoaId.id = :khoaId
            """)
     List<MonHoc> findMonHocByHocKyAndKhoaFromDangKy(@Param("hocKyId") int hocKyId, @Param("khoaId") int khoaId);
-    
+
 }

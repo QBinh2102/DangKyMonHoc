@@ -15,7 +15,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -27,21 +26,21 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api")
 @CrossOrigin
 public class ApiTongKetController {
-    
+
     @Autowired
     private TongKetService tongKetService;
-    
+
     @Autowired
     private NguoiDungService nguoiDungService;
-    
+
     @GetMapping("/secure/me/tongket")
-    public ResponseEntity<List<TongKetHocKyDTO>> getTongKet(Principal principal){
+    public ResponseEntity<List<TongKetHocKyDTO>> getTongKet(Principal principal) {
         NguoiDung nd = this.nguoiDungService.findByEmail(principal.getName());
-        if(nd!=null){
+        if (nd != null) {
             return new ResponseEntity<>(this.tongKetService.getTongKetHocKy(nd.getId()), HttpStatus.OK);
-        }else{
+        } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
-    
+
 }

@@ -49,7 +49,7 @@ public class ApiSinhVienController {
     public ResponseEntity<List<SinhVien>> getSinhVien(@RequestParam Map<String, String> params) {
         return new ResponseEntity<>(this.sinhVienService.findSinhVien(params), HttpStatus.OK);
     }
-    
+
     @GetMapping("/secure/admin/sinhvien-page")
     public ResponseEntity<Page<SinhVien>> getSinhVienPage(@RequestParam Map<String, String> params) {
         Page<SinhVien> sinhVienPage = this.sinhVienService.findSinhVienPage(params);

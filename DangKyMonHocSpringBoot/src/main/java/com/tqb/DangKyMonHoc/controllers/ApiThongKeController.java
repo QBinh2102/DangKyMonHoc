@@ -23,10 +23,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api")
 @CrossOrigin
 public class ApiThongKeController {
-    
+
     @Autowired
     private ThongKeService thongKeService;
-    
+
     @GetMapping("/secure/admin/thongke")
     public ThongKeDTO thongKe(
             @RequestParam int hocKyId,
@@ -35,7 +35,7 @@ public class ApiThongKeController {
     ) {
         return this.thongKeService.thongKe(hocKyId, khoaId, monHocId);
     }
-    
+
     @GetMapping("/secure/admin/thongketheolop")
     public List<ThongKeTheoLopDTO> thongKeTheoLop(
             @RequestParam int hocKyId,
@@ -43,5 +43,5 @@ public class ApiThongKeController {
     ) {
         return this.thongKeService.thongKeTheoLop(hocKyId, monHocId);
     }
-    
+
 }

@@ -5,7 +5,6 @@
 package com.tqb.DangKyMonHoc.controllers;
 
 import com.tqb.DangKyMonHoc.pojo.NganhMonHoc;
-import com.tqb.DangKyMonHoc.pojo.NganhMonHocPK;
 import com.tqb.DangKyMonHoc.services.NganhMonHocService;
 import java.util.List;
 import java.util.Map;

@@ -14,11 +14,15 @@ import org.springframework.data.domain.Page;
  * @author toquocbinh2102
  */
 public interface HocPhiService {
-    
+
     HocPhi findById(int id);
+
     HocPhi findHocPhiMoiNhatTheoSinhVien(int sinhVienId);
-    List<HocPhi> findHocPhi(Map<String,String> params);
-    Page<HocPhi> findHocPhiPage(Map<String,String> params);
+
+    List<HocPhi> findHocPhi(Map<String, String> params);
+
+    Page<HocPhi> findHocPhiPage(Map<String, String> params);
+
     HocPhi addOrUpdate(HocPhi hocPhi);
-    
+
 }

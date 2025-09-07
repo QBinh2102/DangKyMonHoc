@@ -53,7 +53,7 @@ public class ChiTietHocPhiServiceImpl implements ChiTietHocPhiService {
         int buoiHocId = Integer.parseInt(params.get("buoiHocId"));
         BuoiHoc buoiHoc = this.buoiHocRepo.findById(buoiHocId);
         MonHoc monHoc = buoiHoc.getMonHocId();
-        
+
         int tongTinChi = monHoc.getTinChiLyThuyet() + monHoc.getTinChiThucHanh();
         BigDecimal donGia = BigDecimal.valueOf(this.quyDinhRepo.findByTen("Số tiền 1 tín chỉ").getGiaTri());
         BigDecimal chiPhi = BigDecimal.valueOf(tongTinChi).multiply(donGia);
@@ -64,7 +64,7 @@ public class ChiTietHocPhiServiceImpl implements ChiTietHocPhiService {
         newChiTietHocPhi.setChiPhi(chiPhi);
 
         ChiTietHocPhi saved = this.chiTietHocPhiRepo.save(newChiTietHocPhi);
-        
+
         HocPhi hocPhi = this.hocPhiRepo.findById(hocPhiId);
         BigDecimal tongTien = this.chiTietHocPhiRepo.sumSoTienByHocPhiId(hocPhiId);
         hocPhi.setTongTien(tongTien);
@@ -76,7 +76,7 @@ public class ChiTietHocPhiServiceImpl implements ChiTietHocPhiService {
     @Override
     public void delete(int sinhVienId, int buoiHocId) {
         HocPhi hocPhi = this.hocPhiRepo.findBySinhVienId_IdAndHocKyId_Id(sinhVienId, this.hocKyRepo.findTopByOrderByIdDesc().getId());
-        
+
         BuoiHoc buoiHoc = this.buoiHocRepo.findById(buoiHocId);
         this.chiTietHocPhiRepo.deleteByHocPhiId_IdAndMonHocId_Id(hocPhi.getId(), buoiHoc.getMonHocId().getId());
 

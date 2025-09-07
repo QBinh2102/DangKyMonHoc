@@ -25,7 +25,6 @@ public interface BuoiHocRepository extends JpaRepository<BuoiHoc, Integer> {
 
     List<BuoiHoc> findByLopId_IdOrderByIdAsc(int lopId);
 
-//    List<BuoiHoc> findByHocKyId_IdAndLopId_NganhId_IdOrderByIdAsc(int hocKyId, int nganhId);
     List<BuoiHoc> findAllByOrderByIdDesc();
 
     Page<BuoiHoc> findByLopId_MaLopContainingIgnoreCaseOrderByIdAsc(String maLop, Pageable pageable);
@@ -33,42 +32,60 @@ public interface BuoiHocRepository extends JpaRepository<BuoiHoc, Integer> {
     Page<BuoiHoc> findAllByOrderByIdDesc(Pageable pageable);
 
     @Query("""
-       SELECT new com.tqb.DangKyMonHoc.dto.BuoiHocDTO(
-            bh.id,
-            mh.tenMon,
-            (mh.tinChiLyThuyet + mh.tinChiThucHanh),
-            l.maLop,
-            bh.siSo,
-            (bh.siSo - COUNT(dk.id))
-       )
-       FROM BuoiHoc bh
-       JOIN bh.lopId l
-       JOIN bh.monHocId mh
-       LEFT JOIN DangKy dk ON dk.buoiHocId = bh
-       WHERE bh.hocKyId.id = :hocKyId
-         AND l.id = :lopId
-       GROUP BY bh.id, mh.tenMon, mh.tinChiLyThuyet, mh.tinChiThucHanh, l.maLop, bh.siSo
-       """)
+            SELECT new com.tqb.DangKyMonHoc.dto.BuoiHocDTO(
+                 bh.id,
+                 mh.tenMon,
+                 (mh.tinChiLyThuyet + mh.tinChiThucHanh),
+                 l.maLop,
+                 bh.siSo,
+                 (bh.siSo - COUNT(dk.id))
+            )
+            FROM BuoiHoc bh
+            JOIN bh.lopId l
+            JOIN bh.monHocId mh
+            LEFT JOIN DangKy dk ON dk.buoiHocId = bh
+            WHERE bh.hocKyId.id = :hocKyId
+                AND l.id = :lopId
+            GROUP BY bh.id, mh.tenMon, mh.tinChiLyThuyet, mh.tinChiThucHanh, l.maLop, bh.siSo
+           """)
     List<BuoiHocDTO> findBuoiHocTheoHocKyVaLop(@Param("hocKyId") int hocKyId,
             @Param("lopId") int lopId);
 
     @Query("""
-       SELECT new com.tqb.DangKyMonHoc.dto.BuoiHocDTO(
-            bh.id,
-            mh.tenMon,
-            (mh.tinChiLyThuyet + mh.tinChiThucHanh),
-            l.maLop,
-            bh.siSo,
-            (bh.siSo - COUNT(dk.id))
-       )
-       FROM BuoiHoc bh
-       JOIN bh.lopId l
-       JOIN bh.monHocId mh
-       LEFT JOIN DangKy dk ON dk.buoiHocId = bh
-       WHERE bh.hocKyId.id = :hocKyId
-         AND mh.id = :monHocId
-       GROUP BY bh.id, mh.tenMon, mh.tinChiLyThuyet, mh.tinChiThucHanh, l.maLop, bh.siSo
-       """)
+            SELECT new com.tqb.DangKyMonHoc.dto.BuoiHocDTO(
+                 bh.id,
+                 mh.tenMon,
+                 (mh.tinChiLyThuyet + mh.tinChiThucHanh),
+                 l.maLop,
+                 bh.siSo,
+                 (bh.siSo - COUNT(dk.id))
+            )
+            FROM BuoiHoc bh
+            JOIN bh.lopId l
+            JOIN bh.monHocId mh
+            LEFT JOIN DangKy dk ON dk.buoiHocId = bh
+            WHERE bh.hocKyId.id = :hocKyId
+                AND mh.id = :monHocId
+            GROUP BY bh.id, mh.tenMon, mh.tinChiLyThuyet, mh.tinChiThucHanh, l.maLop, bh.siSo
+           """)
     List<BuoiHocDTO> findBuoiHocTheoHocKyVaMonHoc(@Param("hocKyId") int hocKyId,
             @Param("monHocId") int monHocId);
+
+    @Query("""
+            SELECT new com.tqb.DangKyMonHoc.dto.BuoiHocDTO(
+                 bh.id,
+                 mh.tenMon,
+                 (mh.tinChiLyThuyet + mh.tinChiThucHanh),
+                 l.maLop,
+                 bh.siSo,
+                 (bh.siSo - COUNT(dk.id))
+            )
+            FROM BuoiHoc bh
+            JOIN bh.lopId l
+            JOIN bh.monHocId mh
+            LEFT JOIN DangKy dk ON dk.buoiHocId = bh
+            WHERE bh.id = :buoiHocId
+            GROUP BY bh.id, mh.tenMon, mh.tinChiLyThuyet, mh.tinChiThucHanh, l.maLop, bh.siSo
+           """)
+    BuoiHocDTO findBuoiHocTheoId(@Param("buoiHocId") int buoiHocId);
 }

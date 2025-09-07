@@ -14,10 +14,13 @@ import java.util.Map;
  * @author toquocbinh2102
  */
 public interface DiemService {
-    
+
     Diem findById(int id);
-    List<Diem> findDiem(Map<String,String> params);
+
+    List<Diem> findDiem(Map<String, String> params);
+
     List<DiemSinhVienDTO> findDiemBySinhVienId(int sinhVienId);
+
     Diem addOrUpdate(Diem diem);
-    
+
 }

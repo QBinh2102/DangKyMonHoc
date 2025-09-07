@@ -14,10 +14,13 @@ import org.springframework.data.domain.Page;
  * @author toquocbinh2102
  */
 public interface GiangVienService {
-    
+
     GiangVien findById(int id);
-    List<GiangVien> findGiangVien(Map<String,String> params);
-    Page<GiangVien> findGiangVienPage(Map<String,String> params);
+
+    List<GiangVien> findGiangVien(Map<String, String> params);
+
+    Page<GiangVien> findGiangVienPage(Map<String, String> params);
+
     GiangVien addOrUpdate(GiangVien giangVien);
-    
+
 }
