@@ -330,7 +330,7 @@ const SuaMonHoc = () => {
                                                 value={currentKy}
                                                 onChange={(e) => handleKyChange(nganh.id, parseInt(e.target.value))}
                                             >
-                                                {[...Array(12)].map((_, i) => ( // ví dụ có 8 kỳ
+                                                {[...Array(12)].map((_, i) => (
                                                     <option key={i + 1} value={i + 1}>Kỳ {i + 1}</option>
                                                 ))}
                                             </select>
@@ -344,7 +344,6 @@ const SuaMonHoc = () => {
                             <h2>Các môn học liên quan</h2>
                         </div>
 
-                        {/* Mục thêm mặc định môn học liên quan */}
                         <div className="row mt-3 mb-3 align-items-center">
                             <div className="col-md-4">
                                 <select

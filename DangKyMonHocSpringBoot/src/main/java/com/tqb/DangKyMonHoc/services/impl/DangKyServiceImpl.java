@@ -74,6 +74,11 @@ public class DangKyServiceImpl implements DangKyService {
         int monHocId = this.buoiHocRepo.findById(buoiHocId).getMonHocId().getId();
         int nganhId = this.sinhVienRepo.findById(sinhVienId).getNganhId().getId();
         HocKy hocKyLatest = this.hocKyRepo.findTopByOrderByIdDesc();
+        
+        HocPhi existingHocPhi = this.hocPhiRepo.findBySinhVienId_IdAndHocKyId_Id(sinhVienId, hocKyLatest.getId());
+        if(existingHocPhi!=null&&existingHocPhi.getTrangThai().equals("DA_THANH_TOAN")){
+            throw new RuntimeException("Sinh viên đã đóng học phí kỳ này, không thể đăng ký thêm!");
+        }
 
         //Kiểm tra sinh viên đã đăng ký môn học 
         DangKy existingDangKy = this.dangKyRepo.findBySinhVienId_IdAndBuoiHocId_MonHocId_IdAndHocKyId_Id(sinhVienId, monHocId, hocKyLatest.getId());
@@ -119,7 +124,6 @@ public class DangKyServiceImpl implements DangKyService {
         dangKy.setTrangThai("DANG_KY");
 
         //Tạo mới học phí cho sinh viên khi đăng ký môn kỳ mới
-        HocPhi existingHocPhi = this.hocPhiRepo.findBySinhVienId_IdAndHocKyId_Id(sinhVienId, hocKyLatest.getId());
         if (existingHocPhi == null) {
             HocPhi newHocPhi = new HocPhi();
             newHocPhi.setSinhVienId(this.sinhVienRepo.findById(sinhVienId));

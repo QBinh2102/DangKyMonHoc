@@ -179,7 +179,6 @@ const ThemGiangVien = () => {
                         />
                     </div>
 
-                    {/* Xem trước ảnh */}
                     {newGiangVien.nguoiDung.avatar && (
                         <div className="mt-3 text-center">
                             <img
