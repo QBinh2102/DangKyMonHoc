@@ -1,6 +1,7 @@
 'use client'
 
 import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 import cookie from "react-cookies";
 
 export default function SinhVienLayout({ children }) {
@@ -14,6 +15,13 @@ export default function SinhVienLayout({ children }) {
         { label: "Đăng ký môn học", href: "/sinhvien/dangkymonhoc" },
         { label: "Xem học phí", href: "/sinhvien/hocphi" },
     ]
+
+    useEffect(() => {
+        const token = cookie.load("token");
+        if (!token) {
+            router.replace("/dangnhap");
+        }
+    }, [router]);
 
     const dangXuat = () => {
         cookie.remove('token');
